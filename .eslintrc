@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "oclif",
+    "oclif-typescript"
+  ],
+  "rules": {
+    "comma-dangle": "off",
+    "quotes": "off",
+    "semi": "off",
+    "object-curly-spacing": "off"
+  }
+}
