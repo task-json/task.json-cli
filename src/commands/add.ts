@@ -1,7 +1,12 @@
 import {Command, flags} from '@oclif/command'
+import * as fs from "fs";
+import { format } from "date-fns";
+import { Task } from "../types";
+import { readTodo, writeTodo } from "../utils/task";
+import { readConfig } from "../utils/config";
 
 export default class Add extends Command {
-  static description = 'describe the command here'
+  static description = 'add a new task'
 
   static examples = [
     `$ todo add "Hello world" -p hello world -c test
@@ -10,6 +15,10 @@ export default class Add extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
+    priority: flags.string({
+      char: "P",
+      description: "priority (A-Z)"
+    }),
     projects: flags.string({
       char: "p",
       description: "one or more projects",
@@ -28,7 +37,29 @@ export default class Add extends Command {
 
   async run() {
     const { args, flags } = this.parse(Add);
+    let tasks: Task[];
 
-    this.log(`text: ${args.text} projects: ${JSON.stringify(flags.projects)}`);
+    const { dataPath } = readConfig();
+
+    if (!fs.existsSync(dataPath)) {
+      tasks = [];
+    }
+    else {
+      // Read
+      tasks = readTodo(dataPath);
+    }
+
+    tasks.push({
+      text: args.text,
+      priority: flags.priority || "",
+      done: false,
+      start: format(new Date(), "yyyy-MM-dd"),
+      end: null,
+      contexts: flags.contexts || [],
+      projects: flags.projects || []
+    });
+
+    writeTodo(dataPath, tasks);
+    this.log(`Task ${tasks.length} added: ${args.text}`);
   }
 }
