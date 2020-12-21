@@ -7,6 +7,8 @@
     "comma-dangle": "off",
     "quotes": "off",
     "semi": "off",
-    "object-curly-spacing": "off"
+    "object-curly-spacing": "off",
+    "brace-style": "off",
+    "no-negated-condition": "off"
   }
 }
