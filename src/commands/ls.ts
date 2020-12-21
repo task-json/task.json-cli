@@ -47,9 +47,10 @@ export default class List extends Command {
 
     const data = [
       // Head
-      ["Pri", "Text", "Projects", "Contexts"]
+      ["ID", "Pri", "Text", "Projects", "Contexts"]
     ];
-    const output = table(data.concat(tasks.map(task => ([
+    const output = table(data.concat(tasks.map((task, index) => ([
+      (index + 1).toString(),
       task.priority,
       task.text,
       task.projects.join(","),
@@ -59,11 +60,11 @@ export default class List extends Command {
       border: {
         bodyLeft: "",
         bodyRight: "",
-        bodyJoin: " ",
+        bodyJoin: "",
 
         joinLeft: "",
         joinRight: "",
-        joinJoin: "─"
+        joinJoin: ""
       }
     });
 
