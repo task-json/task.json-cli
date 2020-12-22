@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { readTodo } from "../utils/task";
+import { readTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table } from "table";
 
@@ -33,45 +33,27 @@ export default class List extends Command {
     }),
   }
 
-  // Allow multiple arguments
-  static strict = false;
-
-  static args = [{
-    name: "ID...",
-    description: "only show specific IDs"
-  }]
-
   async run() {
-    const { argv, flags } = this.parse(List);
-    const { dataPath } = readConfig();
+    const { flags } = this.parse(List);
+    const { todoPath } = readConfig();
 
-    if (!fs.existsSync(dataPath)) {
-      this.error("todo.json does not exist.");
+    if (!fs.existsSync(todoPath)) {
+      this.error("todo.json does not exist. Use `todo add` to create one.");
     }
 
-    const ids = argv.map(a => {
-      const id = parseInt(a);
-      if (isNaN(id) || id <= 0)
-        this.error("Invalid IDs");
-      return id;
-    });
-
     // Read Todo
-    const tasks = readTodo(dataPath).filter((task, index) => {
-      return (flags.all || !task.done) &&
-        (ids.length === 0 || ids.includes(index + 1));
-    });
+    const todoTasks = readTasks(todoPath);
 
     const header = [
       ["ID", "Pri", "Text", "Projects", "Contexts", "Due"]
     ];
-    const data = tasks.map((task, index) => ([
+    const todoData = todoTasks.map((task, index) => ([
       (index + 1).toString(),
-      task.priority,
+      task.priority ?? "",
       task.text,
-      task.projects.join(","),
-      task.contexts.join(","),
-      task.due || ""
+      task.projects?.join(",") ?? "",
+      task.contexts?.join(",") ?? "",
+      task.due ?? ""
     ])).sort((a, b) => {
       // Priority
       if (a[1].length !== b[1].length)
@@ -88,7 +70,7 @@ export default class List extends Command {
       return 0;
     });
 
-    const output = table(header.concat(data), {
+    const todoOutput = table(header.concat(todoData), {
       drawHorizontalLine: index => index === 1,
       border: {
         bodyLeft: "",
@@ -105,6 +87,6 @@ export default class List extends Command {
       }
     });
 
-    this.log(`\n${output}`);
+    this.log(`\n${todoOutput}`);
   }
 }

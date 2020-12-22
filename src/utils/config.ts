@@ -10,9 +10,11 @@ export function readConfig() {
   }
 
   // TODO: Customize path
-  const dataPath = path.join(configPath, "todo.json");
+  const todoPath = path.join(configPath, "todo.json");
+  const donePath = path.join(configPath, "done.json");
 
   return {
-    dataPath
+    todoPath,
+    donePath
   };
 }
