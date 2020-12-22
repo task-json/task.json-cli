@@ -33,21 +33,29 @@ export default class List extends Command {
     }),
   }
 
+  // Allow multiple arguments
+  static strict = false;
+
   static args = [{
-    name: "id",
+    name: "ID...",
+    description: "only show specific IDs"
   }]
 
   async run() {
-    const { args, flags } = this.parse(List);
+    const { argv, flags } = this.parse(List);
     const { dataPath } = readConfig();
 
     if (!fs.existsSync(dataPath)) {
-      this.log("todo.json does not exist.")
-      return;
+      this.error("todo.json does not exist.");
     }
 
+    const ids = argv.map(a => parseInt(a));
+
     // Read Todo
-    const tasks = readTodo(dataPath).filter(task => flags.all || !task.done);
+    const tasks = readTodo(dataPath).filter((task, index) => {
+      return (flags.all || !task.done) &&
+        (ids.length === 0 || ids.includes(index + 1));
+    });
 
     const data = [
       // Head
@@ -66,6 +74,10 @@ export default class List extends Command {
         bodyLeft: "",
         bodyRight: "",
         bodyJoin: "",
+        bottomLeft: "",
+        bottomRight: "",
+        bottomJoin: "",
+        bottomBody: "─",
 
         joinLeft: "",
         joinRight: "",
