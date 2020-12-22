@@ -1,9 +1,10 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { readTasks } from "../utils/task";
+import { colorTask, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
 import { Task } from "../types";
+import chalk = require('chalk');
 
 export default class List extends Command {
   static description = 'List tasks'
@@ -71,27 +72,21 @@ export default class List extends Command {
         todoTasks = readTasks(todoPath);
       }
 
-      const todoData = todoTasks.map((task, index) => ([
-        (index + 1).toString(),
-        task.priority ?? "",
-        task.text,
-        task.projects?.join(",") ?? "",
-        task.contexts?.join(",") ?? "",
-        task.due ?? ""
-      ])).sort((a, b) => {
-        // Priority
-        if (a[1].length !== b[1].length)
-          return b[1].length - a[1].length;
-        if (a[1] !== b[1])
-          return a[1] < b[1] ? -1 : 1;
-
-        // Due date
-        if (a[5].length !== b[5].length)
-          return b[5].length - a[5].length;
-        if (a[5] !== b[5])
-          return a[5] < b[5] ? -1 : 1;
-
-        return 0;
+      const todoData = todoTasks.map((task, index) => ({
+        index,
+        task
+      })).sort((a, b) => {
+        return urgency(b.task) - urgency(a.task);
+      }).map(({ index, task }) => {
+        const color = colorTask(task);
+        return [
+          (index + 1).toString(),
+          task.priority ?? "",
+          task.text,
+          task.projects?.join(",") ?? "",
+          task.contexts?.join(",") ?? "",
+          task.due ?? ""
+        ].map(field => color ? chalk[color](field) : field);
       });
 
       todoOutput = table(header.concat(todoData), tableOptions);
@@ -104,27 +99,21 @@ export default class List extends Command {
         doneTasks = readTasks(donePath);
       }
 
-      const doneData = doneTasks.map((task, index) => ([
-        (index + 1).toString(),
-        task.priority ?? "",
-        task.text,
-        task.projects?.join(",") ?? "",
-        task.contexts?.join(",") ?? "",
-        task.due ?? ""
-      ])).sort((a, b) => {
-        // Priority
-        if (a[1].length !== b[1].length)
-          return b[1].length - a[1].length;
-        if (a[1] !== b[1])
-          return a[1] < b[1] ? -1 : 1;
-
-        // Due date
-        if (a[5].length !== b[5].length)
-          return b[5].length - a[5].length;
-        if (a[5] !== b[5])
-          return a[5] < b[5] ? -1 : 1;
-
-        return 0;
+      const doneData = doneTasks.map((task, index) => ({
+        index,
+        task
+      })).sort((a, b) => {
+        return urgency(b.task) - urgency(a.task);
+      }).map(({ index, task }) => {
+        const color = colorTask(task);
+        return [
+          (index + 1).toString(),
+          task.priority ?? "",
+          task.text,
+          task.projects?.join(",") ?? "",
+          task.contexts?.join(",") ?? "",
+          task.due ?? ""
+        ].map(field => color ? chalk[color](field) : field);
       });
 
       doneOutput = table(header.concat(doneData), tableOptions);
