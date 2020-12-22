@@ -9,6 +9,7 @@
     "semi": "off",
     "object-curly-spacing": "off",
     "brace-style": "off",
-    "no-negated-condition": "off"
+    "no-negated-condition": "off",
+    "radix": "off"
   }
 }
