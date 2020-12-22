@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { differenceInDays } from "date-fns";
 import { Task } from "../types";
 
 export function readTasks(dataPath: string) {
@@ -30,4 +31,39 @@ export function appendTasks(dataPath: string, tasks: Task[]) {
   );
 
   return originalTasks.length;
+}
+
+export function colorTask(task: Task) {
+  if (task.due) {
+    const days = differenceInDays(new Date(task.due), new Date());
+    if (days < 3) {
+      return "redBright";
+    }
+    if (days < 7) {
+      return "yellowBright";
+    }
+  }
+
+  if (task.priority) {
+    return "cyanBright";
+  }
+
+  return null;
+}
+
+export function urgency(task: Task) {
+  let urg = 0;
+  if (task.priority) {
+    urg += "Z".charCodeAt(0) - task.priority.charCodeAt(0) + 2;
+  }
+  if (task.due) {
+    const days = differenceInDays(new Date(task.due), new Date());
+    if (days < 7) {
+      urg += 100;
+    }
+    else {
+      urg += 1;
+    }
+  }
+  return urg;
 }
