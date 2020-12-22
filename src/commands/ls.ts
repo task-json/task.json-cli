@@ -13,6 +13,10 @@ export default class List extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
+    all: flags.boolean({
+      char: "a",
+      description: "list all tasks including completed ones"
+    }),
     priority: flags.string({
       char: "P",
       description: "priority (A-Z)"
@@ -30,7 +34,7 @@ export default class List extends Command {
   }
 
   static args = [{
-    name: "text"
+    name: "id",
   }]
 
   async run() {
@@ -43,11 +47,11 @@ export default class List extends Command {
     }
 
     // Read Todo
-    const tasks = readTodo(dataPath);
+    const tasks = readTodo(dataPath).filter(task => flags.all || !task.done);
 
     const data = [
       // Head
-      ["ID", "Pri", "Text", "Projects", "Contexts"]
+      ["ID", "Pri", "Text", "Projects", "Contexts", "Due"]
     ];
     const output = table(data.concat(tasks.map((task, index) => ([
       (index + 1).toString(),
