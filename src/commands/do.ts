@@ -41,7 +41,7 @@ export default class Do extends Command {
         this.error("Invalid IDs");
       if (id > todoTasks.length)
         this.error(`Task ${id} does not exist.`);
-      return id;
+      return id - 1;
     });
 
     const doneTasks = _.remove(todoTasks, (_, index) => ids.includes(index)).map(task => {
@@ -51,6 +51,6 @@ export default class Do extends Command {
     writeTasks(todoPath, todoTasks);
     appendTasks(donePath, doneTasks);
 
-    this.log(`Finish ${doneTasks.length} tasks.`);
+    this.log(`Finish ${doneTasks.length} task(s).`);
   }
 }
