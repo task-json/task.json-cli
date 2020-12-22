@@ -49,7 +49,12 @@ export default class List extends Command {
       this.error("todo.json does not exist.");
     }
 
-    const ids = argv.map(a => parseInt(a));
+    const ids = argv.map(a => {
+      const id = parseInt(a);
+      if (isNaN(id) || id <= 0)
+        this.error("Invalid IDs");
+      return id;
+    });
 
     // Read Todo
     const tasks = readTodo(dataPath).filter((task, index) => {
