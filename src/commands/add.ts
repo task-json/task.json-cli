@@ -53,10 +53,11 @@ export default class Add extends Command {
       text: args.text,
       priority: flags.priority || "",
       done: false,
-      start: format(new Date(), "yyyy-MM-dd"),
-      end: null,
       contexts: flags.contexts || [],
-      projects: flags.projects || []
+      projects: flags.projects || [],
+      due: null,
+      start: format(new Date(), "yyyy-MM-dd"),
+      end: null
     });
 
     writeTodo(dataPath, tasks);

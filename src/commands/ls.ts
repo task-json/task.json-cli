@@ -58,7 +58,8 @@ export default class List extends Command {
       task.priority,
       task.text,
       task.projects.join(","),
-      task.contexts.join(",")
+      task.contexts.join(","),
+      task.due || ""
     ]))), {
       drawHorizontalLine: index => index === 1,
       border: {
