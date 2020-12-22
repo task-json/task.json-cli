@@ -1,4 +1,4 @@
-import {Command, flags} from '@oclif/command'
+import { Command, flags } from '@oclif/command'
 import * as fs from "fs";
 import { format } from "date-fns";
 import { Task } from "../types";
@@ -17,26 +17,36 @@ export default class Add extends Command {
     help: flags.help({char: 'h'}),
     priority: flags.string({
       char: "P",
-      description: "priority (A-Z)"
+      description: "priority (A-Z)",
+      default: ""
     }),
     projects: flags.string({
       char: "p",
       description: "one or more projects",
-      multiple: true
+      multiple: true,
+      default: []
     }),
     contexts: flags.string({
       char: "c",
       description: "one or more contexts",
-      multiple: true
+      multiple: true,
+      default: []
     }),
+    due: flags.string({
+      char: "d",
+      description: "due date"
+    })
   }
 
+  static strict = false;
+
   static args = [{
-    name: "text"
-  }]
+    name: "text",
+    required: true
+  }];
 
   async run() {
-    const { args, flags } = this.parse(Add);
+    const { argv, flags } = this.parse(Add);
     let tasks: Task[];
 
     const { dataPath } = readConfig();
@@ -49,18 +59,21 @@ export default class Add extends Command {
       tasks = readTodo(dataPath);
     }
 
+    const text = argv.join(" ");
+
+    // TODO: add date validation
     tasks.push({
-      text: args.text,
-      priority: flags.priority || "",
+      text,
+      priority: flags.priority,
       done: false,
-      contexts: flags.contexts || [],
-      projects: flags.projects || [],
-      due: null,
+      contexts: flags.contexts,
+      projects: flags.projects,
+      due: flags.due ?? null,
       start: format(new Date(), "yyyy-MM-dd"),
       end: null
     });
 
     writeTodo(dataPath, tasks);
-    this.log(`Task ${tasks.length} added: ${args.text}`);
+    this.log(`Task ${tasks.length} added: ${text}`);
   }
 }
