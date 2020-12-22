@@ -62,18 +62,33 @@ export default class List extends Command {
         (ids.length === 0 || ids.includes(index + 1));
     });
 
-    const data = [
-      // Head
+    const header = [
       ["ID", "Pri", "Text", "Projects", "Contexts", "Due"]
     ];
-    const output = table(data.concat(tasks.map((task, index) => ([
+    const data = tasks.map((task, index) => ([
       (index + 1).toString(),
       task.priority,
       task.text,
       task.projects.join(","),
       task.contexts.join(","),
       task.due || ""
-    ]))), {
+    ])).sort((a, b) => {
+      // Priority
+      if (a[1].length !== b[1].length)
+        return b[1].length - a[1].length;
+      if (a[1] !== b[1])
+        return a[1] < b[1] ? -1 : 1;
+
+      // Due date
+      if (a[5].length !== b[5].length)
+        return b[5].length - a[5].length;
+      if (a[5] !== b[5])
+        return a[5] < b[5] ? -1 : 1;
+
+      return 0;
+    });
+
+    const output = table(header.concat(data), {
       drawHorizontalLine: index => index === 1,
       border: {
         bodyLeft: "",
