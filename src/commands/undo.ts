@@ -20,7 +20,7 @@ export default class Undo extends Command {
 
   static args = [{
     name: "ID...",
-    description: "mark specific IDs as done"
+    description: "mark specific tasks as done"
   }];
 
   async run() {
@@ -37,7 +37,7 @@ export default class Undo extends Command {
     const ids = argv.map(a => {
       const id = parseInt(a);
       if (isNaN(id) || id <= 0)
-        this.error("Invalid IDs");
+        this.error(`Invalid ID "${id}"`);
       if (id > doneTasks.length)
         this.error(`Task ${id} does not exist.`);
       return id;
