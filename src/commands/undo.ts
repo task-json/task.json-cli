@@ -8,7 +8,7 @@ export default class Undo extends Command {
   static description = 'Undo tasks';
 
   static examples = [
-    `$ todo done 1`,
+    `$ todo undo 1 2`,
   ];
 
   static flags = {
@@ -20,7 +20,7 @@ export default class Undo extends Command {
 
   static args = [{
     name: "ID...",
-    description: "mark specific tasks as done"
+    description: "undo specific done tasks"
   }];
 
   async run() {

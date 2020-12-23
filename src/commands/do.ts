@@ -21,7 +21,7 @@ export default class Do extends Command {
 
   static args = [{
     name: "ID...",
-    description: "mark specific IDs as done"
+    description: "mark specific tasks as done"
   }];
 
   async run() {
