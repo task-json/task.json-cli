@@ -28,7 +28,7 @@ export default class Undo extends Command {
     const { todoPath, donePath } = readConfig();
 
     if (!fs.existsSync(donePath)) {
-      this.error("done.json does not exist. Use `todo add` to create one.");
+      this.error("done.json does not exist.");
     }
 
     // Read Todo
