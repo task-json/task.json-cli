@@ -9,6 +9,7 @@
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
+    "@oclif/plugin-autocomplete": "^0.3.0",
     "@oclif/plugin-help": "^3.2.1",
     "chalk": "^4.1.0",
     "date-fns": "^2.16.1",
@@ -47,7 +48,8 @@
     "commands": "./lib/commands",
     "bin": "todo",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-autocomplete"
     ]
   },
   "repository": "DCsunset/todo.json-cli",
