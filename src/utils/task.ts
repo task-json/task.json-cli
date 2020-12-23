@@ -8,6 +8,9 @@ export function readTasks(dataPath: string) {
 }
 
 export function writeTasks(dataPath: string, tasks: Task[]) {
+  // Backup
+  fs.renameSync(dataPath, dataPath + ".bak");
+
   fs.writeFileSync(
     dataPath,
     JSON.stringify(tasks, null, "\t"),
@@ -24,12 +27,7 @@ export function appendTasks(dataPath: string, tasks: Task[]) {
     originalTasks = [];
   }
 
-  fs.writeFileSync(
-    dataPath,
-    JSON.stringify(originalTasks.concat(tasks), null, "\t"),
-    { encoding: "utf8" }
-  );
-
+  writeTasks(dataPath, originalTasks.concat(tasks));
   return originalTasks.length;
 }
 
