@@ -5,7 +5,7 @@ import { readConfig } from "../utils/config";
 import * as _ from "lodash";
 
 export default class Undo extends Command {
-  static description = 'Mark tasks as done';
+  static description = 'Undo tasks';
 
   static examples = [
     `$ todo done 1`,

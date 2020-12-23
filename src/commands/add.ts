@@ -5,7 +5,7 @@ import { appendTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Add extends Command {
-  static description = 'add a new task'
+  static description = 'Add a new task'
 
   static examples = [
     `$ todo add "Hello world" -p hello world -c test
