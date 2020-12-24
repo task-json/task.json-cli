@@ -29,17 +29,14 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-- [todo.json-cli](#todojson-cli)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`todo add TEXT`](#todo-add-text)
-  - [`todo autocomplete [SHELL]`](#todo-autocomplete-shell)
-  - [`todo do [ID...]`](#todo-do-id)
-  - [`todo help [COMMAND]`](#todo-help-command)
-  - [`todo ls`](#todo-ls)
-  - [`todo restore`](#todo-restore)
-  - [`todo rm [ID...]`](#todo-rm-id)
-  - [`todo undo [ID...]`](#todo-undo-id)
+* [`todo add TEXT`](#todo-add-text)
+* [`todo autocomplete [SHELL]`](#todo-autocomplete-shell)
+* [`todo do [ID...]`](#todo-do-id)
+* [`todo help [COMMAND]`](#todo-help-command)
+* [`todo ls`](#todo-ls)
+* [`todo restore`](#todo-restore)
+* [`todo rm [ID...]`](#todo-rm-id)
+* [`todo undo [ID...]`](#todo-undo-id)
 
 ## `todo add TEXT`
 
