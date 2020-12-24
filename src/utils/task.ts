@@ -9,7 +9,8 @@ export function readTasks(dataPath: string) {
 
 export function writeTasks(dataPath: string, tasks: Task[]) {
   // Backup
-  fs.renameSync(dataPath, dataPath + ".bak");
+  if (fs.existsSync(dataPath))
+    fs.renameSync(dataPath, dataPath + ".bak");
 
   fs.writeFileSync(
     dataPath,
