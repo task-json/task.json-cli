@@ -36,15 +36,15 @@ export function colorTask(task: Task) {
   if (task.due) {
     const days = differenceInDays(new Date(task.due), new Date());
     if (days < 3) {
-      return "redBright";
+      return "red";
     }
     if (days < 7) {
-      return "yellowBright";
+      return "yellow";
     }
   }
 
   if (task.priority) {
-    return "cyanBright";
+    return "cyan";
   }
 
   return null;
