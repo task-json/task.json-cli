@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "DCsunset @DCsunset",
   "bin": {
-    "todo": "./bin/run"
+    "td": "./bin/run"
   },
   "bugs": "https://github.com/DCsunset/todo.json-cli/issues",
   "dependencies": {
@@ -47,7 +47,7 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "todo",
+    "bin": "td",
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-autocomplete"
