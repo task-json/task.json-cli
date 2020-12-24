@@ -20,7 +20,7 @@ $ npm install -g todo.json-cli
 $ td COMMAND
 running command...
 $ td (-v|--version|version)
-todo.json-cli/1.0.0 linux-x64 node-v15.4.0
+todo.json-cli/1.0.1 linux-x64 node-v15.4.0
 $ td --help [COMMAND]
 USAGE
   $ td COMMAND
@@ -58,7 +58,7 @@ EXAMPLES
   $ todo add "Hello World" -p test first-task -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/add.ts)_
 
 ## `td autocomplete [SHELL]`
 
@@ -101,7 +101,7 @@ EXAMPLE
   $ todo done 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/do.ts)_
 
 ## `td help [COMMAND]`
 
@@ -140,7 +140,7 @@ EXAMPLE
   $ todo ls
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/ls.ts)_
 
 ## `td restore`
 
@@ -160,7 +160,7 @@ EXAMPLES
   $ todo restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/restore.ts)_
 
 ## `td rm [ID...]`
 
@@ -181,7 +181,7 @@ EXAMPLE
   $ todo rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/rm.ts)_
 
 ## `td undo [ID...]`
 
@@ -201,5 +201,5 @@ EXAMPLE
   $ todo undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.0/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.1/src/commands/undo.ts)_
 <!-- commandsstop -->
