@@ -1,7 +1,7 @@
 todo.json-cli
 =============
 
-Command line todo management app for todo.json
+Command line todo management app for [todo.json](https://github.com/DCsunset/todo.json).
 
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
@@ -29,14 +29,17 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`td add TEXT`](#td-add-text)
-* [`td autocomplete [SHELL]`](#td-autocomplete-shell)
-* [`td do [ID...]`](#td-do-id)
-* [`td help [COMMAND]`](#td-help-command)
-* [`td ls`](#td-ls)
-* [`td restore`](#td-restore)
-* [`td rm [ID...]`](#td-rm-id)
-* [`td undo [ID...]`](#td-undo-id)
+- [todo.json-cli](#todojson-cli)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`td add TEXT`](#td-add-text)
+  - [`td autocomplete [SHELL]`](#td-autocomplete-shell)
+  - [`td do [ID...]`](#td-do-id)
+  - [`td help [COMMAND]`](#td-help-command)
+  - [`td ls`](#td-ls)
+  - [`td restore`](#td-restore)
+  - [`td rm [ID...]`](#td-rm-id)
+  - [`td undo [ID...]`](#td-undo-id)
 
 ## `td add TEXT`
 
