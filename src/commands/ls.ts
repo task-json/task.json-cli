@@ -86,7 +86,7 @@ export default class List extends Command {
           task.projects?.join(",") ?? "",
           task.contexts?.join(",") ?? "",
           task.due ?? ""
-        ].map(field => color ? chalk[color](field) : field);
+        ].map(field => color ? chalk[color].bold(field) : field);
       });
 
       todoOutput = table(header.concat(todoData), tableOptions);
