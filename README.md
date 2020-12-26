@@ -20,7 +20,7 @@ $ npm install -g todo.json-cli
 $ td COMMAND
 running command...
 $ td (-v|--version|version)
-todo.json-cli/1.0.2 linux-x64 node-v15.4.0
+todo.json-cli/1.1.0 linux-x64 node-v15.4.0
 $ td --help [COMMAND]
 USAGE
   $ td COMMAND
@@ -34,6 +34,7 @@ USAGE
 * [`td do [ID...]`](#td-do-id)
 * [`td help [COMMAND]`](#td-help-command)
 * [`td ls`](#td-ls)
+* [`td modify [ID...]`](#td-modify-id)
 * [`td restore`](#td-restore)
 * [`td rm [ID...]`](#td-rm-id)
 * [`td undo [ID...]`](#td-undo-id)
@@ -47,18 +48,18 @@ USAGE
   $ td add TEXT
 
 OPTIONS
-  -P, --priority=priority  priority (A-Z)
-  -c, --contexts=contexts  one or more contexts
-  -d, --due=due            due date
-  -h, --help               show CLI help
-  -p, --projects=projects  one or more projects
+  -P, --priority=A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z  priority (A-Z)
+  -c, --contexts=contexts                                             one or more contexts
+  -d, --due=due                                                       due date
+  -h, --help                                                          show CLI help
+  -p, --projects=projects                                             one or more projects
 
 EXAMPLES
   $ todo add Hello World
   $ todo add "Hello World" -p test first-task -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/add.ts)_
 
 ## `td autocomplete [SHELL]`
 
@@ -101,7 +102,7 @@ EXAMPLE
   $ todo done 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/do.ts)_
 
 ## `td help [COMMAND]`
 
@@ -129,18 +130,50 @@ USAGE
   $ td ls
 
 OPTIONS
-  -P, --priority=priority  priority (A-Z)
-  -a, --all                list all tasks including done ones
-  -c, --contexts=contexts  one or more contexts
-  -d, --done               list only done tasks
-  -h, --help               show CLI help
-  -p, --projects=projects  one or more projects
+  -P, --priority=A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z  priority (A-Z)
+  -a, --all                                                           list all tasks including done ones
+  -c, --contexts=contexts                                             one or more contexts
+  -d, --done                                                          list only done tasks
+  -h, --help                                                          show CLI help
+  -p, --projects=projects                                             one or more projects
 
 EXAMPLE
   $ todo ls
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/ls.ts)_
+
+## `td modify [ID...]`
+
+Modify tasks
+
+```
+USAGE
+  $ td modify [ID...]
+
+ARGUMENTS
+  ID...  modify specific tasks
+
+OPTIONS
+  -P, --priority=A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z  modify priority
+  -c, --contexts=contexts                                             modify contexts
+  -d, --due=due                                                       modify due date
+  -h, --help                                                          show CLI help
+  -p, --projects=projects                                             modify projects
+  -t, --text=text                                                     modify text
+  --delete-contexts                                                   delete contexts
+  --delete-due                                                        delete due date
+  --delete-priority                                                   delete priority
+  --delete-projects                                                   delete projects
+  --done                                                              modify done tasks
+
+EXAMPLES
+  $ todo modify 1 --due 2020-12-12
+  $ todo modify 2 3 --projects projA projB
+  $ todo modify 1 --text "New description" --done
+```
+
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/modify.ts)_
 
 ## `td restore`
 
@@ -160,7 +193,7 @@ EXAMPLES
   $ todo restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/restore.ts)_
 
 ## `td rm [ID...]`
 
@@ -181,7 +214,7 @@ EXAMPLE
   $ todo rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/rm.ts)_
 
 ## `td undo [ID...]`
 
@@ -201,5 +234,5 @@ EXAMPLE
   $ todo undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.0.2/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.1.0/src/commands/undo.ts)_
 <!-- commandsstop -->
