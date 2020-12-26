@@ -67,4 +67,15 @@ export function urgency(task: Task) {
   return urg;
 }
 
+export function parseIds(ids: string[], maxId: number, onError: (msg: string) => void) {
+  return ids.map(a => {
+    const id = parseInt(a);
+    if (isNaN(id) || id <= 0)
+      onError("Invalid IDs");
+    if (id > maxId)
+      onError(`Task ${id} does not exist.`);
+    return id - 1;
+  });
+}
+
 export const priorities = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

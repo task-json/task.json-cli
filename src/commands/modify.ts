@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { priorities, readTasks, writeTasks } from "../utils/task";
+import { parseIds, priorities, readTasks, writeTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Modify extends Command {
@@ -74,15 +74,7 @@ export default class Modify extends Command {
     }
 
     const tasks = readTasks(taskPath);
-
-    const ids = argv.map(a => {
-      const id = parseInt(a);
-      if (isNaN(id) || id <= 0)
-        this.error("Invalid IDs");
-      if (id > tasks.length)
-        this.error(`Task ${id} does not exist.`);
-      return id - 1;
-    });
+    const ids = parseIds(argv, tasks.length, this.error);
 
     for (const id of ids) {
       if (flags.text)

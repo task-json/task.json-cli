@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { appendTasks, readTasks, writeTasks } from "../utils/task";
+import { appendTasks, parseIds, readTasks, writeTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 import * as _ from "lodash";
 
@@ -33,15 +33,7 @@ export default class Undo extends Command {
 
     // Read Todo
     const doneTasks = readTasks(donePath);
-
-    const ids = argv.map(a => {
-      const id = parseInt(a);
-      if (isNaN(id) || id <= 0)
-        this.error(`Invalid ID "${id}"`);
-      if (id > doneTasks.length)
-        this.error(`Task ${id} does not exist.`);
-      return id;
-    });
+    const ids = parseIds(argv, doneTasks.length, this.error);
 
     const todoTasks = _.remove(doneTasks, (_, index) => ids.includes(index)).map(task => {
       delete task.end;
