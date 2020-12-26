@@ -66,3 +66,5 @@ export function urgency(task: Task) {
   }
   return urg;
 }
+
+export const priorities = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

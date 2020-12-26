@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import { format } from "date-fns";
 import { Task } from "../types";
-import { appendTasks } from "../utils/task";
+import { appendTasks, priorities } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Add extends Command {
@@ -17,7 +17,8 @@ export default class Add extends Command {
     priority: flags.string({
       char: "P",
       description: "priority (A-Z)",
-      default: ""
+      default: "",
+      options: priorities
     }),
     projects: flags.string({
       char: "p",

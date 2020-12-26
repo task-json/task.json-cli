@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { colorTask, readTasks, urgency } from "../utils/task";
+import { colorTask, priorities, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
 import { Task } from "../types";
@@ -25,7 +25,8 @@ export default class List extends Command {
     }),
     priority: flags.string({
       char: "P",
-      description: "priority (A-Z)"
+      description: "priority (A-Z)",
+      options: priorities
     }),
     projects: flags.string({
       char: "p",
