@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { colorTask, priorities, readTasks, urgency } from "../utils/task";
+import { colorTask, maxWidth, priorities, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
 import { Task } from "../types";
@@ -52,8 +52,10 @@ export default class List extends Command {
     if (stdoutColumns < 50) {
       this.error("Terminal width must be greater than 50.");
     }
+    const textWidth = Math.floor((stdoutColumns - 28) / 5 * 3);
+    const projectWidth = Math.floor((stdoutColumns - 28) / 5);
 
-    const tableOptions: TableUserConfig = {
+    const tableOptions = (tasks: Task[]): TableUserConfig => ({
       drawHorizontalLine: index => index === 1,
       border: {
         bodyLeft: "",
@@ -69,20 +71,20 @@ export default class List extends Command {
         joinJoin: ""
       },
       columns: {
-        2: {
-          width: Math.floor((stdoutColumns - 26) / 5 * 3),
+        ...(maxWidth(tasks, "text") < textWidth ? null : ({ 2: {
+          width: textWidth,
           wrapWord: true
-        },
-        3: {
-          width: Math.floor((stdoutColumns - 26) / 5),
+        }})),
+        ...(maxWidth(tasks, "projects") < projectWidth ? null : ({ 3: {
+          width: projectWidth,
           wrapWord: true
-        },
-        4: {
-          width: Math.floor((stdoutColumns - 26) / 5),
+        }})),
+        ...(maxWidth(tasks, "contexts") < projectWidth ? null : ({ 4: {
+          width: projectWidth,
           wrapWord: true
-        }
+        }})),
       }
-    };
+    });
 
     let todoOutput = "";
     let doneOutput = "";
@@ -104,13 +106,13 @@ export default class List extends Command {
           (index + 1).toString(),
           task.priority ?? "",
           task.text,
-          task.projects?.join(",") ?? "",
-          task.contexts?.join(",") ?? "",
+          task.projects?.join(", ") ?? "",
+          task.contexts?.join(", ") ?? "",
           task.due ?? ""
         ].map(field => color ? chalk[color].bold(field) : field);
       });
 
-      todoOutput = table(header.concat(todoData), tableOptions);
+      todoOutput = table(header.concat(todoData), tableOptions(todoTasks));
     }
 
     if (flags.done || flags.all) {
@@ -136,7 +138,7 @@ export default class List extends Command {
         ];
       });
 
-      doneOutput = table(header.concat(doneData), tableOptions);
+      doneOutput = table(header.concat(doneData), tableOptions(doneTasks));
     }
 
     if (flags.all) {

@@ -32,6 +32,24 @@ export function appendTasks(dataPath: string, tasks: Task[]) {
   return originalTasks.length;
 }
 
+export function maxWidth(tasks: Task[], field: keyof Task) {
+  return tasks.reduce((width: number, task: Task) => {
+    let w = 0;
+    switch (field) {
+      case "contexts":
+      case "projects":
+        w = (task[field]?.join(", ") ?? "").length;
+        break;
+      case "due":
+        w = (task.due ?? "").length;
+        break;
+      default:
+        break;
+    }
+    return Math.max(w, width);
+  }, 0);
+}
+
 export function colorTask(task: Task) {
   if (task.due) {
     const days = differenceInDays(new Date(task.due), new Date());
