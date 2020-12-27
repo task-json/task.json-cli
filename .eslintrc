@@ -11,6 +11,7 @@
     "brace-style": "off",
     "no-negated-condition": "off",
     "radix": "off",
-    "no-mixed-operators": "off"
+    "no-mixed-operators": "off",
+    "indent": ["warn", { "SwitchCase": 1 }]
   }
 }
