@@ -94,7 +94,6 @@ export default class List extends Command {
       if (fs.existsSync(todoPath)) {
         todoTasks = readTasks(todoPath);
       }
-      console.log(maxWidth(todoTasks, "text"))
 
       const todoData = todoTasks.map((task, index) => ({
         index,
