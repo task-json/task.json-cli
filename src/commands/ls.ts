@@ -106,7 +106,6 @@ export default class List extends Command {
       })).sort((a, b) => {
         return urgency(b.task) - urgency(a.task);
       }).map(({ index, task }) => {
-        const color = colorTask(task);
         return [
           (index + 1).toString(),
           task.priority ?? "",
@@ -114,7 +113,7 @@ export default class List extends Command {
           task.projects?.join(",") ?? "",
           task.contexts?.join(",") ?? "",
           task.due ?? ""
-        ].map(field => color ? chalk[color](field) : field);
+        ];
       });
 
       doneOutput = table(header.concat(doneData), tableOptions);
