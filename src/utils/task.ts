@@ -38,10 +38,10 @@ export function maxWidth(tasks: Task[], field: keyof Task) {
     switch (field) {
       case "contexts":
       case "projects":
-        w = (task[field]?.join(", ") ?? "").length;
+        w = task[field]?.join(", ").length ?? 8;
         break;
-      case "due":
-        w = (task.due ?? "").length;
+      case "text":
+        w = Math.max(task.text.length, 4);
         break;
       default:
         break;
