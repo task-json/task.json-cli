@@ -47,6 +47,12 @@ export default class List extends Command {
     const header = [
       ["ID", "Pri", "Text", "Projects", "Contexts", "Due"]
     ];
+
+    const stdoutColumns = process.stdout.columns ?? 80;
+    if (stdoutColumns < 50) {
+      this.error("Terminal width must be greater than 50.");
+    }
+
     const tableOptions: TableUserConfig = {
       drawHorizontalLine: index => index === 1,
       border: {
@@ -56,11 +62,22 @@ export default class List extends Command {
         bottomLeft: "",
         bottomRight: "",
         bottomJoin: "",
-        bottomBody: "─",
+        bottomBody: "-",
 
         joinLeft: "",
         joinRight: "",
         joinJoin: ""
+      },
+      columns: {
+        2: {
+          width: Math.floor((stdoutColumns - 26) / 5 * 3)
+        },
+        3: {
+          width: Math.floor((stdoutColumns - 26) / 5)
+        },
+        4: {
+          width: Math.floor((stdoutColumns - 26) / 5)
+        }
       }
     };
 
