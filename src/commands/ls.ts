@@ -70,13 +70,16 @@ export default class List extends Command {
       },
       columns: {
         2: {
-          width: Math.floor((stdoutColumns - 26) / 5 * 3)
+          width: Math.floor((stdoutColumns - 26) / 5 * 3),
+          wrapWord: true
         },
         3: {
-          width: Math.floor((stdoutColumns - 26) / 5)
+          width: Math.floor((stdoutColumns - 26) / 5),
+          wrapWord: true
         },
         4: {
-          width: Math.floor((stdoutColumns - 26) / 5)
+          width: Math.floor((stdoutColumns - 26) / 5),
+          wrapWord: true
         }
       }
     };
