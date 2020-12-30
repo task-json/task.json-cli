@@ -10,7 +10,7 @@ export default class List extends Command {
   static description = 'List tasks'
 
   static examples = [
-    `$ todo ls`,
+    `$ td ls`,
   ]
 
   static flags = {
@@ -20,7 +20,7 @@ export default class List extends Command {
       description: "list all tasks including done ones"
     }),
     done: flags.boolean({
-      char: "d",
+      char: "D",
       description: "list only done tasks"
     }),
     priority: flags.string({

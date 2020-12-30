@@ -9,7 +9,7 @@ export default class Do extends Command {
   static description = 'Mark tasks as done';
 
   static examples = [
-    `$ todo done 1`,
+    `$ td done 1`,
   ];
 
   static flags = {

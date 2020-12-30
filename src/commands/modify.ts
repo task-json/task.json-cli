@@ -7,9 +7,9 @@ export default class Modify extends Command {
   static description = 'Modify tasks';
 
   static examples = [
-    `$ todo modify 1 --due 2020-12-12`,
-    `$ todo modify 2 3 --projects projA projB`,
-    `$ todo modify 1 --text "New description" --done`,
+    `$ td modify 1 --due 2020-12-12`,
+    `$ td modify 2 3 -p projA -p projB`,
+    `$ td modify 1 --text "New description" --done`,
   ];
 
   static flags = {
@@ -27,12 +27,12 @@ export default class Modify extends Command {
       description: "modify priority",
       options: priorities
     }),
-    projects: flags.string({
+    project: flags.string({
       char: "p",
       description: "modify projects",
       multiple: true
     }),
-    contexts: flags.string({
+    context: flags.string({
       char: "c",
       description: "modify contexts",
       multiple: true
@@ -81,10 +81,10 @@ export default class Modify extends Command {
         tasks[id].text = flags.text.join(" ");
       if (flags.priority)
         tasks[id].priority = flags.priority;
-      if (flags.projects)
-        tasks[id].projects = flags.projects;
-      if (flags.contexts)
-        tasks[id].contexts = flags.contexts;
+      if (flags.project)
+        tasks[id].projects = flags.project;
+      if (flags.context)
+        tasks[id].contexts = flags.context;
       if (flags.due)
         tasks[id].due = flags.due;
       if (flags["delete-contexts"])

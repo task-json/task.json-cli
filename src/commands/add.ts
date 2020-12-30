@@ -8,8 +8,8 @@ export default class Add extends Command {
   static description = 'Add a new task'
 
   static examples = [
-    '$ todo add Hello World',
-    '$ todo add "Hello World" -p test first-task -c test --due 2020-12-24',
+    '$ td add Hello World',
+    '$ td add "Hello World" -p test -p greeting -c test --due 2020-12-24',
   ]
 
   static flags = {
@@ -20,12 +20,12 @@ export default class Add extends Command {
       default: "",
       options: priorities
     }),
-    projects: flags.string({
+    project: flags.string({
       char: "p",
       description: "one or more projects",
       multiple: true
     }),
-    contexts: flags.string({
+    context: flags.string({
       char: "c",
       description: "one or more contexts",
       multiple: true
@@ -40,7 +40,6 @@ export default class Add extends Command {
 
   static args = [{
     name: "text",
-    required: true
   }];
 
   async run() {
@@ -53,8 +52,8 @@ export default class Add extends Command {
     const task = {
       text,
       priority: flags.priority,
-      contexts: flags.contexts,
-      projects: flags.projects,
+      contexts: flags.context,
+      projects: flags.project,
       due: flags.due,
       start: format(new Date(), "yyyy-MM-dd")
     } as Task;
