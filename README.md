@@ -1,10 +1,8 @@
-todo.json-cli
-=============
+# todo.json-cli
 
 Command line todo management app for [todo.json](https://github.com/DCsunset/todo.json).
 
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/todo.json-cli.svg)](https://npmjs.org/package/todo.json-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/todo.json-cli.svg)](https://npmjs.org/package/todo.json-cli)
 [![License](https://img.shields.io/npm/l/todo.json-cli.svg)](https://github.com/DCsunset/todo.json-cli/blob/master/package.json)
@@ -13,7 +11,7 @@ Command line todo management app for [todo.json](https://github.com/DCsunset/tod
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Usage
+## Usage
 <!-- usage -->
 ```sh-session
 $ npm install -g todo.json-cli
@@ -27,17 +25,22 @@ USAGE
 ...
 ```
 <!-- usagestop -->
-# Commands
+## Commands
 <!-- commands -->
-* [`td add TEXT`](#td-add-text)
-* [`td autocomplete [SHELL]`](#td-autocomplete-shell)
-* [`td do [ID...]`](#td-do-id)
-* [`td help [COMMAND]`](#td-help-command)
-* [`td ls`](#td-ls)
-* [`td modify [ID...]`](#td-modify-id)
-* [`td restore`](#td-restore)
-* [`td rm [ID...]`](#td-rm-id)
-* [`td undo [ID...]`](#td-undo-id)
+- [todo.json-cli](#todojson-cli)
+  - [Usage](#usage)
+  - [Commands](#commands)
+  - [`td add TEXT`](#td-add-text)
+  - [`td autocomplete [SHELL]`](#td-autocomplete-shell)
+  - [`td do [ID...]`](#td-do-id)
+  - [`td help [COMMAND]`](#td-help-command)
+  - [`td ls`](#td-ls)
+  - [`td modify [ID...]`](#td-modify-id)
+  - [`td restore`](#td-restore)
+  - [`td rm [ID...]`](#td-rm-id)
+  - [`td undo [ID...]`](#td-undo-id)
+  - [Autocomplete](#autocomplete)
+    - [zsh](#zsh)
 
 ## `td add TEXT`
 
@@ -236,3 +239,10 @@ EXAMPLE
 
 _See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v1.2.2/src/commands/undo.ts)_
 <!-- commandsstop -->
+
+## Autocomplete
+
+### zsh
+
+To install the autocompletion function,
+copy the `_td` file to the directory of zsh functions.
