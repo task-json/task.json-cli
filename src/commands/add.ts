@@ -17,7 +17,6 @@ export default class Add extends Command {
     priority: flags.string({
       char: "P",
       description: "priority (A-Z)",
-      default: "",
       options: priorities
     }),
     project: flags.string({
