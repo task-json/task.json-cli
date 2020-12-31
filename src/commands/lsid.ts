@@ -17,7 +17,7 @@ export default class ListProj extends Command {
     help: flags.help({char: 'h'}),
     done: flags.boolean({
       char: "D",
-      description: "list projects of only done tasks"
+      description: "list IDs of only done tasks"
     })
   }
 
