@@ -5,6 +5,7 @@ _td() {
 		"add:add a new task"
 		"do:mark tasks as done"
 		"ls:list tasks"
+		"lsid:list IDs"
 		"lsctx:list contexts"
 		"lsproj:list projects"
 		"modify:modify tasks"
@@ -34,26 +35,29 @@ _td() {
       add)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects]: :complete_projects"
-          "(-c --context)*"{-c,--context}"[one or more contexts]: :complete_contexts"
+          "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
+          "*"{-p,--project}"[one or more projects]: :complete_projects"
+          "*"{-c,--context}"[one or more contexts]: :complete_contexts"
           "(-d --due)"{-d,--due}"[due date]:"
         )
       ;;
       do)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
+          "*:id:($(td lsid))"
         )
       ;;
       undo)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
+          "*:id:($(td lsid -D))"
         )
       ;;
       rm)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
+          "*:id:($(td lsid))"
         )
       ;;
       restore)
@@ -68,9 +72,15 @@ _td() {
           "(- *)"{-h,--help}"[show command help]"
           "(-a --all)"{-a,--all}"[list all tasks including done ones]"
           "(-D --done)"{-D,--done}"[list only done tasks]"
-          "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects]: :complete_projects"
-          "(-c --context)*"{-c,--context}"[one or more contexts]: :complete_contexts"
+          "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
+          "*"{-p,--project}"[one or more projects]: :complete_projects"
+          "*"{-c,--context}"[one or more contexts]: :complete_contexts"
+        )
+      ;;
+      lsid)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-D --done)"{-D,--done}"[list IDs of only done tasks]"
         )
       ;;
       lsctx)
@@ -92,14 +102,15 @@ _td() {
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[modify done tasks]"
           "(-t, --text)"{-t,--text}"[modify text]:"
-          "(-P, --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects (overwrite all)]: :complete_projects"
-          "(-c --context)*"{-c,--context}"[one or more contexts (overwrite all)]: :complete_contexts"
-          "(-d --due)*"{-d,--due}"[modify due date]:"
+          "(-P, --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
+          "*"{-p,--project}"[one or more projects (overwrite all)]: :complete_projects"
+          "*"{-c,--context}"[one or more contexts (overwrite all)]: :complete_contexts"
+          "(-d --due)"{-d,--due}"[modify due date]:"
           "--delete-priority[delete priority]"
           "--delete-projects[delete projects]"
           "--delete-contexts[delete contexts]"
           "--delete-due[delete due date]"
+          "*:id:($(td lsid))"
         )
       ;;
     esac
@@ -107,6 +118,8 @@ _td() {
   if [ $CURRENT -gt 2 ]; then
     set_flags
   fi
+
+  echo $state >> /tmp/zsh_test
 
   _arguments "1: :describe_commands" $command_flags
 }
