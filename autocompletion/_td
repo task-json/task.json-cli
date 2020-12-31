@@ -5,6 +5,8 @@ _td() {
 		"add:add a new task"
 		"do:mark tasks as done"
 		"ls:list tasks"
+		"lsctx:list contexts"
+		"lsproj:list projects"
 		"modify:modify tasks"
 		"restore:undo the last modification in todo.json/done.json using the bak file"
 		"rm:delete tasks"
@@ -13,6 +15,13 @@ _td() {
   )
   describe_commands() {
     _describe "commands" commands
+  }
+
+  complete_contexts() {
+    compadd $(td lsctx -a)
+  }
+  complete_projects() {
+    compadd $(td lsproj -a)
   }
 
   local command_name=${words[2]}
@@ -26,8 +35,8 @@ _td() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects]:"
-          "(-c --context)*"{-c,--context}"[one or more contexts]:"
+          "(-p --project)*"{-p,--project}"[one or more projects]: :complete_projects"
+          "(-c --context)*"{-c,--context}"[one or more contexts]: :complete_contexts"
           "(-d --due)"{-d,--due}"[due date]:"
         )
       ;;
@@ -60,8 +69,22 @@ _td() {
           "(-a --all)"{-a,--all}"[list all tasks including done ones]"
           "(-D --done)"{-D,--done}"[list only done tasks]"
           "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects]:"
-          "(-c --context)*"{-c,--context}"[one or more contexts]:"
+          "(-p --project)*"{-p,--project}"[one or more projects]: :complete_projects"
+          "(-c --context)*"{-c,--context}"[one or more contexts]: :complete_contexts"
+        )
+      ;;
+      lsctx)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-a --all)"{-a,--all}"[list contexts of all tasks including done ones]"
+          "(-D --done)"{-D,--done}"[list contexts of only done tasks]"
+        )
+      ;;
+      lsproj)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-a --all)"{-a,--all}"[list projects of all tasks including done ones]"
+          "(-D --done)"{-D,--done}"[list projects of only done tasks]"
         )
       ;;
       modify)
@@ -69,8 +92,8 @@ _td() {
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[modify done tasks]"
           "(-P, --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
-          "(-p --project)*"{-p,--project}"[one or more projects (overwrite all)]:"
-          "(-c --context)*"{-c,--context}"[one or more contexts (overwrite all)]:"
+          "(-p --project)*"{-p,--project}"[one or more projects (overwrite all)]: :complete_projects"
+          "(-c --context)*"{-c,--context}"[one or more contexts (overwrite all)]: :complete_contexts"
           "(-d --due)*"{-d,--due}"[modify due date]:"
           "--delete-priority[delete priority]"
           "--delete-projects[delete projects]"
