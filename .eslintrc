@@ -12,6 +12,6 @@
     "no-negated-condition": "off",
     "radix": "off",
     "no-mixed-operators": "off",
-    "indent": ["warn", { "SwitchCase": 1 }]
+    "indent": "off"
   }
 }
