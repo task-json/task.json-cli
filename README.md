@@ -1,11 +1,11 @@
 # todo.json-cli
 
-Command line todo management app for [todo.json](https://github.com/DCsunset/todo.json).
-
-
 [![Version](https://img.shields.io/npm/v/todo.json-cli.svg)](https://npmjs.org/package/todo.json-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/todo.json-cli.svg)](https://npmjs.org/package/todo.json-cli)
 [![License](https://img.shields.io/npm/l/todo.json-cli.svg)](https://github.com/DCsunset/todo.json-cli/blob/master/package.json)
+
+Command line todo management app for [todo.json](https://github.com/DCsunset/todo.json).
+
 
 ## Installation
 
@@ -27,6 +27,16 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+
+
+## Autocomplete
+
+### zsh
+
+To install the autocompletion function,
+copy the `autocompletion/_td` file to any directory of zsh functions (i.e. path in `$fpath` variable) and reopen zsh.
+
+
 ## Commands
 <!-- commands -->
 * [`td add [TEXT]`](#td-add-text)
@@ -212,10 +222,3 @@ EXAMPLE
 
 _See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.0.0/src/commands/undo.ts)_
 <!-- commandsstop -->
-
-## Autocomplete
-
-### zsh
-
-To install the autocompletion function,
-copy the `_td` file to the directory of zsh functions.
