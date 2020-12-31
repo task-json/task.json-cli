@@ -91,6 +91,7 @@ _td() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[modify done tasks]"
+          "(-t, --text)"{-t,--text}"[modify text]:"
           "(-P, --priority)"{-P,--priority}"[priority (A-Z)]: :compadd {A..Z}"
           "(-p --project)*"{-p,--project}"[one or more projects (overwrite all)]: :complete_projects"
           "(-c --context)*"{-c,--context}"[one or more contexts (overwrite all)]: :complete_contexts"
