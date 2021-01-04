@@ -28,12 +28,12 @@ export default class List extends Command {
       char: "P",
       description: "priority (A-Z)"
     }),
-    projects: flags.string({
+    project: flags.string({
       char: "p",
       description: "one or more projects",
       multiple: true
     }),
-    contexts: flags.string({
+    context: flags.string({
       char: "c",
       description: "one or more contexts",
       multiple: true
