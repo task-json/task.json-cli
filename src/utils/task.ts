@@ -95,3 +95,26 @@ export function parseIds(ids: string[], maxId: number, onError: (msg: string) =>
     return id - 1;
   });
 }
+
+// Filter by projects or contexts
+export function filterByField(field: "projects" | "contexts", values: string[] | undefined, and: boolean, without: boolean) {
+  if (!values && !without)
+    return () => true;
+
+  const op = (left: boolean, right: boolean) => (
+    and ? (left && right) : (left || right)
+  );
+
+  return (task: Task) => {
+    let result = and;
+    if (without)
+      result = op(result, !task[field]);
+
+    values?.forEach(value => {
+      result = op(result, Boolean(task[field]?.includes(value)));
+    });
+
+    return result;
+  };
+}
+

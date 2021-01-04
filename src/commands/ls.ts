@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { colorTask, maxWidth, readTasks, urgency } from "../utils/task";
+import { colorTask, filterByField, maxWidth, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
 import { Task } from "../types";
@@ -30,14 +30,30 @@ export default class List extends Command {
     }),
     project: flags.string({
       char: "p",
-      description: "one or more projects",
+      description: "filter tasks by specific projects",
       multiple: true
     }),
     context: flags.string({
       char: "c",
-      description: "one or more contexts",
+      description: "filter tasks by specific contexts",
       multiple: true
     }),
+    "without-projects": flags.boolean({
+      description: "list tasks without projects",
+      default: false
+    }),
+    "without-contexts": flags.boolean({
+      description: "list tasks without contexts",
+      default: false
+    }),
+    "and-projects": flags.boolean({
+      description: "filter projects using AND operator instead of OR",
+      default: false
+    }),
+    "and-contexts": flags.boolean({
+      description: "filter contexts using AND operator instead of OR",
+      default: false
+    })
   }
 
   async run() {
@@ -95,21 +111,36 @@ export default class List extends Command {
         todoTasks = readTasks(todoPath);
       }
 
+      const projectFilter = filterByField(
+        "projects",
+        flags.project,
+        flags["and-projects"],
+        flags["without-projects"]
+      );
+      const contextFilter = filterByField(
+        "contexts",
+        flags.context,
+        flags["and-contexts"],
+        flags["without-contexts"]
+      );
+
       const todoData = todoTasks.map((task, index) => ({
         index,
         task
-      })).sort((a, b) => {
-        return urgency(b.task) - urgency(a.task);
-      }).map(({ index, task }) => {
-        const color = colorTask(task);
-        return [
-          (index + 1).toString(),
-          task.priority ?? "",
-          task.text,
-          task.projects?.join(", ") ?? "",
-          task.contexts?.join(", ") ?? "",
-          task.due ?? ""
-        ].map(field => color ? chalk[color].bold(field) : field);
+      }))
+        .filter(({ task }) => projectFilter(task) && contextFilter(task))
+        .sort((a, b) => {
+          return urgency(b.task) - urgency(a.task);
+        }).map(({ index, task }) => {
+          const color = colorTask(task);
+          return [
+            (index + 1).toString(),
+            task.priority ?? "",
+            task.text,
+            task.projects?.join(", ") ?? "",
+            task.contexts?.join(", ") ?? "",
+            task.due ?? ""
+          ].map(field => color ? chalk[color].bold(field) : field);
       });
 
       todoOutput = table(header.concat(todoData), tableOptions(todoTasks));
