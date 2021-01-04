@@ -95,5 +95,3 @@ export function parseIds(ids: string[], maxId: number, onError: (msg: string) =>
     return id - 1;
   });
 }
-
-export const priorities = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

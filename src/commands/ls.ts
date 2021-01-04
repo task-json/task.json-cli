@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { colorTask, maxWidth, priorities, readTasks, urgency } from "../utils/task";
+import { colorTask, maxWidth, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
 import { Task } from "../types";
@@ -11,6 +11,7 @@ export default class List extends Command {
 
   static examples = [
     `$ td ls`,
+    `$ td ls -p test`,
   ]
 
   static flags = {
@@ -25,8 +26,7 @@ export default class List extends Command {
     }),
     priority: flags.string({
       char: "P",
-      description: "priority (A-Z)",
-      options: priorities
+      description: "priority (A-Z)"
     }),
     projects: flags.string({
       char: "p",

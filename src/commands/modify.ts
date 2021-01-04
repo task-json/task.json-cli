@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { parseIds, priorities, readTasks, writeTasks } from "../utils/task";
+import { parseIds, readTasks, writeTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Modify extends Command {
@@ -24,8 +24,7 @@ export default class Modify extends Command {
     }),
     priority: flags.string({
       char: "P",
-      description: "modify priority",
-      options: priorities
+      description: "modify priority"
     }),
     project: flags.string({
       char: "p",
