@@ -2,7 +2,7 @@ import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
 import { readTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
-import { Task } from "../types";
+import { Task } from "todo.json";
 
 export default class ListProj extends Command {
   static description = 'List projects'

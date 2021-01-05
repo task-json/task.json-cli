@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { differenceInDays } from "date-fns";
-import { Task } from "../types";
+import { Task } from "todo.json";
 
 export function readTasks(dataPath: string) {
   const data = fs.readFileSync(dataPath, { encoding: "utf8" });

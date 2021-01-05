@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
 import { format } from "date-fns";
-import { Task } from "../types";
+import { Task } from "todo.json";
 import { appendTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 
