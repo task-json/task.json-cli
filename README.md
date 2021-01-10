@@ -19,7 +19,7 @@ $ npm install -g todo.json-cli
 $ td COMMAND
 running command...
 $ td (-v|--version|version)
-todo.json-cli/2.3.0 linux-x64 node-v15.5.0
+todo.json-cli/2.3.1 linux-x64 node-v15.5.0
 $ td --help [COMMAND]
 USAGE
   $ td COMMAND
@@ -70,7 +70,7 @@ EXAMPLES
   $ td add "Hello World" -p test -p greeting -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/add.ts)_
 
 ## `td do [ID...]`
 
@@ -90,7 +90,7 @@ EXAMPLE
   $ td done 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/do.ts)_
 
 ## `td help [COMMAND]`
 
@@ -134,7 +134,7 @@ EXAMPLES
   $ td ls -p test
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/ls.ts)_
 
 ## `td lsctx`
 
@@ -154,7 +154,7 @@ EXAMPLES
   $ td lsctx -a
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/lsctx.ts)_
 
 ## `td lsid`
 
@@ -173,7 +173,7 @@ EXAMPLES
   $ td lsid -D
 ```
 
-_See code: [src/commands/lsid.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/lsid.ts)_
+_See code: [src/commands/lsid.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/lsid.ts)_
 
 ## `td lsproj`
 
@@ -193,7 +193,7 @@ EXAMPLES
   $ td lsproj -a
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/lsproj.ts)_
 
 ## `td modify [ID...]`
 
@@ -225,7 +225,7 @@ EXAMPLES
   $ td modify 1 --text "New description" --done
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/modify.ts)_
 
 ## `td restore`
 
@@ -245,7 +245,7 @@ EXAMPLES
   $ todo restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/restore.ts)_
 
 ## `td rm [ID...]`
 
@@ -259,14 +259,14 @@ ARGUMENTS
   ID...  delete specific tasks
 
 OPTIONS
-  -d, --done  delete done tasks
+  -D, --done  delete done tasks
   -h, --help  show CLI help
 
 EXAMPLE
   $ todo rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/rm.ts)_
 
 ## `td undo [ID...]`
 
@@ -286,5 +286,5 @@ EXAMPLE
   $ todo undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.0/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.1/src/commands/undo.ts)_
 <!-- commandsstop -->
