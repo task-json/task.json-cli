@@ -15,7 +15,7 @@ export default class Remove extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     done: flags.boolean({
-      char: "d",
+      char: "D",
       description: "delete done tasks"
     })
   };
