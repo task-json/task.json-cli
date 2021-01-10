@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { colorTask, filterByField, maxWidth, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
 import { table, TableUserConfig } from "table";
-import { Task } from "../types";
+import { Task } from "todo.json";
 import chalk = require('chalk');
 
 export default class List extends Command {
