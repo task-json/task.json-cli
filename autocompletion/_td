@@ -25,6 +25,13 @@ _td() {
     compadd $(td lsproj -a)
   }
 
+  local done_flag=""
+  local done_pattern="(-D)|(--done)"
+  # check if done flag is set
+  if (($words[(I)$done_pattern])); then
+    done_flag="-D"
+  fi
+
   local command_name=${words[2]}
   local -a command_flags=(
     "(- *)"{-h,--help}"[show CLI help]"
@@ -57,7 +64,7 @@ _td() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
-          "*:id:($(td lsid))"
+          "*:id:($(td lsid $done_flag))"
         )
       ;;
       restore)
@@ -115,7 +122,7 @@ _td() {
           "--delete-projects[delete projects]"
           "--delete-contexts[delete contexts]"
           "--delete-due[delete due date]"
-          "*:id:($(td lsid))"
+          "*:id:($(td lsid $done_flag))"
         )
       ;;
     esac
