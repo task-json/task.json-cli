@@ -156,9 +156,7 @@ export default class List extends Command {
       const doneData = doneTasks.map((task, index) => ({
         index,
         task
-      })).sort((a, b) => {
-        return urgency(b.task) - urgency(a.task);
-      }).map(({ index, task }) => {
+      })).map(({ index, task }) => {
         return [
           (index + 1).toString(),
           task.priority ?? "",
