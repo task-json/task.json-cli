@@ -15,6 +15,7 @@ export default class Modify extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     done: flags.boolean({
+      char: "D",
       description: "modify done tasks"
     }),
     text: flags.string({
