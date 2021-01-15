@@ -41,7 +41,11 @@
   ],
   "homepage": "https://github.com/DCsunset/todo.json-cli",
   "keywords": [
-    "oclif"
+    "todo",
+    "task",
+    "task-manager",
+    "cli",
+    "nodejs"
   ],
   "license": "GPL-3.0",
   "main": "lib/index.js",
