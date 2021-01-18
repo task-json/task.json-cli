@@ -19,7 +19,7 @@ $ npm install -g todo.json-cli
 $ td COMMAND
 running command...
 $ td (-v|--version|version)
-todo.json-cli/2.3.3 linux-x64 node-v15.5.1
+todo.json-cli/2.4.0 linux-x64 node-v15.5.1
 $ td --help [COMMAND]
 USAGE
   $ td COMMAND
@@ -39,6 +39,7 @@ copy the `autocompletion/_td` file to any directory of zsh functions (i.e. path 
 ## Commands
 <!-- commands -->
 * [`td add [TEXT]`](#td-add-text)
+* [`td autocomplete DIR`](#td-autocomplete-dir)
 * [`td do [ID...]`](#td-do-id)
 * [`td help [COMMAND]`](#td-help-command)
 * [`td ls`](#td-ls)
@@ -70,7 +71,28 @@ EXAMPLES
   $ td add "Hello World" -p test -p greeting -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/add.ts)_
+
+## `td autocomplete DIR`
+
+Install completion file
+
+```
+USAGE
+  $ td autocomplete DIR
+
+ARGUMENTS
+  DIR  Install completion files to specific directory
+
+OPTIONS
+  -h, --help  show CLI help
+  --zsh       Install zsh completion
+
+EXAMPLE
+  $ td autocomplete --zsh ~/.zsh_completion
+```
+
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/autocomplete.ts)_
 
 ## `td do [ID...]`
 
@@ -90,7 +112,7 @@ EXAMPLE
   $ td done 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/do.ts)_
 
 ## `td help [COMMAND]`
 
@@ -134,7 +156,7 @@ EXAMPLES
   $ td ls -p test
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/ls.ts)_
 
 ## `td lsctx`
 
@@ -154,7 +176,7 @@ EXAMPLES
   $ td lsctx -a
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/lsctx.ts)_
 
 ## `td lsid`
 
@@ -173,7 +195,7 @@ EXAMPLES
   $ td lsid -D
 ```
 
-_See code: [src/commands/lsid.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/lsid.ts)_
+_See code: [src/commands/lsid.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/lsid.ts)_
 
 ## `td lsproj`
 
@@ -193,7 +215,7 @@ EXAMPLES
   $ td lsproj -a
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/lsproj.ts)_
 
 ## `td modify [ID...]`
 
@@ -225,7 +247,7 @@ EXAMPLES
   $ td modify 1 --text "New description" --done
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/modify.ts)_
 
 ## `td restore`
 
@@ -245,7 +267,7 @@ EXAMPLES
   $ todo restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/restore.ts)_
 
 ## `td rm [ID...]`
 
@@ -266,7 +288,7 @@ EXAMPLE
   $ todo rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/rm.ts)_
 
 ## `td undo [ID...]`
 
@@ -286,5 +308,5 @@ EXAMPLE
   $ todo undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.3.3/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.0/src/commands/undo.ts)_
 <!-- commandsstop -->
