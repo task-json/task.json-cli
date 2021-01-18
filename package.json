@@ -31,11 +31,12 @@
     "typescript": "^3.9.7"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.5.0"
   },
   "files": [
     "/bin",
     "/lib",
+    "/autocomplete",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
