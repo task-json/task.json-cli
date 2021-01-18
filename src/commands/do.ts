@@ -44,6 +44,6 @@ export default class Do extends Command {
     writeTasks(todoPath, todoTasks);
     appendTasks(donePath, doneTasks);
 
-    this.log(`Finish ${doneTasks.length} task(s).`);
+    this.log(`Finish ${doneTasks.length} task(s): ${doneTasks.map(task => `"${task.text}"`).join(", ")}`);
   }
 }
