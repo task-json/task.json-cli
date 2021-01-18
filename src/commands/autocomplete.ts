@@ -6,7 +6,7 @@ export default class ListProj extends Command {
   static description = "Install completion file";
 
   static examples = [
-    `$ td autocomplete --zsh /usr/share/zsh/site-functions/`
+    `$ td autocomplete --zsh ~/.zsh_completion`
   ];
 
   static flags = {
