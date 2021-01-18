@@ -27,15 +27,6 @@ USAGE
 ```
 <!-- usagestop -->
 
-
-## Autocomplete
-
-### zsh
-
-To install the autocompletion function,
-copy the `autocompletion/_td` file to any directory of zsh functions (i.e. path in `$fpath` variable) and reopen zsh.
-
-
 ## Commands
 <!-- commands -->
 * [`td add [TEXT]`](#td-add-text)
