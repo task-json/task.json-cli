@@ -32,8 +32,11 @@ export function appendTasks(dataPath: string, tasks: Task[]) {
   return originalTasks.length;
 }
 
-export function maxWidth(tasks: Task[], field: keyof Task) {
-  return tasks.reduce((width: number, task: Task) => {
+export function maxWidth(tasks: {
+  index: number;
+  task: Task;
+}[], field: "contexts" | "projects" | "text" | "due") {
+  return tasks.reduce((width: number, { task }) => {
     let w = 0;
     switch (field) {
       case "contexts":
@@ -43,7 +46,8 @@ export function maxWidth(tasks: Task[], field: keyof Task) {
       case "text":
         w = Math.max(task.text.length, 4);
         break;
-      default:
+      case "due":
+        w = task.due?.length ?? 3;
         break;
     }
     return Math.max(w, width);

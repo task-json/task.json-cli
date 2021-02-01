@@ -15,13 +15,15 @@
     "date-fns": "^2.16.1",
     "lodash": "^4.17.20",
     "table": "^6.0.4",
-    "tslib": "^1.14.1"
+    "tslib": "^1.14.1",
+    "wrap-ansi": "^7.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.25.1",
     "@types/lodash": "^4.14.165",
     "@types/node": "^10.17.49",
     "@types/table": "^6.0.0",
+    "@types/wrap-ansi": "^3.0.0",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^0.1.0",

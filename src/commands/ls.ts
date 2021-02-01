@@ -2,10 +2,11 @@ import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
 import { colorTask, filterByField, maxWidth, readTasks, urgency } from "../utils/task";
 import { readConfig } from "../utils/config";
+import { calculateWidth } from "../utils/table";
 import { table, TableUserConfig } from "table";
 import { Task } from "todo.json";
 import chalk = require('chalk');
-
+import wrapAnsi = require("wrap-ansi");
 export default class List extends Command {
   static description = 'List tasks'
 
@@ -61,17 +62,15 @@ export default class List extends Command {
     const { todoPath, donePath } = readConfig();
 
     const header = [
-      ["ID", "Pri", "Text", "Projects", "Contexts", "Due"]
+      ["ID", "P", "Text", "Projects", "Contexts", "Due"]
     ];
 
     const stdoutColumns = process.stdout.columns ?? 80;
     if (stdoutColumns < 50) {
       this.error("Terminal width must be greater than 50.");
     }
-    const textWidth = Math.floor((stdoutColumns - 28) / 5 * 3);
-    const projectWidth = Math.floor((stdoutColumns - 28) / 5);
 
-    const tableOptions = (tasks: Task[]): TableUserConfig => ({
+    const tableOptions = {
       drawHorizontalLine: index => index === 1,
       border: {
         bodyLeft: "",
@@ -85,22 +84,12 @@ export default class List extends Command {
         joinLeft: "",
         joinRight: "",
         joinJoin: ""
-      },
-      columns: {
-        ...(maxWidth(tasks, "text") < textWidth ? null : ({ 2: {
-          width: textWidth,
-          wrapWord: true
-        }})),
-        ...(maxWidth(tasks, "projects") < projectWidth ? null : ({ 3: {
-          width: projectWidth,
-          wrapWord: true
-        }})),
-        ...(maxWidth(tasks, "contexts") < projectWidth ? null : ({ 4: {
-          width: projectWidth,
-          wrapWord: true
-        }})),
       }
-    });
+    } as TableUserConfig;
+
+    const wrapOptions = {
+      hard: true
+    };
 
     let todoOutput = "";
     let doneOutput = "";
@@ -131,19 +120,47 @@ export default class List extends Command {
         .filter(({ task }) => projectFilter(task) && contextFilter(task))
         .sort((a, b) => {
           return urgency(b.task) - urgency(a.task);
-        }).map(({ index, task }) => {
-          const color = colorTask(task);
-          return [
-            (index + 1).toString(),
-            task.priority ?? "",
-            task.text,
-            task.projects?.join(", ") ?? "",
-            task.contexts?.join(", ") ?? "",
-            task.due ?? ""
-          ].map(field => color ? chalk[color].bold(field) : field);
+        });
+
+      const textWidth = maxWidth(todoData, "text");
+      const projWidth = maxWidth(todoData, "projects");
+      const ctxWidth = maxWidth(todoData, "contexts");
+      const dueWidth = maxWidth(todoData, "due");
+
+      const result = calculateWidth(stdoutColumns, {
+        idWidth: Math.max(2, todoData.length.toString().length),
+        priWidth: 1,
+        textWidth,
+        projWidth,
+        ctxWidth,
+        dueWidth
+      }, 2 * 6);
+
+      const output = todoData.map(({ index, task }) => {
+        const color = colorTask(task);
+        return [
+          (index + 1).toString(),
+          task.priority ?? "",
+          task.text,
+          task.projects?.join(" ") ?? "",
+          task.contexts?.join(" ") ?? "",
+          task.due ?? ""
+        ].map((field, i) => {
+          let value = field;
+          if (result) {
+            if (i === 2)
+              value = wrapAnsi(field, result.textWidth, wrapOptions);
+            if (i === 3)
+              value = wrapAnsi(field, result.projWidth, wrapOptions);
+            if (i === 4)
+              value = wrapAnsi(field, result.ctxWidth, wrapOptions);
+          }
+
+          return color ? chalk[color].bold(value) : value;
+        });
       });
 
-      todoOutput = table(header.concat(todoData), tableOptions(todoTasks));
+      todoOutput = table(header.concat(output), tableOptions);
     }
 
     if (flags.done || flags.all) {
@@ -156,18 +173,46 @@ export default class List extends Command {
       const doneData = doneTasks.map((task, index) => ({
         index,
         task
-      })).map(({ index, task }) => {
+      }));
+
+      const textWidth = maxWidth(doneData, "text");
+      const projWidth = maxWidth(doneData, "projects");
+      const ctxWidth = maxWidth(doneData, "contexts");
+      const dueWidth = maxWidth(doneData, "due");
+
+      const result = calculateWidth(stdoutColumns, {
+        idWidth: Math.max(2, doneData.length.toString().length),
+        priWidth: 1,
+        textWidth,
+        projWidth,
+        ctxWidth,
+        dueWidth
+      }, 2 * 6);
+
+      const output = doneData.map(({ index, task }) => {
         return [
           (index + 1).toString(),
           task.priority ?? "",
           task.text,
-          task.projects?.join(",") ?? "",
-          task.contexts?.join(",") ?? "",
+          task.projects?.join(" ") ?? "",
+          task.contexts?.join(" ") ?? "",
           task.due ?? ""
-        ];
+        ].map((field, i) => {
+          let value = field;
+          if (result) {
+            if (i === 2)
+              value = wrapAnsi(field, result.textWidth, wrapOptions);
+            if (i === 3)
+              value = wrapAnsi(field, result.projWidth, wrapOptions);
+            if (i === 4)
+              value = wrapAnsi(field, result.ctxWidth, wrapOptions);
+          }
+
+          return value;
+        });
       });
 
-      doneOutput = table(header.concat(doneData), tableOptions(doneTasks));
+      doneOutput = table(header.concat(output), tableOptions);
     }
 
     if (flags.all) {
