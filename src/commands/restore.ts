@@ -18,7 +18,7 @@ export default class Restore extends Command {
       description: "force overwriting without confirmation"
     }),
     done: flags.boolean({
-      char: 'd',
+      char: 'D',
       description: "restore done.json"
     })
   };
