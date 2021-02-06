@@ -27,8 +27,8 @@ export default class ListProj extends Command {
 
     try {
       if (flags.zsh) {
-        const target = path.join(args.dir, "_td");
-        fs.copyFileSync(path.join(__dirname, "../../autocomplete/_td"), target);
+        const target = path.join(args.dir, "_tj");
+        fs.copyFileSync(path.join(__dirname, "../../autocomplete/_tj"), target);
         this.log(`Completion file installed to ${target}.\nMake sure ${args.dir} is in $fpath environment.\nStart a new zsh shell to put it into effect.`);
       }
       else {
