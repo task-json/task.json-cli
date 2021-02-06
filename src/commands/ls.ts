@@ -4,7 +4,7 @@ import { colorTask, filterByField, maxWidth, readTasks, urgency } from "../utils
 import { readConfig } from "../utils/config";
 import { calculateWidth } from "../utils/table";
 import { table, TableUserConfig } from "table";
-import { Task } from "todo.json";
+import { Task } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 export default class List extends Command {
@@ -70,7 +70,7 @@ export default class List extends Command {
       this.error("Terminal width must be greater than 50.");
     }
 
-    const tableOptions = {
+    const tableOptions: TableUserConfig = {
       drawHorizontalLine: index => index === 1,
       border: {
         bodyLeft: "",
@@ -85,7 +85,7 @@ export default class List extends Command {
         joinRight: "",
         joinJoin: ""
       }
-    } as TableUserConfig;
+    };
 
     const wrapOptions = {
       hard: true

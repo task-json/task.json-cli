@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { format } from "date-fns";
 import { appendTasks, parseIds, readTasks, writeTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 import * as _ from "lodash";
@@ -38,7 +37,9 @@ export default class Do extends Command {
     const ids = parseIds(argv, todoTasks.length, this.error);
 
     const doneTasks = _.remove(todoTasks, (_, index) => ids.includes(index)).map(task => {
-      task.end = format(new Date(), "yyyy-MM-dd")
+      const date = new Date().toISOString();
+      task.end = date;
+      task.modified = date;
       return task;
     });
     writeTasks(todoPath, todoTasks);

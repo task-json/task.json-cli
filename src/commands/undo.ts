@@ -37,6 +37,7 @@ export default class Undo extends Command {
 
     const todoTasks = _.remove(doneTasks, (_, index) => ids.includes(index)).map(task => {
       delete task.end;
+      task.modified = new Date().toISOString();
       return task;
     });
     writeTasks(donePath, doneTasks);

@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { differenceInDays } from "date-fns";
-import { Task } from "todo.json";
+import { DateTime, Interval } from "luxon";
+import { Task } from "task.json";
 
 export function readTasks(dataPath: string) {
   const data = fs.readFileSync(dataPath, { encoding: "utf8" });
@@ -56,7 +56,11 @@ export function maxWidth(tasks: {
 
 export function colorTask(task: Task) {
   if (task.due) {
-    const days = differenceInDays(new Date(task.due), new Date());
+    const days = Interval.fromDateTimes(
+      DateTime.local(),
+      DateTime.fromISO(task.due)
+    ).length("days");
+
     if (days < 3) {
       return "red";
     }
@@ -78,7 +82,10 @@ export function urgency(task: Task) {
     urg += "Z".charCodeAt(0) - task.priority.charCodeAt(0) + 2;
   }
   if (task.due) {
-    const days = differenceInDays(new Date(task.due), new Date());
+    const days = Interval.fromDateTimes(
+      DateTime.local(),
+      DateTime.fromISO(task.due)
+    ).length("days");
     if (days < 7) {
       urg += 100;
     }

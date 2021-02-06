@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { format } from "date-fns";
 import { parseIds, readTasks, writeTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 import * as _ from "lodash";
@@ -43,7 +42,7 @@ export default class Remove extends Command {
     const ids = parseIds(argv, tasks.length, this.error);
 
     const removedTasks = _.remove(tasks, (_, index) => ids.includes(index)).map(task => {
-      task.end = format(new Date(), "yyyy-MM-dd")
+      task.modified = new Date().toISOString();
       return task;
     });
     writeTasks(taskPath, tasks);

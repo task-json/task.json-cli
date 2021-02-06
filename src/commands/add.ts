@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
-import { format } from "date-fns";
-import { Task } from "todo.json";
+import { Task } from "task.json";
+import { v4 as uuidv4 } from "uuid";
 import { appendTasks } from "../utils/task";
 import { readConfig } from "../utils/config";
 
@@ -45,16 +45,19 @@ export default class Add extends Command {
     const { todoPath } = readConfig();
 
     const text = argv.join(" ");
+    const date = new Date().toISOString();
 
     // TODO: add date validation
-    const task = {
+    const task: Task = {
+      uuid: uuidv4(),
       text,
       priority: flags.priority,
       contexts: flags.context,
       projects: flags.project,
       due: flags.due,
-      start: format(new Date(), "yyyy-MM-dd")
-    } as Task;
+      start: date,
+      modified: date
+    };
 
     const id = appendTasks(todoPath, [task]);
     this.log(`Task ${id + 1} added: ${text}`);
