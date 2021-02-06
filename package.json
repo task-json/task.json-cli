@@ -1,9 +1,9 @@
 {
   "name": "task.json-cli",
-  "version": "3.0.2",
+  "version": "3.0.1",
   "author": "DCsunset @DCsunset",
   "bin": {
-    "td": "./bin/run"
+    "tj": "./bin/run"
   },
   "bugs": "https://github.com/DCsunset/task.json-cli/issues",
   "dependencies": {
