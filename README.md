@@ -19,7 +19,7 @@ $ npm install -g task.json-cli
 $ tj COMMAND
 running command...
 $ tj (-v|--version|version)
-task.json-cli/3.0.3 linux-x64 node-v15.7.0
+task.json-cli/3.0.4 linux-x64 node-v15.7.0
 $ tj --help [COMMAND]
 USAGE
   $ tj COMMAND
@@ -62,7 +62,7 @@ EXAMPLES
   $ tj add "Hello World" -p test -p greeting -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/add.ts)_
 
 ## `tj autocomplete DIR`
 
@@ -83,7 +83,7 @@ EXAMPLE
   $ tj autocomplete --zsh ~/.zsh_completion
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/autocomplete.ts)_
 
 ## `tj do [ID...]`
 
@@ -103,7 +103,7 @@ EXAMPLE
   $ tj do 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/do.ts)_
 
 ## `tj help [COMMAND]`
 
@@ -146,7 +146,7 @@ EXAMPLES
   $ tj ls -p test
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/ls.ts)_
 
 ## `tj lsctx`
 
@@ -166,7 +166,7 @@ EXAMPLES
   $ tj lsctx -a
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/lsctx.ts)_
 
 ## `tj lsid`
 
@@ -185,7 +185,7 @@ EXAMPLES
   $ tj lsid -D
 ```
 
-_See code: [src/commands/lsid.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/lsid.ts)_
+_See code: [src/commands/lsid.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/lsid.ts)_
 
 ## `tj lsproj`
 
@@ -205,7 +205,7 @@ EXAMPLES
   $ tj lsproj -a
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/lsproj.ts)_
 
 ## `tj modify [ID...]`
 
@@ -237,7 +237,7 @@ EXAMPLES
   $ tj modify 1 --text "New description" --done
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/modify.ts)_
 
 ## `tj restore`
 
@@ -257,7 +257,7 @@ EXAMPLES
   $ tj restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/restore.ts)_
 
 ## `tj rm [ID...]`
 
@@ -278,7 +278,7 @@ EXAMPLE
   $ tj rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/rm.ts)_
 
 ## `tj undo [ID...]`
 
@@ -298,5 +298,5 @@ EXAMPLE
   $ tj undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.3/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.4/src/commands/undo.ts)_
 <!-- commandsstop -->
