@@ -15,40 +15,40 @@ npm i -g task.json-cli
 ## Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g todo.json-cli
-$ td COMMAND
+$ npm install -g task.json-cli
+$ tj COMMAND
 running command...
-$ td (-v|--version|version)
-todo.json-cli/2.4.2 linux-x64 node-v15.7.0
-$ td --help [COMMAND]
+$ tj (-v|--version|version)
+task.json-cli/3.0.0 linux-x64 node-v15.7.0
+$ tj --help [COMMAND]
 USAGE
-  $ td COMMAND
+  $ tj COMMAND
 ...
 ```
 <!-- usagestop -->
 
 ## Commands
 <!-- commands -->
-* [`td add [TEXT]`](#td-add-text)
-* [`td autocomplete DIR`](#td-autocomplete-dir)
-* [`td do [ID...]`](#td-do-id)
-* [`td help [COMMAND]`](#td-help-command)
-* [`td ls`](#td-ls)
-* [`td lsctx`](#td-lsctx)
-* [`td lsid`](#td-lsid)
-* [`td lsproj`](#td-lsproj)
-* [`td modify [ID...]`](#td-modify-id)
-* [`td restore`](#td-restore)
-* [`td rm [ID...]`](#td-rm-id)
-* [`td undo [ID...]`](#td-undo-id)
+* [`tj add [TEXT]`](#tj-add-text)
+* [`tj autocomplete DIR`](#tj-autocomplete-dir)
+* [`tj do [ID...]`](#tj-do-id)
+* [`tj help [COMMAND]`](#tj-help-command)
+* [`tj ls`](#tj-ls)
+* [`tj lsctx`](#tj-lsctx)
+* [`tj lsid`](#tj-lsid)
+* [`tj lsproj`](#tj-lsproj)
+* [`tj modify [ID...]`](#tj-modify-id)
+* [`tj restore`](#tj-restore)
+* [`tj rm [ID...]`](#tj-rm-id)
+* [`tj undo [ID...]`](#tj-undo-id)
 
-## `td add [TEXT]`
+## `tj add [TEXT]`
 
 Add a new task
 
 ```
 USAGE
-  $ td add [TEXT]
+  $ tj add [TEXT]
 
 OPTIONS
   -P, --priority=priority  priority (A-Z)
@@ -62,15 +62,15 @@ EXAMPLES
   $ td add "Hello World" -p test -p greeting -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/add.ts)_
 
-## `td autocomplete DIR`
+## `tj autocomplete DIR`
 
 Install completion file
 
 ```
 USAGE
-  $ td autocomplete DIR
+  $ tj autocomplete DIR
 
 ARGUMENTS
   DIR  Install completion files to specific directory
@@ -83,15 +83,15 @@ EXAMPLE
   $ td autocomplete --zsh ~/.zsh_completion
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/autocomplete.ts)_
 
-## `td do [ID...]`
+## `tj do [ID...]`
 
 Mark tasks as done
 
 ```
 USAGE
-  $ td do [ID...]
+  $ tj do [ID...]
 
 ARGUMENTS
   ID...  mark specific tasks as done
@@ -103,15 +103,15 @@ EXAMPLE
   $ td do 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/do.ts)_
 
-## `td help [COMMAND]`
+## `tj help [COMMAND]`
 
-display help for td
+display help for tj
 
 ```
 USAGE
-  $ td help [COMMAND]
+  $ tj help [COMMAND]
 
 ARGUMENTS
   COMMAND  command to show help for
@@ -122,18 +122,17 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 
-## `td ls`
+## `tj ls`
 
 List tasks
 
 ```
 USAGE
-  $ td ls
+  $ tj ls
 
 OPTIONS
   -D, --done               list only done tasks
   -P, --priority=priority  priority (A-Z)
-  -a, --all                list all tasks including done ones
   -c, --context=context    filter tasks by specific contexts
   -h, --help               show CLI help
   -p, --project=project    filter tasks by specific projects
@@ -147,15 +146,15 @@ EXAMPLES
   $ td ls -p test
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/ls.ts)_
 
-## `td lsctx`
+## `tj lsctx`
 
 List contexts
 
 ```
 USAGE
-  $ td lsctx
+  $ tj lsctx
 
 OPTIONS
   -D, --done  list contexts of only done tasks
@@ -167,15 +166,15 @@ EXAMPLES
   $ td lsctx -a
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/lsctx.ts)_
 
-## `td lsid`
+## `tj lsid`
 
 List IDs
 
 ```
 USAGE
-  $ td lsid
+  $ tj lsid
 
 OPTIONS
   -D, --done  list IDs of only done tasks
@@ -186,15 +185,15 @@ EXAMPLES
   $ td lsid -D
 ```
 
-_See code: [src/commands/lsid.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/lsid.ts)_
+_See code: [src/commands/lsid.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/lsid.ts)_
 
-## `td lsproj`
+## `tj lsproj`
 
 List projects
 
 ```
 USAGE
-  $ td lsproj
+  $ tj lsproj
 
 OPTIONS
   -D, --done  list projects of only done tasks
@@ -206,15 +205,15 @@ EXAMPLES
   $ td lsproj -a
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/lsproj.ts)_
 
-## `td modify [ID...]`
+## `tj modify [ID...]`
 
 Modify tasks
 
 ```
 USAGE
-  $ td modify [ID...]
+  $ tj modify [ID...]
 
 ARGUMENTS
   ID...  modify specific tasks
@@ -238,15 +237,15 @@ EXAMPLES
   $ td modify 1 --text "New description" --done
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/modify.ts)_
 
-## `td restore`
+## `tj restore`
 
-Undo the last modification in todo.json/done.json using the bak file
+Undo the last modification using the bak file
 
 ```
 USAGE
-  $ td restore
+  $ tj restore
 
 OPTIONS
   -D, --done   restore done.json
@@ -258,15 +257,15 @@ EXAMPLES
   $ todo restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/restore.ts)_
 
-## `td rm [ID...]`
+## `tj rm [ID...]`
 
 Delete tasks
 
 ```
 USAGE
-  $ td rm [ID...]
+  $ tj rm [ID...]
 
 ARGUMENTS
   ID...  delete specific tasks
@@ -279,15 +278,15 @@ EXAMPLE
   $ todo rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/rm.ts)_
 
-## `td undo [ID...]`
+## `tj undo [ID...]`
 
 Undo tasks
 
 ```
 USAGE
-  $ td undo [ID...]
+  $ tj undo [ID...]
 
 ARGUMENTS
   ID...  undo specific done tasks
@@ -299,5 +298,5 @@ EXAMPLE
   $ todo undo 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/todo.json-cli/blob/v2.4.2/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v3.0.0/src/commands/undo.ts)_
 <!-- commandsstop -->
