@@ -131,8 +131,6 @@ _tj() {
     set_flags
   fi
 
-  echo $state >> /tmp/zsh_test
-
   _arguments "1: :describe_commands" $command_flags
 }
 
