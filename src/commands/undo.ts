@@ -7,7 +7,7 @@ export default class Undo extends Command {
   static description = 'Undo tasks';
 
   static examples = [
-    `$ todo undo 1 2`,
+    `$ tj undo 1 2`,
   ];
 
   static flags = {

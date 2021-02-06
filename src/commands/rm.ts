@@ -8,7 +8,7 @@ export default class Remove extends Command {
   static description = 'Delete tasks';
 
   static examples = [
-    `$ todo rm 1`,
+    `$ tj rm 1`,
   ];
 
   static flags = {
@@ -33,7 +33,6 @@ export default class Remove extends Command {
     checkTaskExistence(this.error);
     const type: TaskType = flags.done ? "done" : "todo";
 
-    // Read Todo
     const taskJson = readTaskJson();
     const ids = parseIds(argv, taskJson[type].length, this.error);
     const date = new Date().toISOString();

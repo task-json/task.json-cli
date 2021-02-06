@@ -7,8 +7,8 @@ export default class Restore extends Command {
   static description = 'Undo the last modification using the bak file';
 
   static examples = [
-    `$ todo restore`,
-    `$ todo restore -f --done`,
+    `$ tj restore`,
+    `$ tj restore -f --done`,
   ];
 
   static flags = {
