@@ -78,7 +78,6 @@ _tj() {
       ls)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-a --all)"{-a,--all}"[list all tasks including done ones]"
           "(-D --done)"{-D,--done}"[list only done tasks]"
           "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
           "--without-projects[list tasks without projects]"
