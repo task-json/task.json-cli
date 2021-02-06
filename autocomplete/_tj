@@ -12,6 +12,7 @@ _tj() {
 		"restore:undo the last modification using the bak file"
 		"rm:delete tasks"
 		"undo:undo tasks"
+		"autocomplete:install completion scripts"
 		"help:display help message"
   )
   describe_commands() {
@@ -123,6 +124,13 @@ _tj() {
           "--delete-contexts[delete contexts]"
           "--delete-due[delete due date]"
           "*:id:($(tj lsid $done_flag))"
+        )
+      ;;
+      autocomplete)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "--zsh[install zsh completion scripts]"
+          "2:dir:_files -/"
         )
       ;;
     esac
