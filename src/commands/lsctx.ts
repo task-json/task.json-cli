@@ -6,8 +6,8 @@ export default class ListCtx extends Command {
   static description = 'List contexts'
 
   static examples = [
-    `$ td lsctx`,
-    `$ td lsctx -a`
+    `$ tj lsctx`,
+    `$ tj lsctx -a`
   ]
 
   static flags = {

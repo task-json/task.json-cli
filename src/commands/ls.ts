@@ -9,8 +9,8 @@ export default class List extends Command {
   static description = 'List tasks'
 
   static examples = [
-    `$ td ls`,
-    `$ td ls -p test`,
+    `$ tj ls`,
+    `$ tj ls -p test`,
   ]
 
   static flags = {

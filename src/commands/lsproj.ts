@@ -6,8 +6,8 @@ export default class ListProj extends Command {
   static description = 'List projects'
 
   static examples = [
-    `$ td lsproj`,
-    `$ td lsproj -a`
+    `$ tj lsproj`,
+    `$ tj lsproj -a`
   ]
 
   static flags = {

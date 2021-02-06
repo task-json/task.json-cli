@@ -7,8 +7,8 @@ export default class ListProj extends Command {
   static description = 'List IDs'
 
   static examples = [
-    `$ td lsid`,
-    `$ td lsid -D`
+    `$ tj lsid`,
+    `$ tj lsid -D`
   ]
 
   static flags = {

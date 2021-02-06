@@ -8,8 +8,8 @@ export default class Add extends Command {
   static description = 'Add a new task'
 
   static examples = [
-    '$ td add Hello World',
-    '$ td add "Hello World" -p test -p greeting -c test --due 2020-12-24',
+    '$ tj add Hello World',
+    '$ tj add "Hello World" -p test -p greeting -c test --due 2020-12-24',
   ]
 
   static flags = {
