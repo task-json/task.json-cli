@@ -1,35 +1,37 @@
 import * as fs from "fs";
 import { DateTime, Interval } from "luxon";
-import { Task } from "task.json";
+import { Task, TaskJson } from "task.json";
+import { readConfig } from "./config";
 
-export function readTasks(dataPath: string) {
-  const data = fs.readFileSync(dataPath, { encoding: "utf8" });
-  return JSON.parse(data) as Task[];
+export function readTaskJson() {
+  const { taskPath } = readConfig();
+  let taskJson: TaskJson;
+  try {
+    const data = fs.readFileSync(taskPath, { encoding: "utf8" });
+    taskJson = JSON.parse(data);
+  }
+  catch (error) {
+    taskJson = {
+      todo: [],
+      done: [],
+      removed: []
+    };
+  }
+  return taskJson;
 }
 
-export function writeTasks(dataPath: string, tasks: Task[]) {
+export function writeTaskJson(taskJson: TaskJson) {
+  const { taskPath } = readConfig();
+
   // Backup
-  if (fs.existsSync(dataPath))
-    fs.renameSync(dataPath, dataPath + ".bak");
+  if (fs.existsSync(taskPath))
+    fs.renameSync(taskPath, taskPath + ".bak");
 
   fs.writeFileSync(
-    dataPath,
-    JSON.stringify(tasks, null, "\t"),
+    taskPath,
+    JSON.stringify(taskJson, null, "\t"),
     { encoding: "utf8" }
   );
-}
-
-export function appendTasks(dataPath: string, tasks: Task[]) {
-  let originalTasks: Task[];
-  try {
-    originalTasks = readTasks(dataPath);
-  }
-  catch (_) {
-    originalTasks = [];
-  }
-
-  writeTasks(dataPath, originalTasks.concat(tasks));
-  return originalTasks.length;
 }
 
 export function maxWidth(tasks: {

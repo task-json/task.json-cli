@@ -1,7 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { appendTasks, parseIds, readTasks, writeTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
+import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { checkTaskExistence } from "../utils/config";
 import * as _ from "lodash";
 
 export default class Do extends Command {
@@ -25,25 +24,21 @@ export default class Do extends Command {
 
   async run() {
     const { argv } = this.parse(Do);
-    const { todoPath, donePath } = readConfig();
 
-    if (!fs.existsSync(todoPath)) {
-      this.error("todo.json does not exist. Use `todo add` to create one.");
-    }
+    checkTaskExistence(this.error);
 
-    // Read Todo
-    const todoTasks = readTasks(todoPath);
+    const taskJson = readTaskJson();
+    const ids = parseIds(argv, taskJson.todo.length, this.error);
+    const date = new Date().toISOString();
 
-    const ids = parseIds(argv, todoTasks.length, this.error);
-
-    const doneTasks = _.remove(todoTasks, (_, index) => ids.includes(index)).map(task => {
-      const date = new Date().toISOString();
+    const doneTasks = _.remove(taskJson.todo, (_, index) => ids.includes(index)).map(task => {
       task.end = date;
       task.modified = date;
       return task;
     });
-    writeTasks(todoPath, todoTasks);
-    appendTasks(donePath, doneTasks);
+    taskJson.done.push(...doneTasks);
+
+    writeTaskJson(taskJson);
 
     this.log(`Finish ${doneTasks.length} task(s): ${doneTasks.map(task => `"${task.text}"`).join(", ")}`);
   }

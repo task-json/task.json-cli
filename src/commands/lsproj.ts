@@ -1,8 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { readTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
-import { Task } from "task.json";
+import { readTaskJson } from "../utils/task";
+import { TaskType } from "task.json";
 
 export default class ListProj extends Command {
   static description = 'List projects'
@@ -26,31 +24,14 @@ export default class ListProj extends Command {
 
   async run() {
     const { flags } = this.parse(ListProj);
-    const { todoPath, donePath } = readConfig();
 
     const projects: Set<string> = new Set();
+    const types: TaskType[] = flags.all ? ["todo", "done"] : (flags.done ? ["done"] : ["todo"]);
+    const taskJson = readTaskJson();
 
-    if (!flags.done) {
-      let todoTasks = [] as Task[];
-      if (fs.existsSync(todoPath)) {
-        todoTasks = readTasks(todoPath);
-      }
-
-      todoTasks.forEach(task => {
+    for (const type of types)
+      for (const task of taskJson[type])
         task.projects?.forEach(p => projects.add(p));
-      });
-    }
-
-    if (flags.done || flags.all) {
-      let doneTasks = [] as Task[];
-      if (fs.existsSync(donePath)) {
-        doneTasks = readTasks(donePath);
-      }
-
-      doneTasks.forEach(task => {
-        task.projects?.forEach(p => projects.add(p));
-      });
-    }
 
     this.log([...projects].join("\n"));
   }

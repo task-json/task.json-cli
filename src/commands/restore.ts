@@ -4,7 +4,7 @@ import { readConfig } from "../utils/config";
 import cli from "cli-ux";
 
 export default class Restore extends Command {
-  static description = 'Undo the last modification in todo.json/done.json using the bak file';
+  static description = 'Undo the last modification using the bak file';
 
   static examples = [
     `$ todo restore`,
@@ -28,13 +28,12 @@ export default class Restore extends Command {
 
   async run() {
     const { flags } = this.parse(Restore);
-    const { todoPath, donePath } = readConfig();
+    const { taskPath } = readConfig();
 
-    const taskPath = flags.done ? donePath : todoPath;
     const bakPath = taskPath + ".bak";
 
     if (!fs.existsSync(bakPath)) {
-      this.error(`${flags.done ? "done" : "todo"}.json.bak does not exist.`);
+      this.error("task.json.bak does not exist.");
     }
 
     let res = true;

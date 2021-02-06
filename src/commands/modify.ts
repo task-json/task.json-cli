@@ -1,7 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { parseIds, readTasks, writeTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
+import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { checkTaskExistence } from "../utils/config";
 
 export default class Modify extends Command {
   static description = 'Modify tasks';
@@ -65,39 +64,37 @@ export default class Modify extends Command {
 
   async run() {
     const { argv, flags } = this.parse(Modify);
-    const { todoPath, donePath } = readConfig();
 
-    const taskPath = flags.done ? donePath : todoPath;
+    checkTaskExistence(this.error);
 
-    if (!fs.existsSync(taskPath)) {
-      this.error(`${flags.done ? "done" : "todo"}.json does not exist.`);
-    }
-
-    const tasks = readTasks(taskPath);
-    const ids = parseIds(argv, tasks.length, this.error);
+    const taskJson = readTaskJson();
+    const ids = parseIds(argv, taskJson.todo.length, this.error);
+    const date = new Date().toISOString();
 
     for (const id of ids) {
       if (flags.text)
-        tasks[id].text = flags.text.join(" ");
+        taskJson.todo[id].text = flags.text.join(" ");
       if (flags.priority)
-        tasks[id].priority = flags.priority;
+        taskJson.todo[id].priority = flags.priority;
       if (flags.project)
-        tasks[id].projects = flags.project;
+        taskJson.todo[id].projects = flags.project;
       if (flags.context)
-        tasks[id].contexts = flags.context;
+        taskJson.todo[id].contexts = flags.context;
       if (flags.due)
-        tasks[id].due = flags.due;
+        taskJson.todo[id].due = flags.due;
       if (flags["delete-contexts"])
-        delete tasks[id].contexts;
+        delete taskJson.todo[id].contexts;
       if (flags["delete-due"])
-        delete tasks[id].due;
+        delete taskJson.todo[id].due;
       if (flags["delete-priority"])
-        delete tasks[id].priority;
+        delete taskJson.todo[id].priority;
       if (flags["delete-projects"])
-        delete tasks[id].projects;
+        delete taskJson.todo[id].projects;
+
+      taskJson.todo[id].modified = date;
     }
 
-    writeTasks(taskPath, tasks);
-    this.log(`Modify ${ids.length} task(s) in ${flags.done ? "done" : "todo"}.json.`);
+    writeTaskJson(taskJson);
+    this.log(`Modify ${ids.length} task(s)`);
   }
 }

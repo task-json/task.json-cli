@@ -1,15 +1,15 @@
-# todo.json-cli
+# task.json-cli
 
-[![Version](https://img.shields.io/npm/v/todo.json-cli.svg)](https://npmjs.org/package/todo.json-cli)
-[![License](https://img.shields.io/npm/l/todo.json-cli.svg)](https://github.com/DCsunset/todo.json-cli/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/task.json-cli.svg)](https://npmjs.org/package/task.json-cli)
+[![License](https://img.shields.io/npm/l/task.json-cli.svg)](https://github.com/DCsunset/task.json-cli/blob/master/package.json)
 
-Command line todo management app for [todo.json](https://github.com/DCsunset/todo.json) written in Node.js.
+Command line todo management app for [task.json](https://github.com/DCsunset/task.json) written in Node.js.
 
 
 ## Installation
 
 ```
-npm i -g todo.json-cli
+npm i -g task.json-cli
 ```
 
 ## Usage

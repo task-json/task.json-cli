@@ -1,7 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { appendTasks, parseIds, readTasks, writeTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
+import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { checkTaskExistence } from "../utils/config";
 import * as _ from "lodash";
 
 export default class Undo extends Command {
@@ -25,24 +24,21 @@ export default class Undo extends Command {
 
   async run() {
     const { argv } = this.parse(Undo);
-    const { todoPath, donePath } = readConfig();
 
-    if (!fs.existsSync(donePath)) {
-      this.error("done.json does not exist.");
-    }
+    checkTaskExistence(this.error);
 
-    // Read Todo
-    const doneTasks = readTasks(donePath);
-    const ids = parseIds(argv, doneTasks.length, this.error);
+    const taskJson = readTaskJson();
+    const ids = parseIds(argv, taskJson.done.length, this.error);
 
-    const todoTasks = _.remove(doneTasks, (_, index) => ids.includes(index)).map(task => {
+    const undoneTasks = _.remove(taskJson.done, (_, index) => ids.includes(index)).map(task => {
       delete task.end;
       task.modified = new Date().toISOString();
       return task;
     });
-    writeTasks(donePath, doneTasks);
-    appendTasks(todoPath, todoTasks);
+    taskJson.todo.push(...undoneTasks);
 
-    this.log(`Undo ${todoTasks.length} task(s).`);
+    writeTaskJson(taskJson);
+
+    this.log(`Undo ${undoneTasks.length} task(s): ${undoneTasks.map(task => `"${task.text}"`).join(", ")}`);
   }
 }

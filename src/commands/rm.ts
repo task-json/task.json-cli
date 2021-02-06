@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { parseIds, readTasks, writeTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
+import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { checkTaskExistence } from "../utils/config";
 import * as _ from "lodash";
+import { TaskType } from 'task.json';
 
 export default class Remove extends Command {
   static description = 'Delete tasks';
@@ -29,24 +29,23 @@ export default class Remove extends Command {
 
   async run() {
     const { argv, flags } = this.parse(Remove);
-    const { todoPath, donePath } = readConfig();
 
-    const taskPath = flags.done ? donePath : todoPath;
-
-    if (!fs.existsSync(taskPath)) {
-      this.error(`${flags.done ? "done" : "todo"}.json does not exist.`);
-    }
+    checkTaskExistence(this.error);
+    const type: TaskType = flags.done ? "done" : "todo";
 
     // Read Todo
-    const tasks = readTasks(taskPath);
-    const ids = parseIds(argv, tasks.length, this.error);
+    const taskJson = readTaskJson();
+    const ids = parseIds(argv, taskJson[type].length, this.error);
+    const date = new Date().toISOString();
 
-    const removedTasks = _.remove(tasks, (_, index) => ids.includes(index)).map(task => {
-      task.modified = new Date().toISOString();
+    const removedTasks = _.remove(taskJson[type], (_, index) => ids.includes(index)).map(task => {
+      task.modified = date;
       return task;
     });
-    writeTasks(taskPath, tasks);
+    taskJson.removed.push(...removedTasks);
 
-    this.log(`Delete ${removedTasks.length} task(s) from ${flags.done ? "done" : "todo"}.json.`);
+    writeTaskJson(taskJson);
+
+    this.log(`Remove ${removedTasks.length} task(s)`);
   }
 }

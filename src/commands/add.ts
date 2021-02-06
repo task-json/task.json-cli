@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import { Task } from "task.json";
 import { v4 as uuidv4 } from "uuid";
-import { appendTasks } from "../utils/task";
+import { readTaskJson, writeTaskJson } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Add extends Command {
@@ -42,7 +42,9 @@ export default class Add extends Command {
 
   async run() {
     const { argv, flags } = this.parse(Add);
-    const { todoPath } = readConfig();
+
+    // Create rootPath if not exists
+    readConfig();
 
     const text = argv.join(" ");
     const date = new Date().toISOString();
@@ -59,7 +61,10 @@ export default class Add extends Command {
       modified: date
     };
 
-    const id = appendTasks(todoPath, [task]);
-    this.log(`Task ${id + 1} added: ${text}`);
+    const taskJson = readTaskJson();
+    taskJson.todo.push(task);
+    writeTaskJson(taskJson);
+
+    this.log(`Task ${taskJson.todo.length} added: ${text}`);
   }
 }

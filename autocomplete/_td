@@ -9,7 +9,7 @@ _td() {
 		"lsctx:list contexts"
 		"lsproj:list projects"
 		"modify:modify tasks"
-		"restore:undo the last modification in todo.json/done.json using the bak file"
+		"restore:undo the last modification using the bak file"
 		"rm:delete tasks"
 		"undo:undo tasks"
 		"help:display help message"

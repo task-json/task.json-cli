@@ -1,8 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from "fs";
-import { readTasks } from "../utils/task";
-import { readConfig } from "../utils/config";
-import { Task } from "task.json";
+import { readTaskJson } from "../utils/task";
+import { TaskType } from "task.json";
 
 export default class ListCtx extends Command {
   static description = 'List contexts'
@@ -26,31 +24,14 @@ export default class ListCtx extends Command {
 
   async run() {
     const { flags } = this.parse(ListCtx);
-    const { todoPath, donePath } = readConfig();
 
     const contexts: Set<string> = new Set();
+    const types: TaskType[] = flags.all ? ["todo", "done"] : (flags.done ? ["done"] : ["todo"]);
+    const taskJson = readTaskJson();
 
-    if (!flags.done) {
-      let todoTasks = [] as Task[];
-      if (fs.existsSync(todoPath)) {
-        todoTasks = readTasks(todoPath);
-      }
-
-      todoTasks.forEach(task => {
-        task.contexts?.forEach(p => contexts.add(p));
-      });
-    }
-
-    if (flags.done || flags.all) {
-      let doneTasks = [] as Task[];
-      if (fs.existsSync(donePath)) {
-        doneTasks = readTasks(donePath);
-      }
-
-      doneTasks.forEach(task => {
-        task.contexts?.forEach(p => contexts.add(p));
-      });
-    }
+    for (const type of types)
+      for (const task of taskJson[type])
+        task.contexts?.forEach(c => contexts.add(c));
 
     this.log([...contexts].join("\n"));
   }
