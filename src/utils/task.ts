@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { DateTime, Interval } from "luxon";
-import { Task, TaskJson } from "task.json";
+import { Task, TaskJson, initTaskJson } from "task.json";
 import { readConfig } from "./config";
 
 export function readTaskJson() {
@@ -11,11 +11,7 @@ export function readTaskJson() {
     taskJson = JSON.parse(data);
   }
   catch (error) {
-    taskJson = {
-      todo: [],
-      done: [],
-      removed: []
-    };
+    taskJson = initTaskJson();
   }
   return taskJson;
 }

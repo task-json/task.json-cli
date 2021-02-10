@@ -15,6 +15,7 @@
     "lodash": "^4.17.20",
     "luxon": "^1.25.0",
     "table": "^6.0.4",
+    "task.json": "^1.2.0",
     "tslib": "^1.14.1",
     "uuid": "^8.3.2",
     "wrap-ansi": "^7.0.0"
@@ -31,7 +32,6 @@
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^0.1.0",
     "globby": "^10.0.2",
-    "task.json": "^1.1.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
