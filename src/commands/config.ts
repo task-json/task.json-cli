@@ -14,17 +14,19 @@ export default class ConfigCommand extends Command {
     help: flags.help({ char: 'h' }),
     server: flags.string({
       char: "s",
-      description: "Set server address"
+      description: "set server address"
     }),
     token: flags.string({
       char: "t",
-      description: "Set token for login"
+      description: "set token for login"
     }),
     "data-path": flags.string({
-      description: "Set task.json path"
+      char: "d",
+      description: "set task.json path"
     }),
     reset: flags.boolean({
-      description: "Reset all configurations"
+      char: "r",
+      description: "reset all configurations"
     })
   };
 
