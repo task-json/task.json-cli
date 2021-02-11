@@ -75,6 +75,29 @@ _tj() {
           "(-D --done)"{-D,--done}"[restore done.json]"
         )
       ;;
+      login)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-p --password)"{-p,--password}"[log in with password]:"
+        )
+      ;;
+      sync)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-u --upload)"{-u,--upload}"[upload local task.json to overwrite the one on server]"
+          "(-d --download)"{-d,--download}"[download task.json from server to overwrite the local one]"
+          "(-f --force)"{-f,--force}"[overwrite without confirmation]"
+        )
+      ;;
+      config)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-s --server)"{-s,--server}"[set server address]:"
+          "(-t --token)"{-t,--token}"[set token for login]:"
+          "(-d --data-path)"{-d,--data-path}"[set task.json path]:path:_file"
+          "(-r --reset)"{-r,--reset}"[reset all configurations]"
+        )
+      ;;
       ls)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
