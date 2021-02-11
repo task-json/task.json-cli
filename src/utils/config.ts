@@ -2,7 +2,7 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 
-type Config = {
+export type Config = {
   dataPath: string;
   server?: string;
   token?: string;
@@ -10,17 +10,16 @@ type Config = {
 
 const rootPath = path.join(os.homedir(), ".task.json");
 const configPath = path.join(rootPath, "config.json");
+export const defaultConfig: Config = {
+  dataPath: path.join(rootPath, "task.json")
+};
 
 export function readConfig() {
   if (!fs.existsSync(rootPath)) {
     fs.mkdirSync(rootPath);
   }
 
-  const defaultConfig: Config = {
-    dataPath: path.join(rootPath, "task.json")
-  };
   let config: Config;
-
   try {
     config = {
       ...defaultConfig,
