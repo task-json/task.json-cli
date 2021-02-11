@@ -2,19 +2,30 @@ import {Command, flags} from '@oclif/command'
 import { readConfig, Config, writeConfig, defaultConfig } from "../utils/config";
 
 export default class ConfigCommand extends Command {
-  static description = 'Mark tasks as done';
+  static description = "Modify or show config";
 
   static examples = [
     `$ tj config  # show config`,
     `$ tj config --server "http://localhost:3000"  # set config`,
+    `$ tj config --data-path $PWD/task.json  # set config`,
   ];
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    server: flags.string({ char: "s" }),
-    token: flags.string({ char: "t" }),
-    "data-path": flags.string(),
-    reset: flags.boolean()
+    server: flags.string({
+      char: "s",
+      description: "Set server address"
+    }),
+    token: flags.string({
+      char: "t",
+      description: "Set token for login"
+    }),
+    "data-path": flags.string({
+      description: "Set task.json path"
+    }),
+    reset: flags.boolean({
+      description: "Reset all configurations"
+    })
   };
 
   async run() {
