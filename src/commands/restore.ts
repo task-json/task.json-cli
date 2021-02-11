@@ -28,20 +28,20 @@ export default class Restore extends Command {
 
   async run() {
     const { flags } = this.parse(Restore);
-    const { taskPath } = readConfig();
+    const { dataPath } = readConfig();
 
-    const bakPath = taskPath + ".bak";
+    const bakPath = dataPath + ".bak";
 
     if (!fs.existsSync(bakPath)) {
       this.error("task.json.bak does not exist.");
     }
 
     let res = true;
-    if (flags.force || fs.existsSync(taskPath)) {
-      res = await cli.confirm(`The file ${taskPath} will be overwritten irreversibly. Continue? [y/n]`);
+    if (flags.force || fs.existsSync(dataPath)) {
+      res = await cli.confirm(`The file ${dataPath} will be overwritten irreversibly. Continue? [y/n]`);
     }
 
     if (res)
-      fs.renameSync(bakPath, taskPath)
+      fs.renameSync(bakPath, dataPath)
   }
 }

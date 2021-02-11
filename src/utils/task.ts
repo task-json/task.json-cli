@@ -4,10 +4,10 @@ import { Task, TaskJson, initTaskJson } from "task.json";
 import { readConfig } from "./config";
 
 export function readTaskJson() {
-  const { taskPath } = readConfig();
+  const { dataPath } = readConfig();
   let taskJson: TaskJson;
   try {
-    const data = fs.readFileSync(taskPath, { encoding: "utf8" });
+    const data = fs.readFileSync(dataPath, { encoding: "utf8" });
     taskJson = JSON.parse(data);
   }
   catch (error) {
@@ -17,14 +17,14 @@ export function readTaskJson() {
 }
 
 export function writeTaskJson(taskJson: TaskJson) {
-  const { taskPath } = readConfig();
+  const { dataPath } = readConfig();
 
   // Backup
-  if (fs.existsSync(taskPath))
-    fs.renameSync(taskPath, taskPath + ".bak");
+  if (fs.existsSync(dataPath))
+    fs.renameSync(dataPath, dataPath + ".bak");
 
   fs.writeFileSync(
-    taskPath,
+    dataPath,
     JSON.stringify(taskJson, null, "\t"),
     { encoding: "utf8" }
   );
