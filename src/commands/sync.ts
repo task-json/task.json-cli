@@ -15,11 +15,11 @@ export default class Sync extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    upload: flags.string({
+    upload: flags.boolean({
       char: "u",
       description: "upload local task.json to overwrite the one on server"
     }),
-    download: flags.string({
+    download: flags.boolean({
       char: "d",
       description: "download task.json from server to overwrite the local one"
     }),
