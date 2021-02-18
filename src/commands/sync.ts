@@ -32,7 +32,7 @@ export default class Sync extends Command {
   async run() {
     const { flags } = this.parse(Sync);
     const config = readConfig();
-    let taskJson = readTaskJson();
+    const taskJson = readTaskJson();
 
     if (!config.server) {
       this.error("Use `tj config --server <address>` to set server address");
@@ -57,18 +57,16 @@ export default class Sync extends Command {
           if (!resp)
             return;
         }
-        taskJson = await client.download();
+        writeTaskJson(await client.download());
       }
       else {
-        taskJson = await client.sync(taskJson);
+        writeTaskJson(await client.sync(taskJson));
       }
+      this.log("Sync with server successfully.")
     }
     catch (error) {
       const err = error as HttpError;
       this.error(`${err.status}: ${err.message}`);
     }
-
-    writeTaskJson(taskJson);
-    this.log("Sync with server successfully.")
   }
 }

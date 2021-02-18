@@ -37,17 +37,17 @@ export default class Login extends Command {
 
     const client = new Client(config.server);
     try {
-      client.login(password);
+      await client.login(password);
+
+      writeConfig({
+        ...config,
+        token: client.token
+      });
+      this.log("Log in successfully.")
     }
     catch (error) {
       const err = error as HttpError;
       this.error(`${err.status}: ${err.message}`);
     }
-
-    writeConfig({
-      ...config,
-      token: client.token
-    });
-    this.log("Log in successfully.")
   }
 }

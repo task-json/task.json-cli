@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { readConfig, Config, writeConfig, defaultConfig } from "../utils/config";
+import { readConfig, Config, writeConfig } from "../utils/config";
 
 export default class ConfigCommand extends Command {
   static description = "Modify or show config";
@@ -35,7 +35,7 @@ export default class ConfigCommand extends Command {
     const config = readConfig();
     let showConfig = true;
 
-    let newConfig: Config = config;
+    let newConfig: Config | null = config;
 
     if (flags.server) {
       showConfig = false;
@@ -60,7 +60,7 @@ export default class ConfigCommand extends Command {
     }
     if (flags.reset) {
       showConfig = false;
-      newConfig = defaultConfig;
+      newConfig = null;
     }
 
     if (showConfig) {

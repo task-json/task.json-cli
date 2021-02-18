@@ -33,11 +33,18 @@ export function readConfig() {
   return config;
 }
 
-export function writeConfig(config: Config) {
+export function writeConfig(config: Config | null) {
   if (!fs.existsSync(rootPath)) {
     fs.mkdirSync(rootPath);
   }
-  fs.writeFileSync(configPath, JSON.stringify(config));
+
+  if (config === null) {
+    if (fs.existsSync(configPath))
+      fs.unlinkSync(configPath);
+  }
+  else {
+    fs.writeFileSync(configPath, JSON.stringify(config));
+  }
 }
 
 export function checkTaskExistence(onError: (msg: string) => void) {
