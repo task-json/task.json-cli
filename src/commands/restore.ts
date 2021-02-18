@@ -17,10 +17,6 @@ export default class Restore extends Command {
       char: "f",
       description: "force overwriting without confirmation"
     }),
-    done: flags.boolean({
-      char: 'D',
-      description: "restore done.json"
-    })
   };
 
   // Allow multiple arguments
