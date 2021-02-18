@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByField, maxWidth, readTaskJson, urgency } from "../utils/task";
+import { colorTask, filterByField, filterByPriority, maxWidth, readTaskJson, urgency } from "../utils/task";
 import { calculateWidth } from "../utils/table";
 import { table, TableUserConfig } from "table";
 import { TaskType } from "task.json";
@@ -21,7 +21,8 @@ export default class List extends Command {
     }),
     priority: flags.string({
       char: "P",
-      description: "priority (A-Z)"
+      description: "filter tasks by priority (A-Z)",
+      multiple: true
     }),
     project: flags.string({
       char: "p",
@@ -32,6 +33,10 @@ export default class List extends Command {
       char: "c",
       description: "filter tasks by specific contexts",
       multiple: true
+    }),
+    "without-priority": flags.boolean({
+      description: "list tasks without priority",
+      default: false
     }),
     "without-projects": flags.boolean({
       description: "list tasks without projects",
@@ -87,6 +92,10 @@ export default class List extends Command {
     const taskJson = readTaskJson();
     const type: TaskType = flags.done ? "done" : "todo";
 
+    const priorityFilter = filterByPriority(
+      flags.priority,
+      flags["without-priority"]
+    );
     const projectFilter = filterByField(
       "projects",
       flags.project,
@@ -104,7 +113,11 @@ export default class List extends Command {
       index,
       task
     }))
-      .filter(({ task }) => projectFilter(task) && contextFilter(task));
+      .filter(({ task }) => (
+        projectFilter(task) &&
+        contextFilter(task) &&
+        priorityFilter(task)
+      ));
 
     if (type === "todo")
       data.sort((a, b) => {

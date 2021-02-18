@@ -105,6 +105,18 @@ export function parseIds(ids: string[], maxId: number, onError: (msg: string) =>
   });
 }
 
+export function filterByPriority(priorities: string[] | undefined, without: boolean) {
+  if (!priorities && !without)
+    return () => true;
+
+  return (task: Task) => {
+    if (without)
+      return !task.priority;
+
+    return task.priority !== undefined && priorities!.includes(task.priority);
+  };
+}
+
 // Filter by projects or contexts
 export function filterByField(field: "projects" | "contexts", values: string[] | undefined, and: boolean, without: boolean) {
   if (!values && !without)
