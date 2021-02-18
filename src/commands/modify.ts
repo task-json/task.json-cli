@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { filterByField, filterByPriority, parseIds, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
+import { Task, TaskType } from 'task.json';
 
 export default class Modify extends Command {
   static description = 'Modify tasks';
@@ -17,26 +18,52 @@ export default class Modify extends Command {
       char: "D",
       description: "modify done tasks"
     }),
-    text: flags.string({
+    priorities: flags.string({
+      char: "P",
+      description: "filter tasks by priority (A-Z)",
+      multiple: true
+    }),
+    projects: flags.string({
+      char: "p",
+      description: "filter tasks by specific projects",
+      multiple: true
+    }),
+    contexts: flags.string({
+      char: "c",
+      description: "filter tasks by specific contexts",
+      multiple: true
+    }),
+    "without-priorities": flags.boolean({
+      description: "list tasks without priorities",
+      default: false
+    }),
+    "without-projects": flags.boolean({
+      description: "list tasks without projects",
+      default: false
+    }),
+    "without-contexts": flags.boolean({
+      description: "list tasks without contexts",
+      default: false
+    }),
+    "new-text": flags.string({
       char: "t",
       description: "modify text",
       multiple: true
     }),
-    priority: flags.string({
+    "new-priority": flags.string({
       char: "P",
       description: "modify priority"
     }),
-    project: flags.string({
-      char: "p",
+    "new-projects": flags.string({
       description: "modify projects",
       multiple: true
     }),
-    context: flags.string({
+    "new-contexts": flags.string({
       char: "c",
       description: "modify contexts",
       multiple: true
     }),
-    due: flags.string({
+    "new-due": flags.string({
       char: "d",
       description: "modify due date"
     }),
@@ -51,6 +78,14 @@ export default class Modify extends Command {
     }),
     "delete-due": flags.boolean({
       description: "delete due date"
+    }),
+    "and-projects": flags.boolean({
+      description: "filter projects using AND operator instead of OR",
+      default: false
+    }),
+    "and-contexts": flags.boolean({
+      description: "filter contexts using AND operator instead of OR",
+      default: false
     })
   };
 
@@ -70,31 +105,87 @@ export default class Modify extends Command {
     const taskJson = readTaskJson();
     const ids = parseIds(argv, taskJson.todo.length, this.error);
     const date = new Date().toISOString();
+    const type: TaskType = flags.done ? "done" : "todo";
 
-    for (const id of ids) {
-      if (flags.text)
-        taskJson.todo[id].text = flags.text.join(" ");
-      if (flags.priority)
-        taskJson.todo[id].priority = flags.priority;
-      if (flags.project)
-        taskJson.todo[id].projects = flags.project;
-      if (flags.context)
-        taskJson.todo[id].contexts = flags.context;
-      if (flags.due)
-        taskJson.todo[id].due = flags.due;
-      if (flags["delete-contexts"])
-        delete taskJson.todo[id].contexts;
-      if (flags["delete-due"])
-        delete taskJson.todo[id].due;
-      if (flags["delete-priority"])
-        delete taskJson.todo[id].priority;
-      if (flags["delete-projects"])
-        delete taskJson.todo[id].projects;
+    type FlagName = keyof (typeof flags);
 
-      taskJson.todo[id].modified = date;
+    let hasFilters = false;
+    const filterFlags: FlagName[] = ["priorities", "projects", "contexts"];
+    for (const filterFlag of filterFlags) {
+      const withoutFlag = `without-${filterFlag}` as FlagName;
+      if (flags[filterFlag] || flags[withoutFlag]) {
+        hasFilters = true;
+        break;
+      }
+    }
+
+    if (ids.length > 0 && hasFilters) {
+      this.error("Cannot use both IDs and filters.");
+    }
+
+    const modifyTasks = (indexes: number[]) => {
+      for (const id of indexes) {
+        const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due"];
+
+        for (const field of fields) {
+          const newFlagName = `new-${field}` as FlagName;
+          const deleteFlagName = `delete-${field}` as FlagName;
+
+          if (field === "text") {
+            if (flags[newFlagName]) {
+              taskJson[type][id][field] = flags["new-text"].join(" ");
+            }
+            continue;
+          }
+
+          if (flags[newFlagName]) {
+            taskJson[type][id][field] = flags[newFlagName] as any;
+          }
+          if (flags[deleteFlagName]) {
+            delete taskJson[type][id][field];
+          }
+        }
+
+        taskJson[type][id].modified = date;
+      }
+      this.log(`Modify ${indexes.length} task(s)`);
+    };
+
+    if (hasFilters) {
+      const priorityFilter = filterByPriority(
+        flags.priorities,
+        flags["without-priorities"]
+      );
+      const projectFilter = filterByField(
+        "projects",
+        flags.projects,
+        flags["and-projects"],
+        flags["without-projects"]
+      );
+      const contextFilter = filterByField(
+        "contexts",
+        flags.contexts,
+        flags["and-contexts"],
+        flags["without-contexts"]
+      );
+
+      const indexes = taskJson[type].map((task, index) => ({
+        index,
+        task
+      }))
+        .filter(({ task }) => (
+          projectFilter(task) &&
+          contextFilter(task) &&
+          priorityFilter(task)
+        ))
+        .map(({ index }) => index);
+
+      modifyTasks(indexes);
+    }
+    else {
+      modifyTasks(ids);
     }
 
     writeTaskJson(taskJson);
-    this.log(`Modify ${ids.length} task(s)`);
   }
 }
