@@ -72,7 +72,6 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-f --force)"{-f,--force}"[force overwriting without confirmation]"
-          "(-D --done)"{-D,--done}"[restore done.json]"
         )
       ;;
       login)
@@ -102,15 +101,14 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[list only done tasks]"
-          "(-P --priority)"{-P,--priority}"[filter tasks by priority (A-Z)]: :({A..Z})"
-          "--without-priority[list tasks without priorities]"
+          "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
+          "*"{-p,--projects}"[one or more projects]: :complete_projects"
+          "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
+          "--without-priorities[list tasks without priorities]"
           "--without-projects[list tasks without projects]"
           "--without-contexts[list tasks without contexts]"
           "--and-projects[filter projects using AND operator instead of OR]"
           "--and-contexts[filter contexts using AND operator instead of OR]"
-
-          "*"{-p,--project}"[one or more projects]: :complete_projects"
-          "*"{-c,--context}"[one or more contexts]: :complete_contexts"
         )
       ;;
       lsid)
@@ -137,11 +135,20 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[modify done tasks]"
-          "(-t, --text)"{-t,--text}"[modify text]:"
-          "(-P, --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
-          "*"{-p,--project}"[one or more projects (overwrite all)]: :complete_projects"
-          "*"{-c,--context}"[one or more contexts (overwrite all)]: :complete_contexts"
-          "(-d --due)"{-d,--due}"[modify due date]:"
+          "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
+          "*"{-p,--projects}"[one or more projects]: :complete_projects"
+          "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
+          "--without-priorities[list tasks without priorities]"
+          "--without-projects[list tasks without projects]"
+          "--without-contexts[list tasks without contexts]"
+          "--and-projects[filter projects using AND operator instead of OR]"
+          "--and-contexts[filter contexts using AND operator instead of OR]"
+
+          "--new-text[modify text]:"
+          "--new-priority[priority (A-Z)]: :({A..Z})"
+          "*"{--new-projects}"[one or more projects (overwrite all)]: :complete_projects"
+          "*"{--new-contexts}"[one or more contexts (overwrite all)]: :complete_contexts"
+          "--new-due[modify due date]:"
           "--delete-priority[delete priority]"
           "--delete-projects[delete projects]"
           "--delete-contexts[delete contexts]"
