@@ -48,6 +48,7 @@ export default class Add extends Command {
 
     const text = argv.join(" ");
     const date = new Date().toISOString();
+    const due = flags.due && new Date(flags.due).toISOString();
 
     // TODO: add date validation
     const task: Task = {
@@ -56,7 +57,7 @@ export default class Add extends Command {
       priority: flags.priority,
       contexts: flags.context,
       projects: flags.project,
-      due: flags.due,
+      due,
       start: date,
       modified: date
     };
