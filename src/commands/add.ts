@@ -18,12 +18,12 @@ export default class Add extends Command {
       char: "P",
       description: "priority (A-Z)"
     }),
-    project: flags.string({
+    projects: flags.string({
       char: "p",
       description: "one or more projects",
       multiple: true
     }),
-    context: flags.string({
+    contexts: flags.string({
       char: "c",
       description: "one or more contexts",
       multiple: true
@@ -55,8 +55,8 @@ export default class Add extends Command {
       uuid: uuidv4(),
       text,
       priority: flags.priority,
-      contexts: flags.context,
-      projects: flags.project,
+      contexts: flags.contexts,
+      projects: flags.projects,
       due,
       start: date,
       modified: date

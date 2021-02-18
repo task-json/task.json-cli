@@ -19,23 +19,23 @@ export default class List extends Command {
       char: "D",
       description: "list only done tasks"
     }),
-    priority: flags.string({
+    priorities: flags.string({
       char: "P",
-      description: "filter tasks by priority (A-Z)",
+      description: "filter tasks by priorities (A-Z)",
       multiple: true
     }),
-    project: flags.string({
+    projects: flags.string({
       char: "p",
       description: "filter tasks by specific projects",
       multiple: true
     }),
-    context: flags.string({
+    contexts: flags.string({
       char: "c",
       description: "filter tasks by specific contexts",
       multiple: true
     }),
-    "without-priority": flags.boolean({
-      description: "list tasks without priority",
+    "without-priorities": flags.boolean({
+      description: "list tasks without priorities",
       default: false
     }),
     "without-projects": flags.boolean({
@@ -93,18 +93,18 @@ export default class List extends Command {
     const type: TaskType = flags.done ? "done" : "todo";
 
     const priorityFilter = filterByPriority(
-      flags.priority,
-      flags["without-priority"]
+      flags.priorities,
+      flags["without-priorities"]
     );
     const projectFilter = filterByField(
       "projects",
-      flags.project,
+      flags.projects,
       flags["and-projects"],
       flags["without-projects"]
     );
     const contextFilter = filterByField(
       "contexts",
-      flags.context,
+      flags.contexts,
       flags["and-contexts"],
       flags["without-contexts"]
     );
