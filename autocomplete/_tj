@@ -146,8 +146,8 @@ _tj() {
 
           "--new-text[modify text]:"
           "--new-priority[priority (A-Z)]: :({A..Z})"
-          "*"{--new-projects}"[one or more projects (overwrite all)]: :complete_projects"
-          "*"{--new-contexts}"[one or more contexts (overwrite all)]: :complete_contexts"
+          "*--new-projects[one or more projects (overwrite all)]: :complete_projects"
+          "*--new-contexts[one or more contexts (overwrite all)]: :complete_contexts"
           "--new-due[modify due date]:"
           "--delete-priority[delete priority]"
           "--delete-projects[delete projects]"
