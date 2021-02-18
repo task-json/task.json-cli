@@ -20,7 +20,7 @@ export function calculateWidth(totalWidth: number, {
   if (actualTotal <= totalWidth)
     return null;
   const overflow = actualTotal - totalWidth;
-  const dynamic = totalWidth - idWidth - priWidth - dueWidth;
+  const dynamic = totalWidth - idWidth - priWidth - dueWidth - spacing;
 
   const expectedProj = Math.floor(dynamic / 5);
   const expectedCtx = Math.floor(dynamic / 5);
