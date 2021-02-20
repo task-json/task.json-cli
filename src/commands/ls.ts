@@ -19,6 +19,10 @@ export default class List extends Command {
       char: "D",
       description: "list only done tasks"
     }),
+    removed: flags.boolean({
+      char: "r",
+      description: "list only removed tasks"
+    }),
     priorities: flags.string({
       char: "P",
       description: "filter tasks by priorities (A-Z)",
@@ -89,8 +93,14 @@ export default class List extends Command {
       hard: true
     };
 
+		if (flags.done && flags.removed) {
+			this.error("Cannot specify both `--done` and `--removed` flags");
+		}
+
     const taskJson = readTaskJson();
-    const type: TaskType = flags.done ? "done" : "todo";
+    const type: TaskType = flags.done
+			? "done" : (flags.removed
+			? "removed" : "todo");
 
     const priorityFilter = filterByPriority(
       flags.priorities,
