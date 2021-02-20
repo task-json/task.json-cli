@@ -8,7 +8,8 @@ export default class ListProj extends Command {
 
   static examples = [
     `$ tj lsid`,
-    `$ tj lsid -D`
+    `$ tj lsid -D`,
+    `$ tj lsid -R`
   ]
 
   static flags = {
@@ -16,13 +17,19 @@ export default class ListProj extends Command {
     done: flags.boolean({
       char: "D",
       description: "list IDs of only done tasks"
+    }),
+    removed: flags.boolean({
+      char: "R",
+      description: "list IDs of only removed tasks"
     })
   }
 
   async run() {
     const { flags } = this.parse(ListProj);
 
-    const type: TaskType = flags.done ? "done" : "todo";
+    const type: TaskType = flags.done
+			? "done" : (flags.removed
+			? "removed" : "todo");
     const taskJson = readTaskJson();
     const size = taskJson[type].length;
 
