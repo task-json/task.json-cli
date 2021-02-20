@@ -5,6 +5,8 @@ import { table, TableUserConfig } from "table";
 import { TaskType } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
+import { DateTime } from "luxon";
+
 export default class List extends Command {
   static description = 'List tasks'
 
@@ -156,7 +158,7 @@ export default class List extends Command {
         task.text,
         task.projects?.join(" ") ?? "",
         task.contexts?.join(" ") ?? "",
-        task.due ?? ""
+        task.due ? DateTime.fromISO(task.due).toFormat("yyyy-MM-dd") : ""
       ].map((field, i) => {
         let value = field;
         if (result) {
