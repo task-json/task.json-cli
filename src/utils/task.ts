@@ -45,7 +45,7 @@ export function maxWidth(tasks: {
         w = Math.max(task.text.length, 4);
         break;
       case "due":
-        w = task.due?.length ?? 3;
+        w = task.due ? 10 : 3;
         break;
     }
     return Math.max(w, width);
