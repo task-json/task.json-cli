@@ -19,7 +19,7 @@ $ npm install -g task.json-cli
 $ tj COMMAND
 running command...
 $ tj (-v|--version|version)
-task.json-cli/3.2.0 linux-x64 node-v15.7.0
+task.json-cli/3.3.0 linux-x64 node-v15.7.0
 $ tj --help [COMMAND]
 USAGE
   $ tj COMMAND
@@ -65,7 +65,7 @@ EXAMPLES
   $ tj add "Hello World" -p test -p greeting -c test --due 2020-12-24
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/add.ts)_
 
 ## `tj autocomplete DIR`
 
@@ -86,7 +86,7 @@ EXAMPLE
   $ tj autocomplete --zsh ~/.zsh_completion
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/autocomplete.ts)_
 
 ## `tj config`
 
@@ -109,7 +109,7 @@ EXAMPLES
   $ tj config --data-path $PWD/task.json  # set config
 ```
 
-_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/config.ts)_
 
 ## `tj do [ID...]`
 
@@ -129,7 +129,7 @@ EXAMPLE
   $ tj do 1
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/do.ts)_
 
 ## `tj help [COMMAND]`
 
@@ -165,7 +165,7 @@ EXAMPLES
   $ tj login --password "xxx"  # log in with password
 ```
 
-_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/login.ts)_
+_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/login.ts)_
 
 ## `tj ls`
 
@@ -178,6 +178,7 @@ USAGE
 OPTIONS
   -D, --done                   list only done tasks
   -P, --priorities=priorities  filter tasks by priorities (A-Z)
+  -R, --removed                list only removed tasks
   -c, --contexts=contexts      filter tasks by specific contexts
   -h, --help                   show CLI help
   -p, --projects=projects      filter tasks by specific projects
@@ -192,7 +193,7 @@ EXAMPLES
   $ tj ls -p test
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/ls.ts)_
 
 ## `tj lsctx`
 
@@ -212,7 +213,7 @@ EXAMPLES
   $ tj lsctx -a
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/lsctx.ts)_
 
 ## `tj lsid`
 
@@ -223,15 +224,17 @@ USAGE
   $ tj lsid
 
 OPTIONS
-  -D, --done  list IDs of only done tasks
-  -h, --help  show CLI help
+  -D, --done     list IDs of only done tasks
+  -R, --removed  list IDs of only removed tasks
+  -h, --help     show CLI help
 
 EXAMPLES
   $ tj lsid
   $ tj lsid -D
+  $ tj lsid -R
 ```
 
-_See code: [src/commands/lsid.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/lsid.ts)_
+_See code: [src/commands/lsid.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/lsid.ts)_
 
 ## `tj lsproj`
 
@@ -251,7 +254,7 @@ EXAMPLES
   $ tj lsproj -a
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/lsproj.ts)_
 
 ## `tj modify [ID...]`
 
@@ -291,7 +294,7 @@ EXAMPLES
   $ tj modify 1 --text "New description" --done
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/modify.ts)_
 
 ## `tj restore`
 
@@ -310,7 +313,7 @@ EXAMPLES
   $ tj restore -f --done
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/restore.ts)_
 
 ## `tj rm [ID...]`
 
@@ -331,7 +334,7 @@ EXAMPLE
   $ tj rm 1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/rm.ts)_
 
 ## `tj sync`
 
@@ -353,7 +356,7 @@ EXAMPLES
   $ tj sync --download --force
 ```
 
-_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/sync.ts)_
+_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/sync.ts)_
 
 ## `tj undo [ID...]`
 
@@ -364,14 +367,16 @@ USAGE
   $ tj undo [ID...]
 
 ARGUMENTS
-  ID...  undo specific done tasks
+  ID...  undo specific done or removed tasks
 
 OPTIONS
-  -h, --help  show CLI help
+  -R, --removed  restore removed tasks
+  -h, --help     show CLI help
 
-EXAMPLE
+EXAMPLES
   $ tj undo 1 2
+  $ tj undo --removed 1 2
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v3.2.0/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v3.3.0/src/commands/undo.ts)_
 <!-- commandsstop -->
