@@ -26,11 +26,17 @@ _tj() {
     compadd $(tj lsproj -a)
   }
 
-  local done_flag=""
+  local lsid_flag=""
   local done_pattern="(-D)|(--done)"
+  local removed_pattern="(-R)|(--removed)"
+
   # check if done flag is set
   if (($words[(I)$done_pattern])); then
-    done_flag="-D"
+    lsid_flag="-D"
+  fi
+  # check if removed flag is set
+  if (($words[(I)$removed_pattern])); then
+    lsid_flag="-R"
   fi
 
   local command_name=${words[2]}
@@ -58,6 +64,7 @@ _tj() {
       undo)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
+          "(-r --removed)"{-r,--removed}"[restore removed tasks]"
           "*:id:($(tj lsid -D))"
         )
       ;;
@@ -65,7 +72,7 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
-          "*:id:($(tj lsid $done_flag))"
+          "*:id:($(tj lsid $lsid_flag))"
         )
       ;;
       restore)
@@ -101,6 +108,7 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[list only done tasks]"
+          "(-R --removed)"{-R,--removed}"[list only removed tasks]"
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[one or more projects]: :complete_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
@@ -115,6 +123,7 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[list IDs of only done tasks]"
+          "(-R --removed)"{-R,--removed}"[list IDs of only removed tasks]"
         )
       ;;
       lsctx)
@@ -153,7 +162,7 @@ _tj() {
           "--delete-projects[delete projects]"
           "--delete-contexts[delete contexts]"
           "--delete-due[delete due date]"
-          "*:id:($(tj lsid $done_flag))"
+          "*:id:($(tj lsid $lsid_flag))"
         )
       ;;
       autocomplete)
