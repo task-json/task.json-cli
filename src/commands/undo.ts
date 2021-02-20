@@ -15,7 +15,7 @@ export default class Undo extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
 		removed: flags.boolean({
-			char: "r",
+			char: "R",
 			description: "restore removed tasks"
 		})
   };

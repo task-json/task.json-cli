@@ -20,7 +20,7 @@ export default class List extends Command {
       description: "list only done tasks"
     }),
     removed: flags.boolean({
-      char: "r",
+      char: "R",
       description: "list only removed tasks"
     }),
     priorities: flags.string({
@@ -147,6 +147,8 @@ export default class List extends Command {
       ctxWidth,
       dueWidth
     }, 2 * 6);
+
+		console.log(result);
 
     const tableData = data.map(({ index, task }) => {
       const color = type === "todo" ? colorTask(task) : null;
