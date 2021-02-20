@@ -148,8 +148,6 @@ export default class List extends Command {
       dueWidth
     }, 2 * 6);
 
-		console.log(result);
-
     const tableData = data.map(({ index, task }) => {
       const color = type === "todo" ? colorTask(task) : null;
       return [
