@@ -36,19 +36,17 @@ export default class Undo extends Command {
     const taskJson = readTaskJson();
 		const type: TaskType = flags.removed ? "removed" : "done";
     const ids = parseIds(argv, taskJson[type].length, this.error);
-
-    const undoneTasks = _.remove(taskJson[type], (_, index) => ids.includes(index));
+    const date = new Date().toISOString();
+    const undoneTasks = _.remove(taskJson[type], (_, index) => ids.includes(index))
+      .map(task => {
+        task.modified = date;
+        return task;
+      });
     const doneTasks = undoneTasks.filter(task => type === "removed" && task.end);
     const todoTasks = undoneTasks.filter(task => type === "done" || !task.end);
-    const date = new Date().toISOString();
 
     todoTasks.forEach(task => {
       delete task.end;
-      task.modified = date;
-      return task;
-    });
-    doneTasks.forEach(task => {
-      task.modified = date;
       return task;
     });
 
