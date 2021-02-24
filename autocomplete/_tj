@@ -3,6 +3,7 @@
 _tj() {
 	local -a commands=(
 		"add:add a new task"
+		"config:modify or show config"
 		"do:mark tasks as done"
 		"ls:list tasks"
 		"lsid:list IDs"
@@ -50,8 +51,8 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
-          "*"{-p,--project}"[one or more projects]: :complete_projects"
-          "*"{-c,--context}"[one or more contexts]: :complete_contexts"
+          "*"{-p,--projects}"[one or more projects]: :complete_projects"
+          "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
           "(-d --due)"{-d,--due}"[due date]:"
         )
       ;;
