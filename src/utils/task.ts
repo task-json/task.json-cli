@@ -54,12 +54,13 @@ export function maxWidth(tasks: {
 
 export function colorTask(task: Task) {
   if (task.due) {
-    const days = Interval.fromDateTimes(
+    const interval = Interval.fromDateTimes(
       DateTime.local(),
       DateTime.fromISO(task.due)
-    ).length("days");
+    );
+    const days = interval.length("days");
 
-    if (days < 3) {
+    if (!interval.isValid || days < 3) {
       return "red";
     }
     if (days < 7) {
