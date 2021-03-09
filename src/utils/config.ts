@@ -9,14 +9,16 @@ export type Config = {
 };
 
 const rootPath = path.join(os.homedir(), ".task.json");
-const configPath = path.join(rootPath, "config.json");
+const configPath = process.env.TASK_JSON_CONFIG || path.join(rootPath, "config.json");
+
 export const defaultConfig: Config = {
   dataPath: path.join(rootPath, "task.json")
 };
 
 export function readConfig() {
-  if (!fs.existsSync(rootPath)) {
-    fs.mkdirSync(rootPath);
+  const configDir = path.dirname(configPath);
+  if (!fs.existsSync(configDir)) {
+    fs.mkdirSync(configDir);
   }
 
   let config: Config;
@@ -30,12 +32,18 @@ export function readConfig() {
     config = defaultConfig;
   }
 
+  const dataDir = path.dirname(config.dataPath);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
+  }
+
   return config;
 }
 
 export function writeConfig(config: Config | null) {
-  if (!fs.existsSync(rootPath)) {
-    fs.mkdirSync(rootPath);
+  const configDir = path.dirname(configPath);
+  if (!fs.existsSync(configDir)) {
+    fs.mkdirSync(configDir);
   }
 
   if (config === null) {
