@@ -12,6 +12,7 @@
     "no-negated-condition": "off",
     "radix": "off",
     "no-mixed-operators": "off",
-    "indent": "off"
+    "indent": "off",
+    "operator-linebreak": "off"
   }
 }
