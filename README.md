@@ -5,6 +5,9 @@
 
 Command line task management app for [task.json](https://github.com/DCsunset/task.json) written in Node.js.
 
+## Screenshots
+
+![Screenshot](Screenshot.png)
 
 ## Installation
 
