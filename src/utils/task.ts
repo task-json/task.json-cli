@@ -78,12 +78,16 @@ export function urgency(task: Task) {
     urg += "Z".charCodeAt(0) - task.priority.charCodeAt(0) + 2;
   }
   if (task.due) {
-    const days = Interval.fromDateTimes(
+    const interval = Interval.fromDateTimes(
       DateTime.local(),
       DateTime.fromISO(task.due)
-    ).length("days");
-    if (days < 7) {
+    );
+    const days = interval.length("days");
+    if (!interval.isValid || days < 3) {
       urg += 100;
+    }
+    else if (days < 7) {
+      urg += 50;
     }
     else {
       urg += 1;
