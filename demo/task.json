@@ -1,0 +1,52 @@
+{
+	"todo": [
+		{
+			"uuid": "aef18536-64e7-4ef6-b785-a070faef8e01",
+			"text": "Have a test",
+			"start": "2021-03-10T03:19:24.112Z",
+			"modified": "2021-03-10T03:19:24.112Z"
+		},
+		{
+			"uuid": "acb0efc0-cb85-4a67-bb04-47a58cdd909a",
+			"text": "Publish a new version",
+			"due": "2021-03-10T00:00:00.000Z",
+			"start": "2021-03-10T03:20:47.188Z",
+			"modified": "2021-03-10T03:22:49.869Z",
+			"projects": [
+				"task.json-cli"
+			]
+		},
+		{
+			"uuid": "4395163e-96f7-4781-be9e-d43f8006aecf",
+			"text": "Go for dinner",
+			"priority": "A",
+			"start": "2021-03-10T03:21:42.199Z",
+			"modified": "2021-03-10T03:21:42.199Z"
+		},
+		{
+			"uuid": "8904f37a-1a61-40e4-8db2-4c36ab0bcb6a",
+			"text": "Clean up my room",
+			"start": "2021-03-10T03:24:43.959Z",
+			"modified": "2021-03-10T03:27:22.412Z",
+			"contexts": [
+				"chore"
+			]
+		},
+		{
+			"uuid": "9059d279-0876-4eea-9230-e894a2727123",
+			"text": "Exam",
+			"due": "2021-03-15",
+			"start": "2021-03-10T03:25:19.172Z",
+			"modified": "2021-03-10T03:27:52.264Z"
+		}
+	],
+	"done": [],
+	"removed": [
+		{
+			"uuid": "f5cd9096-7973-4b4f-921f-70f2c2a5a7dc",
+			"text": "ls",
+			"start": "2021-03-10T03:19:29.797Z",
+			"modified": "2021-03-10T03:19:55.892Z"
+		}
+	]
+}
