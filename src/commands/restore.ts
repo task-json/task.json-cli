@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { readConfig } from "../utils/config";
+import { dataPath } from "../utils/config";
 import cli from "cli-ux";
 
 export default class Restore extends Command {
@@ -24,7 +24,6 @@ export default class Restore extends Command {
 
   async run() {
     const { flags } = this.parse(Restore);
-    const { dataPath } = readConfig();
 
     const bakPath = dataPath + ".bak";
 
