@@ -6,8 +6,7 @@ export default class ConfigCommand extends Command {
 
   static examples = [
     `$ tj config  # show config`,
-    `$ tj config --server "http://localhost:3000"  # set config`,
-    `$ tj config --data-path $PWD/task.json  # set config`,
+    `$ tj config --server "http://localhost:3000"  # set config`
   ];
 
   static flags = {
@@ -19,10 +18,6 @@ export default class ConfigCommand extends Command {
     token: flags.string({
       char: "t",
       description: "set token for login"
-    }),
-    "data-path": flags.string({
-      char: "d",
-      description: "set task.json path"
     }),
     reset: flags.boolean({
       char: "r",
@@ -49,13 +44,6 @@ export default class ConfigCommand extends Command {
       newConfig = {
         ...newConfig,
         token: flags.token
-      };
-    }
-    if (flags["data-path"]) {
-      showConfig = false;
-      newConfig = {
-        ...newConfig,
-        dataPath: flags["data-path"]
       };
     }
     if (flags.reset) {

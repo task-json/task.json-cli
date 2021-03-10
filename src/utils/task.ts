@@ -1,10 +1,9 @@
 import * as fs from "fs";
 import { DateTime, Interval } from "luxon";
 import { Task, TaskJson, initTaskJson } from "task.json";
-import { readConfig } from "./config";
+import { dataPath } from "./config";
 
 export function readTaskJson() {
-  const { dataPath } = readConfig();
   let taskJson: TaskJson;
   try {
     const data = fs.readFileSync(dataPath, { encoding: "utf8" });
@@ -17,8 +16,6 @@ export function readTaskJson() {
 }
 
 export function writeTaskJson(taskJson: TaskJson) {
-  const { dataPath } = readConfig();
-
   // Backup
   if (fs.existsSync(dataPath))
     fs.renameSync(dataPath, dataPath + ".bak");

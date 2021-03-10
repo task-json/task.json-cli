@@ -3,47 +3,33 @@ import * as os from "os";
 import * as fs from "fs";
 
 export type Config = {
-  dataPath: string;
   server?: string;
   token?: string;
 };
 
-const rootPath = path.join(os.homedir(), ".task.json");
-const configPath = process.env.TASK_JSON_CONFIG || path.join(rootPath, "config.json");
-
-export const defaultConfig: Config = {
-  dataPath: path.join(rootPath, "task.json")
-};
+export const rootPath = process.env.TASK_JSON_PATH || path.join(os.homedir(), ".task.json");
+export const configPath = path.join(rootPath, "config.json");
+export const dataPath = path.join(rootPath, "task.json");
 
 export function readConfig() {
-  const configDir = path.dirname(configPath);
-  if (!fs.existsSync(configDir)) {
-    fs.mkdirSync(configDir);
+  if (!fs.existsSync(rootPath)) {
+    fs.mkdirSync(rootPath);
   }
 
   let config: Config;
   try {
-    config = {
-      ...defaultConfig,
-      ...JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }))
-    };
+    config = JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }));
   }
   catch (error) {
-    config = defaultConfig;
-  }
-
-  const dataDir = path.dirname(config.dataPath);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir);
+    config = {};
   }
 
   return config;
 }
 
 export function writeConfig(config: Config | null) {
-  const configDir = path.dirname(configPath);
-  if (!fs.existsSync(configDir)) {
-    fs.mkdirSync(configDir);
+  if (!fs.existsSync(rootPath)) {
+    fs.mkdirSync(rootPath);
   }
 
   if (config === null) {
@@ -56,8 +42,6 @@ export function writeConfig(config: Config | null) {
 }
 
 export function checkTaskExistence(onError: (msg: string) => void) {
-  const { dataPath } = readConfig();
-
   if (!fs.existsSync(dataPath)) {
     onError("task.json does not exist.");
   }
