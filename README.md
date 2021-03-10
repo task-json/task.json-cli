@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/npm/v/task.json-cli.svg)](https://npmjs.org/package/task.json-cli)
 [![License](https://img.shields.io/npm/l/task.json-cli.svg)](https://github.com/DCsunset/task.json-cli/blob/master/package.json)
 
-Command line todo management app for [task.json](https://github.com/DCsunset/task.json) written in Node.js.
+Command line task management app for [task.json](https://github.com/DCsunset/task.json) written in Node.js.
 
 
 ## Installation
@@ -11,6 +11,11 @@ Command line todo management app for [task.json](https://github.com/DCsunset/tas
 ```
 npm i -g task.json-cli
 ```
+
+## Environment Variables
+
+* `TASK_JSON_PATH`: the path of task.json data (default: `$HOME/.task.json`)
+
 
 ## Usage
 <!-- usage -->
