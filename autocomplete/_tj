@@ -101,7 +101,6 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "(-s --server)"{-s,--server}"[set server address]:"
           "(-t --token)"{-t,--token}"[set token for login]:"
-          "(-d --data-path)"{-d,--data-path}"[set task.json path]:path:_file"
           "(-r --reset)"{-r,--reset}"[reset all configurations]"
         )
       ;;
