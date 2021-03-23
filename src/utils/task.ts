@@ -1,6 +1,5 @@
 import * as fs from "fs";
-import { DateTime, Interval } from "luxon";
-import { Task, TaskJson, initTaskJson } from "task.json";
+import { Task, TaskJson, initTaskJson, taskUrgency } from "task.json";
 import { dataPath } from "./config";
 
 export function readTaskJson() {
@@ -50,50 +49,14 @@ export function maxWidth(tasks: {
 }
 
 export function colorTask(task: Task) {
-  if (task.due) {
-    const interval = Interval.fromDateTimes(
-      DateTime.local(),
-      DateTime.fromISO(task.due)
-    );
-    const days = interval.length("days");
-
-    if (!interval.isValid || days < 3) {
-      return "red";
-    }
-    if (days < 7) {
-      return "yellow";
-    }
-  }
-
-  if (task.priority) {
+  const urgency = taskUrgency(task);
+  if (urgency >= 100)
+    return "red";
+  if (urgency >= 10)
+    return "yellow";
+  if (urgency >= 1)
     return "cyan";
-  }
-
   return null;
-}
-
-export function urgency(task: Task) {
-  let urg = 0;
-  if (task.priority) {
-    urg += "Z".charCodeAt(0) - task.priority.charCodeAt(0) + 2;
-  }
-  if (task.due) {
-    const interval = Interval.fromDateTimes(
-      DateTime.local(),
-      DateTime.fromISO(task.due)
-    );
-    const days = interval.length("days");
-    if (!interval.isValid || days < 3) {
-      urg += 100;
-    }
-    else if (days < 7) {
-      urg += 50;
-    }
-    else {
-      urg += 1;
-    }
-  }
-  return urg;
 }
 
 export function parseNumbers(numbers: string[], maxNumber: number, onError: (msg: string) => void) {

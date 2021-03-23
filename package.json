@@ -15,7 +15,7 @@
     "lodash": "^4.17.21",
     "luxon": "^1.26.0",
     "table": "^6.0.7",
-    "task.json": "^2.0.1",
+    "task.json": "^2.1.1",
     "task.json-client": "^0.1.4",
     "tslib": "^1.14.1",
     "uuid": "^8.3.2",

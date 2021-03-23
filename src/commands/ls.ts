@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByField, filterByPriority, maxWidth, readTaskJson, urgency } from "../utils/task";
+import { colorTask, filterByField, filterByPriority, maxWidth, readTaskJson } from "../utils/task";
 import { calculateWidth } from "../utils/table";
 import { table, TableUserConfig } from "table";
-import { TaskType } from "task.json";
+import { TaskType, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { DateTime } from "luxon";
@@ -133,7 +133,7 @@ export default class List extends Command {
 
     if (type === "todo")
       data.sort((a, b) => {
-        return urgency(b.task) - urgency(a.task);
+        return taskUrgency(b.task) - taskUrgency(a.task);
       });
 
     const textWidth = maxWidth(data, "text");
