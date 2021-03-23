@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { filterByField, filterByPriority, parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { filterByField, filterByPriority, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 
@@ -103,7 +103,7 @@ export default class Modify extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const ids = parseIds(argv, taskJson.todo.length, this.error);
+    const numbers = parseNumbers(argv, taskJson.todo.length, this.error);
     const date = new Date().toISOString();
     const type: TaskType = flags.done ? "done" : "todo";
 
@@ -119,12 +119,12 @@ export default class Modify extends Command {
       }
     }
 
-    if (ids.length > 0 && hasFilters) {
-      this.error("Cannot use both IDs and filters.");
+    if (numbers.length > 0 && hasFilters) {
+      this.error("Cannot use both numbers and filters.");
     }
 
-    const modifyTasks = (indexes: number[]) => {
-      for (const id of indexes) {
+    const modifyTasks = (numbers: number[]) => {
+      for (const num of numbers) {
         const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due"];
 
         for (const field of fields) {
@@ -133,22 +133,22 @@ export default class Modify extends Command {
 
           if (field === "text") {
             if (flags[newFlagName]) {
-              taskJson[type][id][field] = flags["new-text"].join(" ");
+              taskJson[type][num][field] = flags["new-text"].join(" ");
             }
             continue;
           }
 
           if (flags[newFlagName]) {
-            taskJson[type][id][field] = flags[newFlagName] as any;
+            taskJson[type][num][field] = flags[newFlagName] as any;
           }
           if (flags[deleteFlagName]) {
-            delete taskJson[type][id][field];
+            delete taskJson[type][num][field];
           }
         }
 
-        taskJson[type][id].modified = date;
+        taskJson[type][num].modified = date;
       }
-      this.log(`Modify ${indexes.length} task(s)`);
+      this.log(`Modify ${numbers.length} task(s)`);
     };
 
     if (hasFilters) {
@@ -183,7 +183,7 @@ export default class Modify extends Command {
       modifyTasks(indexes);
     }
     else {
-      modifyTasks(ids);
+      modifyTasks(numbers);
     }
 
     writeTaskJson(taskJson);

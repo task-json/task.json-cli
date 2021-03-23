@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { parseIds, readTaskJson, writeTaskJson } from "../utils/task";
+import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import * as _ from "lodash";
 import { TaskType } from "task.json";
@@ -24,7 +24,7 @@ export default class Undo extends Command {
   static strict = false;
 
   static args = [{
-    name: "ID...",
+    name: "NUM...",
     description: "undo specific done or removed tasks"
   }];
 
@@ -35,9 +35,9 @@ export default class Undo extends Command {
 
     const taskJson = readTaskJson();
 		const type: TaskType = flags.removed ? "removed" : "done";
-    const ids = parseIds(argv, taskJson[type].length, this.error);
+    const numbers = parseNumbers(argv, taskJson[type].length, this.error);
     const date = new Date().toISOString();
-    const undoneTasks = _.remove(taskJson[type], (_, index) => ids.includes(index))
+    const undoneTasks = _.remove(taskJson[type], (_, index) => numbers.includes(index))
       .map(task => {
         task.modified = date;
         return task;

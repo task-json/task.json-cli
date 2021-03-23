@@ -66,7 +66,7 @@ export default class List extends Command {
     const { flags } = this.parse(List);
 
     const header = [
-      ["ID", "P", "Text", "Projects", "Contexts", "Due"]
+      ["#", "P", "Text", "Projects", "Contexts", "Due"]
     ];
 
     const stdoutColumns = process.stdout.columns ?? 80;
@@ -142,7 +142,7 @@ export default class List extends Command {
     const dueWidth = maxWidth(data, "due");
 
     const result = calculateWidth(stdoutColumns, {
-      idWidth: Math.max(2, data.length.toString().length),
+      numWidth: Math.max(1, data.length.toString().length),
       priWidth: 1,
       textWidth,
       projWidth,

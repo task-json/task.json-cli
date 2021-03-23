@@ -3,29 +3,29 @@ import { readTaskJson } from "../utils/task";
 import { TaskType } from "task.json";
 import * as _ from "lodash";
 
-export default class ListProj extends Command {
-  static description = 'List IDs'
+export default class ListNum extends Command {
+  static description = 'List Numbers'
 
   static examples = [
-    `$ tj lsid`,
-    `$ tj lsid -D`,
-    `$ tj lsid -R`
+    `$ tj lsnum`,
+    `$ tj lsnum -D`,
+    `$ tj lsnum -R`
   ]
 
   static flags = {
     help: flags.help({char: 'h'}),
     done: flags.boolean({
       char: "D",
-      description: "list IDs of only done tasks"
+      description: "list numbers of only done tasks"
     }),
     removed: flags.boolean({
       char: "R",
-      description: "list IDs of only removed tasks"
+      description: "list numbers of only removed tasks"
     })
   }
 
   async run() {
-    const { flags } = this.parse(ListProj);
+    const { flags } = this.parse(ListNum);
 
     const type: TaskType = flags.done
 			? "done" : (flags.removed

@@ -1,5 +1,5 @@
 type ActualWidth = {
-  idWidth: number; // fixed
+  numWidth: number; // fixed
   priWidth: number; // fixed
   textWidth: number; // dyn: 3/5
   projWidth: number; // dyn: 1/5
@@ -14,13 +14,13 @@ type ResultWidth = {
 };
 
 export function calculateWidth(totalWidth: number, {
-  idWidth, priWidth, textWidth, projWidth, ctxWidth, dueWidth
+  numWidth, priWidth, textWidth, projWidth, ctxWidth, dueWidth
 }: ActualWidth, spacing: number): ResultWidth | null {
-  const actualTotal = idWidth + priWidth + textWidth + projWidth + ctxWidth + dueWidth + spacing;
+  const actualTotal = numWidth + priWidth + textWidth + projWidth + ctxWidth + dueWidth + spacing;
   if (actualTotal <= totalWidth)
     return null;
   const overflow = actualTotal - totalWidth;
-  const dynamic = totalWidth - idWidth - priWidth - dueWidth - spacing;
+  const dynamic = totalWidth - numWidth - priWidth - dueWidth - spacing;
 
   const expectedProj = Math.floor(dynamic / 5);
   const expectedCtx = Math.floor(dynamic / 5);

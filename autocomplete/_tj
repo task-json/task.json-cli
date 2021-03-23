@@ -6,7 +6,7 @@ _tj() {
 		"config:modify or show config"
 		"do:mark tasks as done"
 		"ls:list tasks"
-		"lsid:list IDs"
+		"lsnum:list numbers"
 		"lsctx:list contexts"
 		"lsproj:list projects"
 		"modify:modify tasks"
@@ -27,17 +27,17 @@ _tj() {
     compadd $(tj lsproj -a)
   }
 
-  local lsid_flag=""
+  local lsnum_flag=""
   local done_pattern="(-D)|(--done)"
   local removed_pattern="(-R)|(--removed)"
 
   # check if done flag is set
   if (($words[(I)$done_pattern])); then
-    lsid_flag="-D"
+    lsnum_flag="-D"
   fi
   # check if removed flag is set
   if (($words[(I)$removed_pattern])); then
-    lsid_flag="-R"
+    lsnum_flag="-R"
   fi
 
   local command_name=${words[2]}
@@ -59,21 +59,21 @@ _tj() {
       do)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*:id:($(tj lsid))"
+          "*:num:($(tj lsnum))"
         )
       ;;
       undo)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-r --removed)"{-r,--removed}"[restore removed tasks]"
-          "*:id:($(tj lsid -D))"
+          "*:num:($(tj lsnum -D))"
         )
       ;;
       rm)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
-          "*:id:($(tj lsid $lsid_flag))"
+          "*:num:($(tj lsnum $lsnum_flag))"
         )
       ;;
       restore)
@@ -119,11 +119,11 @@ _tj() {
           "--and-contexts[filter contexts using AND operator instead of OR]"
         )
       ;;
-      lsid)
+      lsnum)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-D --done)"{-D,--done}"[list IDs of only done tasks]"
-          "(-R --removed)"{-R,--removed}"[list IDs of only removed tasks]"
+          "(-D --done)"{-D,--done}"[list numbers of only done tasks]"
+          "(-R --removed)"{-R,--removed}"[list numbers of only removed tasks]"
         )
       ;;
       lsctx)
@@ -162,7 +162,7 @@ _tj() {
           "--delete-projects[delete projects]"
           "--delete-contexts[delete contexts]"
           "--delete-due[delete due date]"
-          "*:id:($(tj lsid $lsid_flag))"
+          "*:num:($(tj lsnum $lsnum_flag))"
         )
       ;;
       autocomplete)
