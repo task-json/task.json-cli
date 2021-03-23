@@ -50,9 +50,9 @@ export function maxWidth(tasks: {
 
 export function colorTask(task: Task) {
   const urgency = taskUrgency(task);
-  if (urgency >= 100)
+  if (urgency >= 1000)
     return "red";
-  if (urgency >= 10)
+  if (urgency >= 100)
     return "yellow";
   if (urgency >= 1)
     return "cyan";
