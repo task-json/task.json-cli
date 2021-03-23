@@ -1,8 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
-import * as _ from "lodash";
-import { TaskType } from "task.json";
+import { TaskType, undoTasks } from "task.json";
 
 export default class Undo extends Command {
   static description = 'Undo tasks';
@@ -35,26 +34,11 @@ export default class Undo extends Command {
 
     const taskJson = readTaskJson();
 		const type: TaskType = flags.removed ? "removed" : "done";
-    const numbers = parseNumbers(argv, taskJson[type].length, this.error);
-    const date = new Date().toISOString();
-    const undoneTasks = _.remove(taskJson[type], (_, index) => numbers.includes(index))
-      .map(task => {
-        task.modified = date;
-        return task;
-      });
-    const doneTasks = undoneTasks.filter(task => type === "removed" && task.end);
-    const todoTasks = undoneTasks.filter(task => type === "done" || !task.end);
-
-    todoTasks.forEach(task => {
-      delete task.end;
-      return task;
-    });
-
-    taskJson.todo.push(...todoTasks);
-    taskJson.done.push(...doneTasks);
+    const indexes = parseNumbers(argv, taskJson[type].length, this.error);
+    undoTasks(taskJson, type, indexes);
 
     writeTaskJson(taskJson);
 
-    this.log(`Undo ${undoneTasks.length} task(s): ${undoneTasks.map(task => `"${task.text}"`).join(", ")}`);
+    this.log(`Undo ${new Set(indexes).size} task(s)`);
   }
 }

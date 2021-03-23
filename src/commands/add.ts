@@ -52,7 +52,7 @@ export default class Add extends Command {
 
     // TODO: add date validation
     const task: Task = {
-      uuid: uuidv4(),
+      id: uuidv4(),
       text,
       priority: flags.priority,
       contexts: flags.contexts,

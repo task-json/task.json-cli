@@ -37,7 +37,11 @@ export function writeConfig(config: Config | null) {
       fs.unlinkSync(configPath);
   }
   else {
-    fs.writeFileSync(configPath, JSON.stringify(config));
+    fs.writeFileSync(
+      configPath,
+      JSON.stringify(config, null, "\t"),
+      { encoding: "utf8" }
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
-import * as _ from "lodash";
+import { doTasks } from "task.json";
 
 export default class Do extends Command {
   static description = 'Mark tasks as done';
@@ -28,18 +28,10 @@ export default class Do extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const numbers = parseNumbers(argv, taskJson.todo.length, this.error);
-    const date = new Date().toISOString();
-
-    const doneTasks = _.remove(taskJson.todo, (_, index) => numbers.includes(index)).map(task => {
-      task.end = date;
-      task.modified = date;
-      return task;
-    });
-    taskJson.done.push(...doneTasks);
-
+    const indexes = parseNumbers(argv, taskJson.todo.length, this.error);
+    doTasks(taskJson, indexes);
     writeTaskJson(taskJson);
 
-    this.log(`Finish ${doneTasks.length} task(s): ${doneTasks.map(task => `"${task.text}"`).join(", ")}`);
+    this.log(`Finish ${new Set(indexes).size} task(s)`);
   }
 }

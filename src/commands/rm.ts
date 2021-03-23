@@ -1,8 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
-import * as _ from "lodash";
-import { TaskType } from 'task.json';
+import { TaskType, removeTasks } from 'task.json';
 
 export default class Remove extends Command {
   static description = 'Delete tasks';
@@ -34,17 +33,10 @@ export default class Remove extends Command {
     const type: TaskType = flags.done ? "done" : "todo";
 
     const taskJson = readTaskJson();
-    const numbers = parseNumbers(argv, taskJson[type].length, this.error);
-    const date = new Date().toISOString();
-
-    const removedTasks = _.remove(taskJson[type], (_, index) => numbers.includes(index)).map(task => {
-      task.modified = date;
-      return task;
-    });
-    taskJson.removed.push(...removedTasks);
-
+    const indexes = parseNumbers(argv, taskJson[type].length, this.error);
+    removeTasks(taskJson, type, indexes);
     writeTaskJson(taskJson);
 
-    this.log(`Remove ${removedTasks.length} task(s)`);
+    this.log(`Remove ${new Set(indexes).size} task(s)`);
   }
 }
