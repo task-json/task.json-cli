@@ -12,6 +12,7 @@ _tj() {
 		"modify:modify tasks"
 		"restore:undo the last modification using the bak file"
 		"rm:delete tasks"
+    "erase:erase removed tasks"
 		"undo:undo tasks"
 		"autocomplete:install completion scripts"
 		"help:display help message"
@@ -74,6 +75,13 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
           "*:num:($(tj lsnum $lsnum_flag))"
+        )
+      ;;
+      erase)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "(-f --force)"{-f,--force}"[force overwriting without confirmation]"
+          "*:num:($(tj lsnum -R))"
         )
       ;;
       restore)
