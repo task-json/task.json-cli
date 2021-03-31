@@ -15,8 +15,9 @@ export default class Restore extends Command {
     help: flags.help({ char: 'h' }),
     force: flags.boolean({
       char: "f",
-      description: "force overwriting without confirmation"
-    }),
+      description: "force overwriting without confirmation",
+      default: false
+    })
   };
 
   // Allow multiple arguments
@@ -32,11 +33,13 @@ export default class Restore extends Command {
     }
 
     let res = true;
-    if (flags.force || fs.existsSync(dataPath)) {
+    if (!flags.force || fs.existsSync(dataPath)) {
       res = await cli.confirm(`The file ${dataPath} will be overwritten irreversibly. Continue? [y/n]`);
     }
 
-    if (res)
-      fs.renameSync(bakPath, dataPath)
+    if (res) {
+      fs.renameSync(bakPath, dataPath);
+      this.log(`Successfully restored`);
+    }
   }
 }
