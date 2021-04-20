@@ -7,9 +7,9 @@ export default class Modify extends Command {
   static description = 'Modify tasks';
 
   static examples = [
-    `$ tj modify 1 --due 2020-12-12`,
-    `$ tj modify 2 3 -p projA -p projB`,
-    `$ tj modify 1 --text "New description" --done`,
+    `$ tj modify 1 --new-due 2020-12-12`,
+    `$ tj modify 2 3 --new-projects projA --new-projects projB`,
+    `$ tj modify 1 --new-text "New description" --done`,
   ];
 
   static flags = {
