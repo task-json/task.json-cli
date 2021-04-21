@@ -4,12 +4,13 @@ import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 
 export default class Modify extends Command {
-  static description = 'Modify tasks';
+  static description = 'Modify tasks (use empty value to delete the field or filter tasks without ';
 
   static examples = [
-    `$ tj modify 1 --new-due 2020-12-12`,
-    `$ tj modify 2 3 --new-projects projA --new-projects projB`,
-    `$ tj modify 1 --new-text "New description" --done`,
+    `$ tj modify 1 -d 2020-12-12`,
+    `$ tj modify 2 3 -p projA -p projB`,
+    `$ tj modify 1 -t "New description" --done`,
+    `$ tj modify --filter-projects projA -p projB # Modify all projA to projB`,
   ];
 
   static flags = {
@@ -18,66 +19,38 @@ export default class Modify extends Command {
       char: "D",
       description: "modify done tasks"
     }),
-    priorities: flags.string({
-      char: "P",
+    "filter-priorities": flags.string({
       description: "filter tasks by priority (A-Z)",
       multiple: true
     }),
-    projects: flags.string({
-      char: "p",
+    "filter-projects": flags.string({
       description: "filter tasks by specific projects",
+      multiple: true
+    }),
+    "filter-contexts": flags.string({
+      description: "filter tasks by specific contexts",
+      multiple: true
+    }),
+    text: flags.string({
+      char: "t",
+      description: "modify text"
+    }),
+    priority: flags.string({
+      char: "P",
+      description: "modify priority"
+    }),
+    projects: flags.string({
+      description: "modify projects",
       multiple: true
     }),
     contexts: flags.string({
       char: "c",
-      description: "filter tasks by specific contexts",
-      multiple: true
-    }),
-    "without-priorities": flags.boolean({
-      description: "list tasks without priorities",
-      default: false
-    }),
-    "without-projects": flags.boolean({
-      description: "list tasks without projects",
-      default: false
-    }),
-    "without-contexts": flags.boolean({
-      description: "list tasks without contexts",
-      default: false
-    }),
-    "new-text": flags.string({
-      char: "t",
-      description: "modify text",
-      multiple: true
-    }),
-    "new-priority": flags.string({
-      char: "P",
-      description: "modify priority"
-    }),
-    "new-projects": flags.string({
-      description: "modify projects",
-      multiple: true
-    }),
-    "new-contexts": flags.string({
-      char: "c",
       description: "modify contexts",
       multiple: true
     }),
-    "new-due": flags.string({
+    due: flags.string({
       char: "d",
       description: "modify due date"
-    }),
-    "delete-priority": flags.boolean({
-      description: "delete priority"
-    }),
-    "delete-projects": flags.boolean({
-      description: "delete projects"
-    }),
-    "delete-contexts": flags.boolean({
-      description: "delete contexts"
-    }),
-    "delete-due": flags.boolean({
-      description: "delete due date"
     }),
     "and-projects": flags.boolean({
       description: "filter projects using AND operator instead of OR",
@@ -110,10 +83,9 @@ export default class Modify extends Command {
     type FlagName = keyof (typeof flags);
 
     let hasFilters = false;
-    const filterFlags: FlagName[] = ["priorities", "projects", "contexts"];
+    const filterFlags: FlagName[] = ["filter-priorities", "filter-projects", "filter-contexts"];
     for (const filterFlag of filterFlags) {
-      const withoutFlag = `without-${filterFlag}` as FlagName;
-      if (flags[filterFlag] || flags[withoutFlag]) {
+      if (flags[filterFlag]) {
         hasFilters = true;
         break;
       }
@@ -128,21 +100,31 @@ export default class Modify extends Command {
         const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due"];
 
         for (const field of fields) {
-          const newFlagName = `new-${field}` as FlagName;
-          const deleteFlagName = `delete-${field}` as FlagName;
-
-          if (field === "text") {
-            if (flags[newFlagName]) {
-              taskJson[type][num][field] = flags["new-text"].join(" ");
+          const value = flags[field as FlagName] as string | string[] | undefined;
+          if (value !== undefined) {
+            if (typeof value === "string") {
+              if (value.length > 0) {
+                taskJson[type][num][field] = value as any;
+              }
+              else {
+                if (field === "text")
+                  this.error(`Invalid empty text`);
+                delete taskJson[type][num][field];
+              }
             }
-            continue;
-          }
-
-          if (flags[newFlagName]) {
-            taskJson[type][num][field] = flags[newFlagName] as any;
-          }
-          if (flags[deleteFlagName]) {
-            delete taskJson[type][num][field];
+            else {
+              if (value.length === 1 && value[0].length === 0) {
+                delete taskJson[type][num][field];
+              }
+              else {
+                for (const v of value) {
+                  if (v.length === 0) {
+                    this.error(`Invalid empty ${field}`);
+                  }
+                }
+                taskJson[type][num][field] = value as any;
+              }
+            }
           }
         }
 
@@ -152,21 +134,16 @@ export default class Modify extends Command {
     };
 
     if (hasFilters) {
-      const priorityFilter = filterByPriority(
-        flags.priorities,
-        flags["without-priorities"]
-      );
+      const priorityFilter = filterByPriority(flags['filter-priorities']);
       const projectFilter = filterByField(
         "projects",
-        flags.projects,
-        flags["and-projects"],
-        flags["without-projects"]
+        flags['filter-projects'],
+        flags["and-projects"]
       );
       const contextFilter = filterByField(
         "contexts",
-        flags.contexts,
-        flags["and-contexts"],
-        flags["without-contexts"]
+        flags['filter-contexts'],
+        flags["and-contexts"]
       );
 
       const indexes = taskJson[type].map((task, index) => ({

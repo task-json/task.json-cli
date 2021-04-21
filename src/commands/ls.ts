@@ -13,6 +13,7 @@ export default class List extends Command {
   static examples = [
     `$ tj ls`,
     `$ tj ls -p test`,
+    `$ tj ls -c "" # list tasks without contexts`,
   ]
 
   static flags = {
@@ -39,18 +40,6 @@ export default class List extends Command {
       char: "c",
       description: "filter tasks by specific contexts",
       multiple: true
-    }),
-    "without-priorities": flags.boolean({
-      description: "list tasks without priorities",
-      default: false
-    }),
-    "without-projects": flags.boolean({
-      description: "list tasks without projects",
-      default: false
-    }),
-    "without-contexts": flags.boolean({
-      description: "list tasks without contexts",
-      default: false
     }),
     "and-projects": flags.boolean({
       description: "filter projects using AND operator instead of OR",
@@ -104,21 +93,16 @@ export default class List extends Command {
 			? "done" : (flags.removed
 			? "removed" : "todo");
 
-    const priorityFilter = filterByPriority(
-      flags.priorities,
-      flags["without-priorities"]
-    );
+    const priorityFilter = filterByPriority(flags.priorities);
     const projectFilter = filterByField(
       "projects",
       flags.projects,
-      flags["and-projects"],
-      flags["without-projects"]
+      flags["and-projects"]
     );
     const contextFilter = filterByField(
       "contexts",
       flags.contexts,
-      flags["and-contexts"],
-      flags["without-contexts"]
+      flags["and-contexts"]
     );
 
     const data = taskJson[type].map((task, index) => ({

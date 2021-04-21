@@ -70,21 +70,24 @@ export function parseNumbers(numbers: string[], maxNumber: number, onError: (msg
   });
 }
 
-export function filterByPriority(priorities: string[] | undefined, without: boolean) {
-  if (!priorities && !without)
+export function filterByPriority(priorities: string[] | undefined) {
+  if (!priorities)
     return () => true;
 
   return (task: Task) => {
-    if (without)
-      return !task.priority;
-
-    return task.priority !== undefined && priorities!.includes(task.priority);
+    for (const p of priorities) {
+      if (p.length === 0 && task.priority === undefined)
+        return true;
+      if (p.length > 0 && task.priority === p)
+        return true;
+    }
+    return false;
   };
 }
 
 // Filter by projects or contexts
-export function filterByField(field: "projects" | "contexts", values: string[] | undefined, and: boolean, without: boolean) {
-  if (!values && !without)
+export function filterByField(field: "projects" | "contexts", values: string[] | undefined, and: boolean) {
+  if (!values)
     return () => true;
 
   const op = (left: boolean, right: boolean) => (
@@ -93,11 +96,11 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
 
   return (task: Task) => {
     let result = and;
-    if (without)
-      result = op(result, !task[field]);
-
-    values?.forEach(value => {
-      result = op(result, Boolean(task[field]?.includes(value)));
+    values.forEach(value => {
+      if (value.length === 0)
+        result = op(result, task[field] === undefined);
+      else
+        result = op(result, Boolean(task[field]?.includes(value)));
     });
 
     return result;
