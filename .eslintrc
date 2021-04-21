@@ -13,6 +13,8 @@
     "radix": "off",
     "no-mixed-operators": "off",
     "indent": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "max-depth": "off",
+    "no-lonely-if": "off"
   }
 }
