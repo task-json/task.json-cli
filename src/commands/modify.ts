@@ -37,15 +37,15 @@ export default class Modify extends Command {
     }),
     priority: flags.string({
       char: "P",
-      description: "modify priority"
+      description: "modify priority (A-Z)"
     }),
     projects: flags.string({
-      description: "modify projects",
+      description: "modify projects (overwrite all)",
       multiple: true
     }),
     contexts: flags.string({
       char: "c",
-      description: "modify contexts",
+      description: "modify contexts (overwrite all)",
       multiple: true
     }),
     due: flags.string({
