@@ -6,7 +6,7 @@ export default class ConfigCommand extends Command {
 
   static examples = [
     `$ tj config  # show config`,
-    `$ tj config --reset # reset all config`,
+    `$ tj config --reset  # reset all config`,
     `$ tj config --server "http://localhost:3000"  # set config`,
     `$ tj config --server ""  # reset server`
   ];
@@ -19,11 +19,11 @@ export default class ConfigCommand extends Command {
     }),
     token: flags.string({
       char: "t",
-      description: "set token for login (empty string to clear)"
+      description: "set token for login"
     }),
     reset: flags.boolean({
       char: "r",
-      description: "reset all configurations (empty string to clear)"
+      description: "reset all configurations"
     })
   };
 

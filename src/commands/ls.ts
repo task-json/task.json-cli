@@ -13,8 +13,8 @@ export default class List extends Command {
   static examples = [
     `$ tj ls`,
     `$ tj ls -p test`,
-    `$ tj ls -c "" # list tasks without contexts`,
-    `$ tj ls -p projA -p projB # list tasks with projA or projB`,
+    `$ tj ls -c ""  # list tasks without contexts`,
+    `$ tj ls -p projA -p projB  # list tasks with projA or projB`,
   ]
 
   static flags = {
