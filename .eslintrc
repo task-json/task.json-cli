@@ -15,6 +15,7 @@
     "indent": "off",
     "operator-linebreak": "off",
     "max-depth": "off",
-    "no-lonely-if": "off"
+    "no-lonely-if": "off",
+    "lines-between-class-members": "off"
   }
 }
