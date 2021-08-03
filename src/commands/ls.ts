@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import { colorTask, filterByField, filterByPriority, maxWidth, readTaskJson } from "../utils/task";
-import { calculateWidth } from "../utils/table";
-import { table, TableUserConfig } from "table";
+import { calculateWidth, tableConfig } from "../utils/table";
+import { table } from "table";
 import { TaskType, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
@@ -63,23 +63,6 @@ export default class List extends Command {
     if (stdoutColumns < 50) {
       this.error("Terminal width must be greater than 50.");
     }
-
-    const tableOptions: TableUserConfig = {
-      drawHorizontalLine: index => index === 1,
-      border: {
-        bodyLeft: "",
-        bodyRight: "",
-        bodyJoin: "",
-        bottomLeft: "",
-        bottomRight: "",
-        bottomJoin: "",
-        bottomBody: "-",
-
-        joinLeft: "",
-        joinRight: "",
-        joinJoin: ""
-      }
-    };
 
     const wrapOptions = {
       hard: true
@@ -159,7 +142,7 @@ export default class List extends Command {
       });
     });
 
-    const output = table(header.concat(tableData), tableOptions);
+    const output = table(header.concat(tableData), tableConfig);
 
     this.log(`\n${output}`);
   }

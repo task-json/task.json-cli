@@ -1,3 +1,5 @@
+import { TableUserConfig } from "table";
+
 type ActualWidth = {
   numWidth: number; // fixed
   priWidth: number; // fixed
@@ -42,3 +44,20 @@ export function calculateWidth(totalWidth: number, {
     ctxWidth: ctxWidth - overflowCtx
   } as ResultWidth;
 }
+
+export const tableConfig: TableUserConfig = {
+  drawHorizontalLine: index => index === 1,
+  border: {
+    bodyLeft: "",
+    bodyRight: "",
+    bodyJoin: "",
+    bottomLeft: "",
+    bottomRight: "",
+    bottomJoin: "",
+    bottomBody: "-",
+
+    joinLeft: "",
+    joinRight: "",
+    joinJoin: ""
+  }
+};
