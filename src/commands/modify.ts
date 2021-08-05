@@ -40,6 +40,7 @@ export default class Modify extends Command {
       description: "modify priority (A-Z)"
     }),
     projects: flags.string({
+      char: "p",
       description: "modify projects (overwrite all)",
       multiple: true
     }),
