@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import { readConfig } from "../utils/config";
 import { Client, HttpError } from "task.json-client";
-import { readTaskJson, writeTaskJson } from '../utils/task';
+import { readTaskJson, writeTaskJson, stringifyDiffStat } from '../utils/task';
 import cli from "cli-ux";
 
 export default class Sync extends Command {
@@ -60,7 +60,10 @@ export default class Sync extends Command {
         writeTaskJson(await client.download());
       }
       else {
-        writeTaskJson(await client.sync(taskJson));
+				const { data, stat } = await client.sync(taskJson);
+        writeTaskJson(data);
+				this.log(`[Client] ${stringifyDiffStat(stat.client)}`);
+				this.log(`[Server] ${stringifyDiffStat(stat.server)}`);
       }
       this.log("Sync with server successfully.")
     }

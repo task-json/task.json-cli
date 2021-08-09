@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { Task, TaskJson, initTaskJson, taskUrgency } from "task.json";
+import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency } from "task.json";
 import { dataPath } from "./config";
 
 export function readTaskJson() {
@@ -105,5 +105,11 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
 
     return result;
   };
+}
+
+export function stringifyDiffStat(stat: DiffStat) {
+	return stat.entries()
+		.map([key, value] => `${key}: ${value}`)
+		.join(", ");
 }
 
