@@ -16,7 +16,7 @@
     "luxon": "^1.28.0",
     "table": "^6.7.1",
     "task.json": "^2.4.0",
-    "task.json-client": "^0.1.4",
+    "task.json-client": "^0.2.0",
     "tslib": "^1.14.1",
     "uuid": "^8.3.2",
     "wrap-ansi": "^7.0.0"
