@@ -108,8 +108,8 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
 }
 
 export function stringifyDiffStat(stat: DiffStat) {
-	return stat.entries()
-		.map([key, value] => `${key}: ${value}`)
+	return Object.entries(stat)
+		.map(([key, value]) => `${key}: ${value}`)
 		.join(", ");
 }
 
