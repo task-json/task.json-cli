@@ -75,11 +75,11 @@ export default class Modify extends Command {
     const { argv, flags } = this.parse(Modify);
 
     checkTaskExistence(this.error);
+    const type: TaskType = flags.done ? "done" : "todo";
 
     const taskJson = readTaskJson();
-    const numbers = parseNumbers(argv, taskJson.todo.length, this.error);
+    const numbers = parseNumbers(argv, taskJson[type].length, this.error);
     const date = new Date().toISOString();
-    const type: TaskType = flags.done ? "done" : "todo";
 
     type FlagName = keyof (typeof flags);
 
