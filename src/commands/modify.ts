@@ -2,6 +2,7 @@ import {Command, flags} from '@oclif/command'
 import { filterByField, filterByPriority, normalizeTypes, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
+import cli from "cli-ux";
 
 export default class Modify extends Command {
   static description = 'Modify tasks (use empty value to delete the field or filter tasks without ';
@@ -90,6 +91,11 @@ export default class Modify extends Command {
     if (argv.length > 0 && hasFilters) {
       this.error("Cannot use both numbers and filters.");
     }
+    if (!hasFilters && argv.length === 0) {
+      const resp = await cli.confirm(`No filter or task number specified. This will make changes to ALL tasks. Continue? [y/n]`);
+      if (!resp)
+        this.exit(0);
+    }
 
     const taskJson = readTaskJson();
     const date = new Date().toISOString();
@@ -132,7 +138,7 @@ export default class Modify extends Command {
     };
 
     let count = 0;
-    if (hasFilters) {
+    if (argv.length === 0) {
       const types = normalizeTypes(flags.types || ["all"], this.error);
       const priorityFilter = filterByPriority(flags['filter-priorities']);
       const projectFilter = filterByField(
