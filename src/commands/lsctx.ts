@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { readTaskJson } from "../utils/task";
+import { normalizeTypes, readTaskJson } from "../utils/task";
 import { TaskType } from "task.json";
 
 export default class ListCtx extends Command {
@@ -7,18 +7,16 @@ export default class ListCtx extends Command {
 
   static examples = [
     `$ tj lsctx`,
-    `$ tj lsctx -a`
+    `$ tj lsctx -T all`
   ]
 
   static flags = {
     help: flags.help({char: 'h'}),
-    all: flags.boolean({
-      char: "a",
-      description: "list contexts of all tasks including done ones"
-    }),
-    done: flags.boolean({
-      char: "D",
-      description: "list contexts of only done tasks"
+    types: flags.string({
+      char: "T",
+      description: "list contexts of tasks of types (todo, done, removed, all) [default: todo]",
+      default: ["todo"],
+      multiple: true
     })
   }
 
@@ -26,7 +24,7 @@ export default class ListCtx extends Command {
     const { flags } = this.parse(ListCtx);
 
     const contexts: Set<string> = new Set();
-    const types: TaskType[] = flags.all ? ["todo", "done"] : (flags.done ? ["done"] : ["todo"]);
+    const types = normalizeTypes(flags.types, this.error);
     const taskJson = readTaskJson();
 
     for (const type of types)

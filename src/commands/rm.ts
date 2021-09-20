@@ -7,15 +7,12 @@ export default class Remove extends Command {
   static description = 'Delete tasks';
 
   static examples = [
-    `$ tj rm 1`,
+    `$ tj rm t1`,
+    `$ tj rm d1`
   ];
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    done: flags.boolean({
-      char: "D",
-      description: "delete done tasks"
-    })
+    help: flags.help({ char: 'h' })
   };
 
   // Allow multiple arguments
@@ -27,16 +24,18 @@ export default class Remove extends Command {
   }];
 
   async run() {
-    const { argv, flags } = this.parse(Remove);
+    const { argv } = this.parse(Remove);
 
     checkTaskExistence(this.error);
-    const type: TaskType = flags.done ? "done" : "todo";
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson[type].length, this.error);
-    removeTasks(taskJson, type, indexes);
+    const indexes = parseNumbers(argv, taskJson, this.error);
+    if (indexes.removed.length > 0)
+      this.error("Cannot delete removed tasks")
+    removeTasks(taskJson, "todo", indexes.todo);
+    removeTasks(taskJson, "done", indexes.done);
     writeTaskJson(taskJson);
 
-    this.log(`Remove ${new Set(indexes).size} task(s)`);
+    this.log(`Remove ${new Set(indexes.todo).size + new Set(indexes.done).size} task(s)`);
   }
 }

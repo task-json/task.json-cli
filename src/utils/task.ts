@@ -1,5 +1,6 @@
+import { reset } from "chalk";
 import * as fs from "fs";
-import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency } from "task.json";
+import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType } from "task.json";
 import { dataPath } from "./config";
 
 export function readTaskJson() {
@@ -59,15 +60,58 @@ export function colorTask(task: Task) {
   return null;
 }
 
-export function parseNumbers(numbers: string[], maxNumber: number, onError: (msg: string) => void) {
-  return numbers.map(a => {
-    const num = parseInt(a);
-    if (isNaN(num) || num <= 0)
-      onError(`Invalid Number: ${num}`);
-    if (num > maxNumber)
-      onError(`Task ${num} does not exist.`);
-    return num - 1;
-  });
+export function parseNumbers(numbers: string[], taskJson: TaskJson, onError: (msg: string) => never) {
+  const handleError = (num: string): never => {
+    onError(`Invalid Number: ${num}`);
+  };
+  const result = {
+    todo: [] as number[],
+    done: [] as number[],
+    removed: [] as number[]
+  };
+
+  for (const num of numbers) {
+    if (num.length <= 1)
+      handleError(num);
+    const typeStr = num.substring(0, 1);
+    const n = parseInt(num.substring(1));
+    if (isNaN(n) || n <= 0)
+      handleError(num);
+    
+    const typeMap: { [key: string]: TaskType } = {
+      t: "todo",
+      d: "done",
+      r: "removed"
+    };
+    if (!(typeStr in typeMap))
+      handleError(num);
+
+    const type = typeMap[typeStr];
+    if (n > taskJson[type].length)
+      handleError(num);
+    result[type].push(n-1);
+  }
+
+  return result;
+}
+
+export function normalizeTypes(types: string[], onError: (msg: string) => never) {
+  const preset = new Set(["todo", "done", "removed", "all"])
+  const result: Set<TaskType> = new Set();
+  for (const type of types) {
+    if (!preset.has(type))
+      onError(`Invalid task type: ${type}`);
+      
+    if (type === "all") {
+      result.add("todo");
+      result.add("done");
+      result.add("removed");
+      break;
+    }
+    else
+      result.add(type as TaskType);
+  }
+  return [...result];
 }
 
 export function filterByPriority(priorities: string[] | undefined) {

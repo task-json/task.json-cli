@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { filterByField, filterByPriority, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { filterByField, filterByPriority, normalizeTypes, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 
@@ -7,17 +7,18 @@ export default class Modify extends Command {
   static description = 'Modify tasks (use empty value to delete the field or filter tasks without ';
 
   static examples = [
-    `$ tj modify 1 -d 2020-12-12`,
-    `$ tj modify 2 3 -p projA -p projB`,
-    `$ tj modify 1 -t "New description" --done`,
-    `$ tj modify --filter-projects projA -p projB # Modify all projA to projB`,
+    `$ tj modify t1 -d 2020-12-12`,
+    `$ tj modify d2 d3 -p projA -p projB`,
+    `$ tj modify t1 -t "New description"`,
+    `$ tj modify -T todo --filter-projects projA -p projB # Modify all projA to projB`,
   ];
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    done: flags.boolean({
-      char: "D",
-      description: "modify done tasks"
+    types: flags.string({
+      char: "T",
+      description: "filter tasks by type (todo, done, removed, all) [default: all (if no number specified)",
+      multiple: true
     }),
     "filter-priorities": flags.string({
       description: "filter tasks by priority (A-Z)",
@@ -75,16 +76,10 @@ export default class Modify extends Command {
     const { argv, flags } = this.parse(Modify);
 
     checkTaskExistence(this.error);
-    const type: TaskType = flags.done ? "done" : "todo";
-
-    const taskJson = readTaskJson();
-    const numbers = parseNumbers(argv, taskJson[type].length, this.error);
-    const date = new Date().toISOString();
 
     type FlagName = keyof (typeof flags);
-
     let hasFilters = false;
-    const filterFlags: FlagName[] = ["filter-priorities", "filter-projects", "filter-contexts"];
+    const filterFlags: FlagName[] = ["filter-priorities", "filter-projects", "filter-contexts", "types"];
     for (const filterFlag of filterFlags) {
       if (flags[filterFlag]) {
         hasFilters = true;
@@ -92,12 +87,15 @@ export default class Modify extends Command {
       }
     }
 
-    if (numbers.length > 0 && hasFilters) {
+    if (argv.length > 0 && hasFilters) {
       this.error("Cannot use both numbers and filters.");
     }
 
-    const modifyTasks = (numbers: number[]) => {
-      for (const num of numbers) {
+    const taskJson = readTaskJson();
+    const date = new Date().toISOString();
+
+    const modifyTasks = (indexes: number[], type: TaskType) => {
+      for (const index of indexes) {
         const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due"];
 
         for (const field of fields) {
@@ -105,17 +103,17 @@ export default class Modify extends Command {
           if (value !== undefined) {
             if (typeof value === "string") {
               if (value.length > 0) {
-                taskJson[type][num][field] = value as any;
+                taskJson[type][index][field] = value as any;
               }
               else {
                 if (field === "text")
                   this.error(`Invalid empty text`);
-                delete taskJson[type][num][field];
+                delete taskJson[type][index][field];
               }
             }
             else {
               if (value.length === 1 && value[0].length === 0) {
-                delete taskJson[type][num][field];
+                delete taskJson[type][index][field];
               }
               else {
                 for (const v of value) {
@@ -123,18 +121,19 @@ export default class Modify extends Command {
                     this.error(`Invalid empty ${field}`);
                   }
                 }
-                taskJson[type][num][field] = value as any;
+                taskJson[type][index][field] = value as any;
               }
             }
           }
         }
 
-        taskJson[type][num].modified = date;
+        taskJson[type][index].modified = date;
       }
-      this.log(`Modify ${numbers.length} task(s)`);
     };
 
+    let count = 0;
     if (hasFilters) {
+      const types = normalizeTypes(flags.types || ["all"], this.error);
       const priorityFilter = filterByPriority(flags['filter-priorities']);
       const projectFilter = filterByField(
         "projects",
@@ -147,23 +146,31 @@ export default class Modify extends Command {
         flags["and-contexts"]
       );
 
-      const indexes = taskJson[type].map((task, index) => ({
-        index,
-        task
-      }))
-        .filter(({ task }) => (
-          projectFilter(task) &&
-          contextFilter(task) &&
-          priorityFilter(task)
-        ))
-        .map(({ index }) => index);
+      for (const type of types) {
+        const indexes = taskJson[type].map((task, index) => ({
+          index,
+          task
+        }))
+          .filter(({ task }) => (
+            projectFilter(task) &&
+            contextFilter(task) &&
+            priorityFilter(task)
+          ))
+          .map(({ index }) => index);
 
-      modifyTasks(indexes);
+        modifyTasks(indexes, type);
+        count += indexes.length;
+      }
     }
     else {
-      modifyTasks(numbers);
+      const numbers = parseNumbers(argv, taskJson, this.error);
+      for (const [type, indexes] of Object.entries(numbers)) {
+        count += indexes.length;
+        modifyTasks(indexes, type as TaskType);
+      }
     }
 
     writeTaskJson(taskJson);
+    this.log(`Modify ${count} task(s)`);
   }
 }

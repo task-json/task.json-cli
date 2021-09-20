@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { normalizeTypes, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import { TaskType, undoTasks } from "task.json";
 
@@ -7,16 +7,12 @@ export default class Undo extends Command {
   static description = 'Undo tasks';
 
   static examples = [
-    `$ tj undo 1 2`,
-    `$ tj undo --removed 1 2`,
+    `$ tj undo d1 d2`,
+    `$ tj undo r1 r2  # restore removed tasks`,
   ];
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-		removed: flags.boolean({
-			char: "R",
-			description: "restore removed tasks"
-		})
+    help: flags.help({ char: 'h' })
   };
 
   // Allow multiple arguments
@@ -28,17 +24,18 @@ export default class Undo extends Command {
   }];
 
   async run() {
-    const { argv, flags } = this.parse(Undo);
+    const { argv } = this.parse(Undo);
 
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-		const type: TaskType = flags.removed ? "removed" : "done";
-    const indexes = parseNumbers(argv, taskJson[type].length, this.error);
-    undoTasks(taskJson, type, indexes);
-
+    const indexes = parseNumbers(argv, taskJson, this.error);
+    if (indexes.todo.length > 0)
+      this.error("Cannot delete removed tasks")
+    undoTasks(taskJson, "done", indexes.done);
+    undoTasks(taskJson, "removed", indexes.removed);
     writeTaskJson(taskJson);
 
-    this.log(`Undo ${new Set(indexes).size} task(s)`);
+    this.log(`Undo ${new Set(indexes.done).size + new Set(indexes.removed).size} task(s)`);
   }
 }

@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { readTaskJson } from "../utils/task";
+import { normalizeTypes, readTaskJson } from "../utils/task";
 import { TaskType } from "task.json";
 
 export default class ListProj extends Command {
@@ -7,18 +7,16 @@ export default class ListProj extends Command {
 
   static examples = [
     `$ tj lsproj`,
-    `$ tj lsproj -a`
+    `$ tj lsproj -T all`
   ]
 
   static flags = {
     help: flags.help({char: 'h'}),
-    all: flags.boolean({
-      char: "a",
-      description: "list projects of all tasks including done ones"
-    }),
-    done: flags.boolean({
-      char: "D",
-      description: "list projects of only done tasks"
+    types: flags.string({
+      char: "T",
+      description: "list contexts of tasks of types (todo, done, removed, all) [default: todo]",
+      default: ["todo"],
+      multiple: true
     })
   }
 
@@ -26,7 +24,7 @@ export default class ListProj extends Command {
     const { flags } = this.parse(ListProj);
 
     const projects: Set<string> = new Set();
-    const types: TaskType[] = flags.all ? ["todo", "done"] : (flags.done ? ["done"] : ["todo"]);
+    const types = normalizeTypes(flags.types, this.error);
     const taskJson = readTaskJson();
 
     for (const type of types)

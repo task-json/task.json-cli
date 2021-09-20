@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { readTaskJson } from "../utils/task";
+import { normalizeTypes, readTaskJson } from "../utils/task";
 import { TaskType } from "task.json";
 import * as _ from "lodash";
 
@@ -8,31 +8,32 @@ export default class ListNum extends Command {
 
   static examples = [
     `$ tj lsnum`,
-    `$ tj lsnum -D`,
-    `$ tj lsnum -R`
+    `$ tj lsnum -T all`,
+    `$ tj lsnum -T done`
   ]
 
   static flags = {
     help: flags.help({char: 'h'}),
-    done: flags.boolean({
-      char: "D",
-      description: "list numbers of only done tasks"
-    }),
-    removed: flags.boolean({
-      char: "R",
-      description: "list numbers of only removed tasks"
+    types: flags.string({
+      char: "T",
+      description: "list numbers of tasks of types (todo, done, removed, all) [default: todo]",
+      default: ["todo"],
+      multiple: true
     })
   }
 
   async run() {
     const { flags } = this.parse(ListNum);
 
-    const type: TaskType = flags.done
-			? "done" : (flags.removed
-			? "removed" : "todo");
+    const types = normalizeTypes(flags.types, this.error);
     const taskJson = readTaskJson();
-    const size = taskJson[type].length;
 
-    this.log(_.range(1, size + 1).join("\n"));
+    const nums: string[] = [];
+    for (const type of types) {
+      const size = taskJson[type].length;
+      nums.push(..._.range(1, size).map(n => `${type.charAt(0)}${n}`));
+    }
+
+    this.log(nums.join("\n"));
   }
 }

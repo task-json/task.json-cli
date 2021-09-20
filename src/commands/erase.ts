@@ -8,7 +8,7 @@ export default class Erase extends Command {
   static description = 'Erase removed tasks';
 
   static examples = [
-    `$ tj erase 1`,
+    `$ tj erase r1`,
   ];
 
   static flags = {
@@ -34,16 +34,18 @@ export default class Erase extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson.removed.length, this.error);
+    const indexes = parseNumbers(argv, taskJson, this.error);
 
     let res = true;
     if (!flags.force) {
       res = await cli.confirm("Warning: This will erase the REMOVED tasks permanently. Make sure the erased tasks are not in other servers and clients if you want to sync with them. Continue? [y/n]");
     }
     if (res) {
-      eraseTasks(taskJson, indexes);
+      if (indexes.todo.length + indexes.done.length > 0)
+        this.error("Cannot delete todo or done tasks");
+      eraseTasks(taskJson, indexes.removed);
       writeTaskJson(taskJson);
-      this.log(`Erase ${new Set(indexes).size} task(s)`);
+      this.log(`Erase ${new Set(indexes.removed).size} task(s)`);
     }
   }
 }

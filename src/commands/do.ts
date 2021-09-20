@@ -7,7 +7,7 @@ export default class Do extends Command {
   static description = 'Mark tasks as done';
 
   static examples = [
-    `$ tj do 1`,
+    `$ tj do t1`,
   ];
 
   static flags = {
@@ -28,10 +28,12 @@ export default class Do extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson.todo.length, this.error);
-    doTasks(taskJson, indexes);
+    const indexes = parseNumbers(argv, taskJson, this.error);
+    if (indexes.removed.length + indexes.done.length > 0)
+      this.error("Cannot do done tasks or removed tasks");
+    doTasks(taskJson, indexes.todo);
     writeTaskJson(taskJson);
 
-    this.log(`Finish ${new Set(indexes).size} task(s)`);
+    this.log(`Finish ${new Set(indexes.todo).size} task(s)`);
   }
 }

@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByField, filterByPriority, maxWidth, readTaskJson } from "../utils/task";
+import { colorTask, filterByField, filterByPriority, maxWidth, normalizeTypes, readTaskJson } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
-import { TaskType, taskUrgency } from "task.json";
+import { taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { DateTime } from "luxon";
@@ -19,13 +19,11 @@ export default class List extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
-    done: flags.boolean({
-      char: "D",
-      description: "list only done tasks"
-    }),
-    removed: flags.boolean({
-      char: "R",
-      description: "list only removed tasks"
+    types: flags.string({
+      char: "T",
+      description: "filter tasks by types (todo, done, removed, all) [default: todo]",
+      default: ["todo"],
+      multiple: true
     }),
     priorities: flags.string({
       char: "P",
@@ -68,82 +66,78 @@ export default class List extends Command {
       hard: true
     };
 
-		if (flags.done && flags.removed) {
-			this.error("Cannot specify both `--done` and `--removed` flags");
-		}
-
     const taskJson = readTaskJson();
-    const type: TaskType = flags.done
-			? "done" : (flags.removed
-			? "removed" : "todo");
+    const types = normalizeTypes(flags.types, this.error);
 
-    const priorityFilter = filterByPriority(flags.priorities);
-    const projectFilter = filterByField(
-      "projects",
-      flags.projects,
-      flags["and-projects"]
-    );
-    const contextFilter = filterByField(
-      "contexts",
-      flags.contexts,
-      flags["and-contexts"]
-    );
+    for (const type of types) {
+      const priorityFilter = filterByPriority(flags.priorities);
+      const projectFilter = filterByField(
+        "projects",
+        flags.projects,
+        flags["and-projects"]
+      );
+      const contextFilter = filterByField(
+        "contexts",
+        flags.contexts,
+        flags["and-contexts"]
+      );
 
-    const data = taskJson[type].map((task, index) => ({
-      index,
-      task
-    }))
-      .filter(({ task }) => (
-        projectFilter(task) &&
-        contextFilter(task) &&
-        priorityFilter(task)
-      ));
+      const data = taskJson[type].map((task, index) => ({
+        index,
+        task
+      }))
+        .filter(({ task }) => (
+          projectFilter(task) &&
+          contextFilter(task) &&
+          priorityFilter(task)
+        ));
 
-    if (type === "todo")
-      data.sort((a, b) => {
-        return taskUrgency(b.task) - taskUrgency(a.task);
+      if (type === "todo")
+        data.sort((a, b) => {
+          return taskUrgency(b.task) - taskUrgency(a.task);
+        });
+
+      const textWidth = maxWidth(data, "text");
+      const projWidth = maxWidth(data, "projects");
+      const ctxWidth = maxWidth(data, "contexts");
+      const dueWidth = maxWidth(data, "due");
+
+      const result = calculateWidth(stdoutColumns, {
+        numWidth: Math.max(1, data.length.toString().length + 1),
+        priWidth: 1,
+        textWidth,
+        projWidth,
+        ctxWidth,
+        dueWidth
+      }, 2 * 6);
+
+      const tableData = data.map(({ index, task }) => {
+        const color = type === "todo" ? colorTask(task) : null;
+        return [
+          `${type.charAt(0)}${index+1}`,
+          task.priority ?? "",
+          task.text,
+          task.projects?.join(" ") ?? "",
+          task.contexts?.join(" ") ?? "",
+          task.due ? DateTime.fromISO(task.due).toFormat("yyyy-MM-dd") : ""
+        ].map((field, i) => {
+          let value = field;
+          if (result) {
+            if (i === 2)
+              value = wrapAnsi(field, result.textWidth, wrapOptions);
+            if (i === 3)
+              value = wrapAnsi(field, result.projWidth, wrapOptions);
+            if (i === 4)
+              value = wrapAnsi(field, result.ctxWidth, wrapOptions);
+          }
+
+          return color ? chalk[color].bold(value) : value;
+        });
       });
 
-    const textWidth = maxWidth(data, "text");
-    const projWidth = maxWidth(data, "projects");
-    const ctxWidth = maxWidth(data, "contexts");
-    const dueWidth = maxWidth(data, "due");
+      const output = table(header.concat(tableData), tableConfig);
 
-    const result = calculateWidth(stdoutColumns, {
-      numWidth: Math.max(1, data.length.toString().length),
-      priWidth: 1,
-      textWidth,
-      projWidth,
-      ctxWidth,
-      dueWidth
-    }, 2 * 6);
-
-    const tableData = data.map(({ index, task }) => {
-      const color = type === "todo" ? colorTask(task) : null;
-      return [
-        (index + 1).toString(),
-        task.priority ?? "",
-        task.text,
-        task.projects?.join(" ") ?? "",
-        task.contexts?.join(" ") ?? "",
-        task.due ? DateTime.fromISO(task.due).toFormat("yyyy-MM-dd") : ""
-      ].map((field, i) => {
-        let value = field;
-        if (result) {
-          if (i === 2)
-            value = wrapAnsi(field, result.textWidth, wrapOptions);
-          if (i === 3)
-            value = wrapAnsi(field, result.projWidth, wrapOptions);
-          if (i === 4)
-            value = wrapAnsi(field, result.ctxWidth, wrapOptions);
-        }
-
-        return color ? chalk[color].bold(value) : value;
-      });
-    });
-
-    const output = table(header.concat(tableData), tableConfig);
-
-    this.log(`\n${output}`);
+      this.log(`\n${output}`);
+    }
   }
 }

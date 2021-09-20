@@ -8,7 +8,7 @@ export default class Restore extends Command {
 
   static examples = [
     `$ tj restore`,
-    `$ tj restore -f --done`,
+    `$ tj restore -f`,
   ];
 
   static flags = {

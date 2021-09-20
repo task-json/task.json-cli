@@ -10,7 +10,7 @@
 			"text": "Publish a new version",
 			"due": "2021-03-10T00:00:00.000Z",
 			"start": "2021-03-10T03:20:47.188Z",
-			"modified": "2021-03-10T03:22:49.869Z",
+			"modified": "2021-09-20T03:34:47.276Z",
 			"projects": [
 				"task.json-cli"
 			],
@@ -33,13 +33,6 @@
 			"id": "8904f37a-1a61-40e4-8db2-4c36ab0bcb6a"
 		},
 		{
-			"text": "Exam",
-			"due": "2021-03-15",
-			"start": "2021-03-10T03:25:19.172Z",
-			"modified": "2021-03-10T03:27:52.264Z",
-			"id": "9059d279-0876-4eea-9230-e894a2727123"
-		},
-		{
 			"id": "30de5f2d-abbf-4531-840f-e17d023a03ef",
 			"text": "Send an email",
 			"priority": "B",
@@ -48,8 +41,29 @@
 			"contexts": [
 				"study"
 			]
+		},
+		{
+			"id": "de3e60e1-6558-4285-855b-c65b48c7ddf3",
+			"text": "Add a new feature",
+			"projects": [
+				"task.json-cli"
+			],
+			"start": "2021-09-20T03:29:33.043Z",
+			"modified": "2021-09-20T03:34:47.276Z"
 		}
 	],
-	"done": [],
+	"done": [
+		{
+			"text": "Exam",
+			"due": "2021-03-15",
+			"start": "2021-03-10T03:25:19.172Z",
+			"modified": "2021-09-20T03:34:47.276Z",
+			"id": "9059d279-0876-4eea-9230-e894a2727123",
+			"projects": [
+				"task.json-cli"
+			],
+			"end": "2021-09-20T03:34:08.096Z"
+		}
+	],
 	"removed": []
 }

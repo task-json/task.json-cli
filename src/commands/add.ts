@@ -31,7 +31,10 @@ export default class Add extends Command {
     due: flags.string({
       char: "d",
       description: "due date"
-    })
+    }),
+    deps: flags.integer({
+      description: "Dependencies (use #)"
+    }),
   }
 
   static strict = false;
