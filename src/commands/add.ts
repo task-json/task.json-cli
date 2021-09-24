@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command'
-import { Task } from "task.json";
+import { Task, TaskType } from "task.json";
 import { v4 as uuidv4 } from "uuid";
-import { readTaskJson, writeTaskJson } from "../utils/task";
+import { numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { readConfig } from "../utils/config";
 
 export default class Add extends Command {
@@ -10,6 +10,7 @@ export default class Add extends Command {
   static examples = [
     '$ tj add Hello World',
     '$ tj add "Hello World" -p test -p greeting -c test --due 2020-12-24',
+    '$ tj add Hello World -p test -D t1 -D t2',
   ]
 
   static flags = {
@@ -28,13 +29,15 @@ export default class Add extends Command {
       description: "one or more contexts",
       multiple: true
     }),
+    deps: flags.string({
+      char: "D",
+      description: "Dependencies (use #)",
+      multiple: true
+    }),
     due: flags.string({
       char: "d",
       description: "due date"
-    }),
-    deps: flags.integer({
-      description: "Dependencies (use #)"
-    }),
+    })
   }
 
   static strict = false;
@@ -48,27 +51,32 @@ export default class Add extends Command {
 
     // Create rootPath if not exists
     readConfig();
+    const taskJson = readTaskJson();
 
     const text = argv.join(" ");
     const date = new Date().toISOString();
     const due = flags.due && new Date(flags.due).toISOString();
 
-    // TODO: add date validation
+    let deps: string[] | undefined = undefined;
+    if (flags.deps)
+      deps = numberToId(taskJson, flags.deps, this.error);
+
+    // TODO: add human-friendly date processing
     const task: Task = {
       id: uuidv4(),
       text,
       priority: flags.priority,
       contexts: flags.contexts,
       projects: flags.projects,
+      deps,
       due,
       start: date,
       modified: date
     };
 
-    const taskJson = readTaskJson();
     taskJson.todo.push(task);
     writeTaskJson(taskJson);
 
-    this.log(`Task ${taskJson.todo.length} added: ${text}`);
+    this.log(`Task t${taskJson.todo.length} added: ${text}`);
   }
 }

@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByField, filterByPriority, maxWidth, normalizeTypes, readTaskJson } from "../utils/task";
+import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, readTaskJson } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
-import { taskUrgency } from "task.json";
+import { idToIndex, Task, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { DateTime } from "luxon";
@@ -24,6 +24,11 @@ export default class List extends Command {
       description: "filter tasks by types (todo, done, removed, all) [default: todo]",
       default: ["todo"],
       multiple: true
+    }),
+    deps: flags.boolean({
+      char: "D",
+      description: "show dependent tasks and dependencies [default: false]",
+      default: false
     }),
     priorities: flags.string({
       char: "P",
@@ -54,7 +59,7 @@ export default class List extends Command {
     const { flags } = this.parse(List);
 
     const header = [
-      ["#", "P", "Text", "Projects", "Contexts", "Due"]
+      ["#", "P", "Text", ...(flags.deps ? ["Dep"] : []), "Proj", "Ctx", "Due"]
     ];
 
     const stdoutColumns = process.stdout.columns ?? 80;
@@ -71,6 +76,7 @@ export default class List extends Command {
 
     for (const type of types) {
       const priorityFilter = filterByPriority(flags.priorities);
+      const depFilter = filterByDeps(flags.deps);
       const projectFilter = filterByField(
         "projects",
         flags.projects,
@@ -82,14 +88,22 @@ export default class List extends Command {
         flags["and-contexts"]
       );
 
+      const parseDeps = (task: Task): Task => {
+        return {
+          ...task,
+          ...(task.deps && { deps: idToNumber(taskJson, task.deps) })
+        };
+      };
+
       const data = taskJson[type].map((task, index) => ({
         index,
-        task
+        task: parseDeps(task)
       }))
         .filter(({ task }) => (
           projectFilter(task) &&
           contextFilter(task) &&
-          priorityFilter(task)
+          priorityFilter(task) &&
+          depFilter(task)
         ));
 
       if (type === "todo")
@@ -98,6 +112,7 @@ export default class List extends Command {
         });
 
       const textWidth = maxWidth(data, "text");
+      const depWidth = flags.deps ? maxWidth(data, "deps") : 0;
       const projWidth = maxWidth(data, "projects");
       const ctxWidth = maxWidth(data, "contexts");
       const dueWidth = maxWidth(data, "due");
@@ -105,18 +120,20 @@ export default class List extends Command {
       const result = calculateWidth(stdoutColumns, {
         numWidth: Math.max(1, data.length.toString().length + 1),
         priWidth: 1,
+        depWidth,
         textWidth,
         projWidth,
         ctxWidth,
         dueWidth
-      }, 2 * 6);
+      }, 2 * (6 + (flags.deps ? 1 : 0)));
 
       const tableData = data.map(({ index, task }) => {
         const color = type === "todo" ? colorTask(task) : null;
         return [
-          `${type.charAt(0)}${index+1}`,
+          `${type.charAt(0)}${index + 1}`,
           task.priority ?? "",
           task.text,
+          ...(flags.deps ? [task.deps?.join(" ") ?? ""] : []),
           task.projects?.join(" ") ?? "",
           task.contexts?.join(" ") ?? "",
           task.due ? DateTime.fromISO(task.due).toFormat("yyyy-MM-dd") : ""

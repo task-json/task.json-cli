@@ -1,16 +1,17 @@
 import {Command, flags} from '@oclif/command'
-import { filterByField, filterByPriority, normalizeTypes, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 import cli from "cli-ux";
 
 export default class Modify extends Command {
-  static description = 'Modify tasks (use empty value to delete the field or filter tasks without ';
+  static description = 'Modify tasks (use a single empty string to delete the field or filter tasks without it)';
 
   static examples = [
     `$ tj modify t1 -d 2020-12-12`,
     `$ tj modify d2 d3 -p projA -p projB`,
     `$ tj modify t1 -t "New description"`,
+    `$ tj modify t2 -p ""  # delete projects field`,
     `$ tj modify -T todo --filter-projects projA -p projB # Modify all projA to projB`,
   ];
 
@@ -49,6 +50,11 @@ export default class Modify extends Command {
     contexts: flags.string({
       char: "c",
       description: "modify contexts (overwrite all)",
+      multiple: true
+    }),
+    deps: flags.string({
+      char: "D",
+      description: "modify dependencies",
       multiple: true
     }),
     due: flags.string({
@@ -102,7 +108,7 @@ export default class Modify extends Command {
 
     const modifyTasks = (indexes: number[], type: TaskType) => {
       for (const index of indexes) {
-        const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due"];
+        const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due", "deps"];
 
         for (const field of fields) {
           const value = flags[field as FlagName] as string | string[] | undefined;
@@ -117,7 +123,7 @@ export default class Modify extends Command {
                 delete taskJson[type][index][field];
               }
             }
-            else {
+            else { // array of strings
               if (value.length === 1 && value[0].length === 0) {
                 delete taskJson[type][index][field];
               }
@@ -127,7 +133,11 @@ export default class Modify extends Command {
                     this.error(`Invalid empty ${field}`);
                   }
                 }
-                taskJson[type][index][field] = value as any;
+
+                if (field === "deps")
+                  taskJson[type][index][field] = numberToId(taskJson, value, this.error);
+                else
+                  taskJson[type][index][field] = value as any;
               }
             }
           }

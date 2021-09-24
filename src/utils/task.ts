@@ -1,6 +1,6 @@
 import { reset } from "chalk";
 import * as fs from "fs";
-import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType } from "task.json";
+import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType, idToIndex } from "task.json";
 import { dataPath } from "./config";
 
 export function readTaskJson() {
@@ -30,19 +30,24 @@ export function writeTaskJson(taskJson: TaskJson) {
 export function maxWidth(tasks: {
   index: number;
   task: Task;
-}[], field: "contexts" | "projects" | "text" | "due") {
+}[], field: "contexts" | "projects" | "text" | "due" | "deps") {
   return tasks.reduce((width: number, { task }) => {
     let w = 0;
     switch (field) {
       case "contexts":
+        w = 3;
       case "projects":
-        w = task[field]?.join(", ").length ?? 8;
+        w = 4;
+        w = Math.max(task[field]?.join(" ").length ?? 0, w);
         break;
       case "text":
         w = Math.max(task.text.length, 4);
         break;
       case "due":
         w = task.due ? 10 : 3;
+        break;
+      case "deps":
+        w = Math.max(task.deps?.join(" ").length ?? 0, 3);
         break;
     }
     return Math.max(w, width);
@@ -58,6 +63,17 @@ export function colorTask(task: Task) {
   if (urgency >= 1)
     return "cyan";
   return null;
+}
+
+export function idToNumber(taskJson: TaskJson, ids: string[]) {
+  const types: TaskType[] = ["todo", "done", "removed"];
+  const numbers: string[] = [];
+  for (const type of types) {
+    const indexes = idToIndex(taskJson, type, ids);
+    for (const index of indexes)
+      numbers.push(`${type.charAt(0)}${index+1}`);
+  }
+  return numbers;
 }
 
 export function parseNumbers(numbers: string[], taskJson: TaskJson, onError: (msg: string) => never) {
@@ -95,6 +111,17 @@ export function parseNumbers(numbers: string[], taskJson: TaskJson, onError: (ms
   return result;
 }
 
+export function numberToId(taskJson: TaskJson, numbers: string[], onError: (msg: string) => never) {
+  const result = parseNumbers(numbers, taskJson, onError);
+  // Get id for deps
+  const ids: string[] = [];
+  for (const [type, indexes] of Object.entries(result)) {
+    for (const index of indexes)
+      ids.push(taskJson[type as TaskType][index].id);
+  }
+  return ids;
+}
+
 export function normalizeTypes(types: string[], onError: (msg: string) => never) {
   const preset = new Set(["todo", "done", "removed", "all"])
   const result: Set<TaskType> = new Set();
@@ -112,6 +139,22 @@ export function normalizeTypes(types: string[], onError: (msg: string) => never)
       result.add(type as TaskType);
   }
   return [...result];
+}
+
+export function filterByDeps(flag: boolean) {
+  // Filter when not showing deps
+  if (flag)
+    return () => true;
+
+  return (task: Task) => {
+    if (task.deps)
+      for (const dep of task.deps) {
+        // Deps in todo
+        if (dep.startsWith("t"))
+          return false;
+      }
+    return true;
+  };
 }
 
 export function filterByPriority(priorities: string[] | undefined) {

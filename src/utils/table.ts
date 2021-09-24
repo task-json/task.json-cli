@@ -3,6 +3,7 @@ import { TableUserConfig } from "table";
 type ActualWidth = {
   numWidth: number; // fixed
   priWidth: number; // fixed
+  depWidth: number; // fixed
   textWidth: number; // dyn: 3/5
   projWidth: number; // dyn: 1/5
   ctxWidth: number; // dyn: 1/5
