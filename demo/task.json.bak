@@ -37,10 +37,7 @@
 			"text": "Send an email",
 			"priority": "B",
 			"start": "2021-04-21T05:16:01.417Z",
-			"modified": "2021-09-23T18:14:34.577Z",
-			"deps": [
-				"4395163e-96f7-4781-be9e-d43f8006aecf"
-			]
+			"modified": "2021-09-23T18:15:22.243Z"
 		},
 		{
 			"id": "de3e60e1-6558-4285-855b-c65b48c7ddf3",

@@ -24,7 +24,7 @@ export default class ListProj extends Command {
     const { flags } = this.parse(ListProj);
 
     const projects: Set<string> = new Set();
-    const types = normalizeTypes(flags.types, this.error);
+    const types = normalizeTypes(flags.types);
     const taskJson = readTaskJson();
 
     for (const type of types)

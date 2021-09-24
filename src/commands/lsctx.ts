@@ -24,7 +24,7 @@ export default class ListCtx extends Command {
     const { flags } = this.parse(ListCtx);
 
     const contexts: Set<string> = new Set();
-    const types = normalizeTypes(flags.types, this.error);
+    const types = normalizeTypes(flags.types);
     const taskJson = readTaskJson();
 
     for (const type of types)

@@ -76,9 +76,9 @@ export function idToNumber(taskJson: TaskJson, ids: string[]) {
   return numbers;
 }
 
-export function parseNumbers(numbers: string[], taskJson: TaskJson, onError: (msg: string) => never) {
+export function parseNumbers(numbers: string[], taskJson: TaskJson) {
   const handleError = (num: string): never => {
-    onError(`Invalid Number: ${num}`);
+    throw new Error(`Invalid Number: ${num}`);
   };
   const result = {
     todo: [] as number[],
@@ -111,8 +111,8 @@ export function parseNumbers(numbers: string[], taskJson: TaskJson, onError: (ms
   return result;
 }
 
-export function numberToId(taskJson: TaskJson, numbers: string[], onError: (msg: string) => never) {
-  const result = parseNumbers(numbers, taskJson, onError);
+export function numberToId(taskJson: TaskJson, numbers: string[]) {
+  const result = parseNumbers(numbers, taskJson);
   // Get id for deps
   const ids: string[] = [];
   for (const [type, indexes] of Object.entries(result)) {
@@ -122,12 +122,12 @@ export function numberToId(taskJson: TaskJson, numbers: string[], onError: (msg:
   return ids;
 }
 
-export function normalizeTypes(types: string[], onError: (msg: string) => never) {
+export function normalizeTypes(types: string[]) {
   const preset = new Set(["todo", "done", "removed", "all"])
   const result: Set<TaskType> = new Set();
   for (const type of types) {
     if (!preset.has(type))
-      onError(`Invalid task type: ${type}`);
+      throw new Error(`Invalid task type: ${type}`);
       
     if (type === "all") {
       result.add("todo");

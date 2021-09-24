@@ -29,7 +29,7 @@ export default class Remove extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson, this.error);
+    const indexes = parseNumbers(argv, taskJson);
     if (indexes.removed.length > 0)
       this.error("Cannot delete removed tasks")
     removeTasks(taskJson, "todo", indexes.todo);

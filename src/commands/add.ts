@@ -3,6 +3,7 @@ import { Task, TaskType } from "task.json";
 import { v4 as uuidv4 } from "uuid";
 import { numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { readConfig } from "../utils/config";
+import { parseDate } from '../utils/date';
 
 export default class Add extends Command {
   static description = 'Add a new task'
@@ -55,13 +56,12 @@ export default class Add extends Command {
 
     const text = argv.join(" ");
     const date = new Date().toISOString();
-    const due = flags.due && new Date(flags.due).toISOString();
+    const due = flags.due && parseDate(flags.due);
 
     let deps: string[] | undefined = undefined;
     if (flags.deps)
-      deps = numberToId(taskJson, flags.deps, this.error);
+      deps = numberToId(taskJson, flags.deps);
 
-    // TODO: add human-friendly date processing
     const task: Task = {
       id: uuidv4(),
       text,

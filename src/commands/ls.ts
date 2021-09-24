@@ -6,6 +6,7 @@ import { idToIndex, Task, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { DateTime } from "luxon";
+import { showDate } from '../utils/date';
 
 export default class List extends Command {
   static description = 'List tasks'
@@ -72,7 +73,7 @@ export default class List extends Command {
     };
 
     const taskJson = readTaskJson();
-    const types = normalizeTypes(flags.types, this.error);
+    const types = normalizeTypes(flags.types);
 
     for (const type of types) {
       const priorityFilter = filterByPriority(flags.priorities);
@@ -136,7 +137,7 @@ export default class List extends Command {
           ...(flags.deps ? [task.deps?.join(" ") ?? ""] : []),
           task.projects?.join(" ") ?? "",
           task.contexts?.join(" ") ?? "",
-          task.due ? DateTime.fromISO(task.due).toFormat("yyyy-MM-dd") : ""
+          task.due ? showDate(task.due) : ""
         ].map((field, i) => {
           let value = field;
           if (result) {

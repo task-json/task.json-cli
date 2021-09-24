@@ -3,6 +3,7 @@ import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbe
 import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 import cli from "cli-ux";
+import { parseDate } from '../utils/date';
 
 export default class Modify extends Command {
   static description = 'Modify tasks (use a single empty string to delete the field or filter tasks without it)';
@@ -115,7 +116,10 @@ export default class Modify extends Command {
           if (value !== undefined) {
             if (typeof value === "string") {
               if (value.length > 0) {
-                taskJson[type][index][field] = value as any;
+                if (field === "due")
+                  taskJson[type][index][field] = parseDate(value);
+                else
+                  taskJson[type][index][field] = value as any;
               }
               else {
                 if (field === "text")
@@ -135,7 +139,7 @@ export default class Modify extends Command {
                 }
 
                 if (field === "deps")
-                  taskJson[type][index][field] = numberToId(taskJson, value, this.error);
+                  taskJson[type][index][field] = numberToId(taskJson, value);
                 else
                   taskJson[type][index][field] = value as any;
               }
@@ -149,7 +153,7 @@ export default class Modify extends Command {
 
     let count = 0;
     if (argv.length === 0) {
-      const types = normalizeTypes(flags.types || ["all"], this.error);
+      const types = normalizeTypes(flags.types || ["all"]);
       const priorityFilter = filterByPriority(flags['filter-priorities']);
       const projectFilter = filterByField(
         "projects",
@@ -179,7 +183,7 @@ export default class Modify extends Command {
       }
     }
     else {
-      const numbers = parseNumbers(argv, taskJson, this.error);
+      const numbers = parseNumbers(argv, taskJson);
       for (const [type, indexes] of Object.entries(numbers)) {
         count += indexes.length;
         modifyTasks(indexes, type as TaskType);
