@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { normalizeTypes, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
 import { checkTaskExistence } from "../utils/config";
-import { TaskType, undoTasks } from "task.json";
+import { undoTasks } from "task.json";
 
 export default class Undo extends Command {
   static description = 'Undo tasks';
@@ -29,7 +29,7 @@ export default class Undo extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson, this.error);
+    const indexes = parseNumbers(argv, taskJson);
     if (indexes.todo.length > 0)
       this.error("Cannot delete removed tasks")
     undoTasks(taskJson, "done", indexes.done);

@@ -34,7 +34,7 @@ export default class Erase extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson, this.error);
+    const indexes = parseNumbers(argv, taskJson);
 
     let res = true;
     if (!flags.force) {

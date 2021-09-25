@@ -28,7 +28,7 @@ export default class Do extends Command {
     checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
-    const indexes = parseNumbers(argv, taskJson, this.error);
+    const indexes = parseNumbers(argv, taskJson);
     if (indexes.removed.length + indexes.done.length > 0)
       this.error("Cannot do done tasks or removed tasks");
     doTasks(taskJson, indexes.todo);
