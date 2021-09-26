@@ -20,6 +20,7 @@ export default class Remove extends Command {
 
   static args = [{
     name: "NUM...",
+    required: true,
     description: "delete specific tasks"
   }];
 

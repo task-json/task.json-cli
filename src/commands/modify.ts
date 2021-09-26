@@ -76,7 +76,7 @@ export default class Modify extends Command {
   static strict = false;
 
   static args = [{
-    name: "ID...",
+    name: "NUM...",
     description: "modify specific tasks"
   }];
 

@@ -20,6 +20,7 @@ export default class Undo extends Command {
 
   static args = [{
     name: "NUM...",
+    required: true,
     description: "undo specific done or removed tasks"
   }];
 

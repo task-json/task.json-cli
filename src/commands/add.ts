@@ -44,7 +44,9 @@ export default class Add extends Command {
   static strict = false;
 
   static args = [{
-    name: "text",
+    name: "TEXT",
+    required: true,
+    description: "text of the task"
   }];
 
   async run() {

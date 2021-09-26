@@ -8,6 +8,7 @@ export default class Do extends Command {
 
   static examples = [
     `$ tj do t1`,
+    `$ tj do t1 t2`
   ];
 
   static flags = {
@@ -19,6 +20,7 @@ export default class Do extends Command {
 
   static args = [{
     name: "NUM...",
+    required: true,
     description: "mark specific tasks as done"
   }];
 

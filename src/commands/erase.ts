@@ -25,6 +25,7 @@ export default class Erase extends Command {
 
   static args = [{
     name: "NUM...",
+    required: true,
     description: "erase specific removed tasks"
   }];
 
