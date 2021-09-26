@@ -1,6 +1,5 @@
-import { reset } from "chalk";
 import * as fs from "fs";
-import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType, idToIndex } from "task.json";
+import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
 import { dataPath } from "./config";
 
 export function readTaskJson() {
@@ -58,10 +57,30 @@ export function colorTask(task: Task) {
   const urgency = taskUrgency(task);
   if (urgency >= 1000)
     return "red";
-  if (urgency >= 100)
+  if (urgency >= 600)
     return "yellow";
-  if (urgency >= 1)
+  if (urgency >= 2)
     return "cyan";
+  return null;
+}
+
+export function colorPriority(pri: string) {
+  switch (pri) {
+    case "A":
+      return "red";
+    case "B":
+      return "yellow";
+    default:
+      return "cyan";
+  }
+}
+
+export function colorDue(due: string) {
+  const urgency = dueUrgency(due);
+  if (urgency >= 1000)
+    return "red";
+  if (urgency >= 600)
+    return "yellow";
   return null;
 }
 

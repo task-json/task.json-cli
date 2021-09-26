@@ -2,10 +2,9 @@ import {Command, flags} from '@oclif/command'
 import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, readTaskJson } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
-import { idToIndex, Task, taskUrgency } from "task.json";
+import { Task, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
-import { DateTime } from "luxon";
 import { showDate } from '../utils/date';
 
 export default class List extends Command {
