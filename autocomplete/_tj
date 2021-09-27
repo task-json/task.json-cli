@@ -24,24 +24,14 @@ _tj() {
   }
 
   complete_contexts() {
-    compadd $(tj lsctx -a)
+    compadd $(tj lsctx -T todo -T done)
   }
   complete_projects() {
-    compadd $(tj lsproj -a)
+    compadd $(tj lsproj -T todo -T done)
   }
-
-  local lsnum_flag=""
-  local done_pattern="(-D)|(--done)"
-  local removed_pattern="(-R)|(--removed)"
-
-  # check if done flag is set
-  if (($words[(I)$done_pattern])); then
-    lsnum_flag="-D"
-  fi
-  # check if removed flag is set
-  if (($words[(I)$removed_pattern])); then
-    lsnum_flag="-R"
-  fi
+  complete_numbers() {
+    compadd $(tj lsnum -T all)
+  }
 
   local command_name=${words[2]}
   local -a command_flags=(
@@ -56,6 +46,7 @@ _tj() {
           "(-P --priority)"{-P,--priority}"[priority (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[one or more projects]: :complete_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
+          "*"{-D,--deps}"[dependencies (use #)]: :complete_numbers"
           "(-d --due)"{-d,--due}"[due date]:"
         )
       ;;
@@ -69,21 +60,21 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-r --removed)"{-r,--removed}"[restore removed tasks]"
-          "*:num:($(tj lsnum -D))"
+          "*:num:($(tj lsnum -T done -T removed))"
         )
       ;;
       rm)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-D --done)"{-D,--done}"[delete done tasks]"
-          "*:num:($(tj lsnum $lsnum_flag))"
+          "*:num:($(tj lsnum -T todo -T done))"
         )
       ;;
       erase)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "(-f --force)"{-f,--force}"[force overwriting without confirmation]"
-          "*:num:($(tj lsnum -R))"
+          "*:num:($(tj lsnum -T removed))"
         )
       ;;
       restore)
@@ -114,11 +105,17 @@ _tj() {
           "(-r --reset)"{-r,--reset}"[reset all configurations]"
         )
       ;;
+      detail)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "*:num:complete_numbers"
+        )
+      ;;
       ls)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-D --done)"{-D,--done}"[list only done tasks]"
-          "(-R --removed)"{-R,--removed}"[list only removed tasks]"
+          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]"
+          "*"{-D,--deps}"[show dependent tasks and dependencies]"
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[filter tasks by specific projects]: :complete_projects"
           "*"{-c,--contexts}"[filter tasks by specific contexts]: :complete_contexts"
@@ -129,28 +126,25 @@ _tj() {
       lsnum)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-D --done)"{-D,--done}"[list numbers of only done tasks]"
-          "(-R --removed)"{-R,--removed}"[list numbers of only removed tasks]"
+          "*"{-T,--types}"[list numbers of tasks of types (todo, done, removed, all)]"
         )
       ;;
       lsctx)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-a --all)"{-a,--all}"[list contexts of all tasks including done ones]"
-          "(-D --done)"{-D,--done}"[list contexts of only done tasks]"
+          "*"{-T,--types}"[list contexts of tasks of types (todo, done, removed, all)]"
         )
       ;;
       lsproj)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-a --all)"{-a,--all}"[list projects of all tasks including done ones]"
-          "(-D --done)"{-D,--done}"[list projects of only done tasks]"
+          "*"{-T,--types}"[list projects of tasks of types (todo, done, removed, all)]"
         )
       ;;
       modify)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "(-D --done)"{-D,--done}"[modify done tasks]"
+          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]"
           "*--filter-priorities[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*--filter-projects[filter tasks by specific projects]: :complete_projects"
           "*--filter-contexts[filter tasks by specific contexts]: :complete_contexts"
@@ -161,8 +155,9 @@ _tj() {
           "(-P --priority)"{-P,--priority}"[modify priority (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[modify projects (overwrite all)]: :complete_projects"
           "*"{-c,--contexts}"[modify contexts (overwrite all)]: :complete_contexts"
+          "*"{-D,--deps}"[modify dependencies (overwrite all)]: :complete_numbers"
           "(-d --due)"{-d,--due}"[modify due date]:"
-          "*:num:($(tj lsnum $lsnum_flag))"
+          "*:num:complete_numbers"
         )
       ;;
       autocomplete)
