@@ -36,7 +36,7 @@ export default class ListProj extends Command {
       }
     }
     catch (error) {
-      this.error(error);
+      this.error(error as Error);
     }
   }
 }
