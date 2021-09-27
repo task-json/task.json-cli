@@ -7,6 +7,7 @@ _tj() {
 		"do:mark tasks as done"
     "erase:erase removed tasks"
     "login:login into the server"
+    "detail:show task details"
 		"ls:list tasks"
 		"lsnum:list numbers"
 		"lsctx:list contexts"
