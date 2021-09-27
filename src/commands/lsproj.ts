@@ -14,7 +14,7 @@ export default class ListProj extends Command {
     help: flags.help({char: 'h'}),
     types: flags.string({
       char: "T",
-      description: "list contexts of tasks of types (todo, done, removed, all) [default: todo]",
+      description: "list projects of tasks of types (todo, done, removed, all) [default: todo]",
       default: ["todo"],
       multiple: true
     })

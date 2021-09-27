@@ -32,7 +32,7 @@ export default class Add extends Command {
     }),
     deps: flags.string({
       char: "D",
-      description: "Dependencies (use #)",
+      description: "dependencies (use #)",
       multiple: true
     }),
     due: flags.string({
