@@ -26,32 +26,6 @@ export function writeTaskJson(taskJson: TaskJson) {
   );
 }
 
-export function maxWidth(tasks: {
-  index: number;
-  task: Task;
-}[], field: "contexts" | "projects" | "text" | "due" | "deps") {
-  return tasks.reduce((width: number, { task }) => {
-    let w = 0;
-    switch (field) {
-      case "contexts":
-        w = 3;
-      case "projects":
-        w = 4;
-        w = Math.max(task[field]?.join(" ").length ?? 0, w);
-        break;
-      case "text":
-        w = Math.max(task.text.length, 4);
-        break;
-      case "due":
-        w = task.due ? 10 : 3;
-        break;
-      case "deps":
-        w = Math.max(task.deps?.join(" ").length ?? 0, 3);
-        break;
-    }
-    return Math.max(w, width);
-  }, 0);
-}
 
 export function colorTask(task: Task) {
   const urgency = taskUrgency(task);
@@ -219,3 +193,32 @@ export function stringifyDiffStat(stat: DiffStat) {
 		.join(", ");
 }
 
+export type TaskStr = {
+  number: string;
+  priority: string;
+  text: string;
+  deps?: string;
+  projects: string;
+  contexts: string;
+  due: string;
+  color: ReturnType<typeof colorTask> | null;
+};
+
+export function maxWidth(tasks: TaskStr[], deps: boolean) {
+  const initWidths = {
+    text: 4,
+    contexts: 3,
+    projects: 4,
+    deps: deps ? 3 : 0,
+    due: 3
+  };
+  return tasks.reduce<typeof initWidths>((widths, task) => {
+    for (const [field, value] of Object.entries(widths)) {
+      if (field === "deps" && !deps)
+        continue;
+      type Key = keyof typeof initWidths;
+      widths[field as Key] = Math.max(task[field as Key]!.length, value);
+    }
+    return widths;
+  }, initWidths);
+}

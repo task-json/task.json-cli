@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, readTaskJson } from "../utils/task";
+import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, readTaskJson, TaskStr } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
 import { Task, taskUrgency } from "task.json";
@@ -59,7 +59,7 @@ export default class List extends Command {
     const { flags } = this.parse(List);
 
     const header = [
-      ["#", "P", "Text", ...(flags.deps ? ["Dep"] : []), "Proj", "Ctx", "Due"]
+      ["#", "P", "Text", "Proj", "Ctx", "Due", ...(flags.deps ? ["Dep"] : [])]
     ];
 
     const stdoutColumns = process.stdout.columns ?? 80;
@@ -111,32 +111,37 @@ export default class List extends Command {
           return taskUrgency(b.task) - taskUrgency(a.task);
         });
 
-      const textWidth = maxWidth(data, "text");
-      const depWidth = flags.deps ? maxWidth(data, "deps") : 0;
-      const projWidth = maxWidth(data, "projects");
-      const ctxWidth = maxWidth(data, "contexts");
-      const dueWidth = maxWidth(data, "due");
+      const processedData: TaskStr[] = data.map(({ task, index }) => ({
+        number: `${type.charAt(0)}${index + 1}`,
+        priority: task.priority ?? "",
+        text: task.text,
+        ...(flags.deps && { deps: task.deps?.join(" ") ?? "" }),
+        projects: task.projects?.join(" ") ?? "",
+        contexts: task.contexts?.join(" ") ?? "",
+        due: task.due ? showDate(task.due) : "",
+        color: type === "todo" ? colorTask(task) : null
+      }));
+
+      const widths = maxWidth(processedData, flags.deps);
 
       const result = calculateWidth(stdoutColumns, {
         numWidth: Math.max(1, data.length.toString().length + 1),
         priWidth: 1,
-        depWidth,
-        textWidth,
-        projWidth,
-        ctxWidth,
-        dueWidth
+        depWidth: widths.deps,
+        textWidth: widths.text,
+        projWidth: widths.projects,
+        ctxWidth: widths.contexts,
+        dueWidth: widths.due
       }, 2 * (6 + (flags.deps ? 1 : 0)));
 
-      const tableData = data.map(({ index, task }) => {
-        const color = type === "todo" ? colorTask(task) : null;
-        return [
-          `${type.charAt(0)}${index + 1}`,
-          task.priority ?? "",
+      const tableData = processedData.map(task => {
+        const row = [
+          task.number,
+          task.priority,
           task.text,
-          ...(flags.deps ? [task.deps?.join(" ") ?? ""] : []),
-          task.projects?.join(" ") ?? "",
-          task.contexts?.join(" ") ?? "",
-          task.due ? showDate(task.due) : ""
+          task.projects,
+          task.contexts,
+          task.due,
         ].map((field, i) => {
           let value = field;
           if (result) {
@@ -147,9 +152,15 @@ export default class List extends Command {
             if (i === 4)
               value = wrapAnsi(field, result.ctxWidth, wrapOptions);
           }
-
-          return color ? chalk[color].bold(value) : value;
+          return value;
         });
+        if (flags.deps) {
+          let value = task.deps!;
+          if (result)
+            value = wrapAnsi(value, result.depWidth, wrapOptions);
+          row.push(value);
+        }
+        return row.map(value => task.color ? chalk[task.color].bold(value) : value);
       });
 
       const output = table(header.concat(tableData), tableConfig);
