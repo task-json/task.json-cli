@@ -30,7 +30,7 @@ export default class ListNum extends Command {
     const nums: string[] = [];
     for (const type of types) {
       const size = taskJson[type].length;
-      nums.push(..._.range(1, size).map(n => `${type.charAt(0)}${n}`));
+      nums.push(..._.range(1, size+1).map(n => `${type.charAt(0)}${n}`));
     }
 
     this.log(nums.join("\n"));
