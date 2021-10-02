@@ -165,7 +165,8 @@ export default class List extends Command {
 
       const output = table(header.concat(tableData), tableConfig);
 
-      this.log(`\n${output}`);
+      // Remove one extra newline
+      this.log(`\n${output.substr(0, output.length - 1)}`);
     }
   }
 }
