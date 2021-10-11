@@ -34,6 +34,7 @@ _tj() {
     compadd $(tj lsnum -T all)
   }
 
+  local task_types=(todo done removed all)
   local command_name=${words[2]}
   local -a command_flags=(
     "(- *)"{-h,--help}"[show CLI help]"
@@ -115,7 +116,7 @@ _tj() {
       ls)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]"
+          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
           "*"{-D,--deps}"[show dependent tasks and dependencies]"
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[filter tasks by specific projects]: :complete_projects"
@@ -127,25 +128,25 @@ _tj() {
       lsnum)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-T,--types}"[list numbers of tasks of types (todo, done, removed, all)]"
+          "*"{-T,--types}"[list numbers of tasks of types (todo, done, removed, all)]: :($task_types)"
         )
       ;;
       lsctx)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-T,--types}"[list contexts of tasks of types (todo, done, removed, all)]"
+          "*"{-T,--types}"[list contexts of tasks of types (todo, done, removed, all)]: :($task_types)"
         )
       ;;
       lsproj)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-T,--types}"[list projects of tasks of types (todo, done, removed, all)]"
+          "*"{-T,--types}"[list projects of tasks of types (todo, done, removed, all)]: :($task_types)"
         )
       ;;
       modify)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]"
+          "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
           "*--filter-priorities[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*--filter-projects[filter tasks by specific projects]: :complete_projects"
           "*--filter-contexts[filter tasks by specific contexts]: :complete_contexts"
