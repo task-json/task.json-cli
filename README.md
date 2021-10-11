@@ -27,7 +27,7 @@ $ npm install -g task.json-cli
 $ tj COMMAND
 running command...
 $ tj (-v|--version|version)
-task.json-cli/5.0.3 linux-x64 node-v16.9.1
+task.json-cli/5.0.4 linux-x64 node-v16.10.0
 $ tj --help [COMMAND]
 USAGE
   $ tj COMMAND
@@ -80,7 +80,7 @@ EXAMPLES
   $ tj add Hello World -p test -D t1 -D t2
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/add.ts)_
 
 ## `tj autocomplete DIR`
 
@@ -101,7 +101,7 @@ EXAMPLE
   $ tj autocomplete --zsh ~/.zsh_completion
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/autocomplete.ts)_
 
 ## `tj config`
 
@@ -124,7 +124,7 @@ EXAMPLES
   $ tj config --server ""  # reset server
 ```
 
-_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/config.ts)_
 
 ## `tj detail NUM...`
 
@@ -145,7 +145,7 @@ EXAMPLES
   $ tj detail t1 d1
 ```
 
-_See code: [src/commands/detail.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/detail.ts)_
+_See code: [src/commands/detail.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/detail.ts)_
 
 ## `tj do NUM...`
 
@@ -166,7 +166,7 @@ EXAMPLES
   $ tj do t1 t2
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/do.ts)_
 
 ## `tj erase NUM...`
 
@@ -187,7 +187,7 @@ EXAMPLE
   $ tj erase r1
 ```
 
-_See code: [src/commands/erase.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/erase.ts)_
+_See code: [src/commands/erase.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/erase.ts)_
 
 ## `tj help [COMMAND]`
 
@@ -223,7 +223,7 @@ EXAMPLES
   $ tj login --password "xxx"  # log in with password
 ```
 
-_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/login.ts)_
+_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/login.ts)_
 
 ## `tj ls`
 
@@ -250,7 +250,7 @@ EXAMPLES
   $ tj ls -p projA -p projB  # list tasks with projA or projB
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/ls.ts)_
 
 ## `tj lsctx`
 
@@ -269,7 +269,7 @@ EXAMPLES
   $ tj lsctx -T all
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/lsctx.ts)_
 
 ## `tj lsnum`
 
@@ -289,7 +289,7 @@ EXAMPLES
   $ tj lsnum -T done
 ```
 
-_See code: [src/commands/lsnum.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/lsnum.ts)_
+_See code: [src/commands/lsnum.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/lsnum.ts)_
 
 ## `tj lsproj`
 
@@ -308,7 +308,7 @@ EXAMPLES
   $ tj lsproj -T all
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/lsproj.ts)_
 
 ## `tj modify [NUM...]`
 
@@ -356,7 +356,7 @@ EXAMPLES
   $ tj modify -T todo --filter-projects projA -p projB # Modify all projA to projB
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/modify.ts)_
 
 ## `tj restore`
 
@@ -375,7 +375,7 @@ EXAMPLES
   $ tj restore -f
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/restore.ts)_
 
 ## `tj rm NUM...`
 
@@ -396,7 +396,7 @@ EXAMPLES
   $ tj rm d1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/rm.ts)_
 
 ## `tj sync`
 
@@ -418,7 +418,7 @@ EXAMPLES
   $ tj sync --download --force
 ```
 
-_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/sync.ts)_
+_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/sync.ts)_
 
 ## `tj undo NUM...`
 
@@ -439,5 +439,5 @@ EXAMPLES
   $ tj undo r1 r2  # restore removed tasks
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.3/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v5.0.4/src/commands/undo.ts)_
 <!-- commandsstop -->
