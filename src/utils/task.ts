@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
-import { dataPath } from "./config";
+import { dataPath, emptyRootGuard } from "./config";
 
 export function readTaskJson() {
   let taskJson: TaskJson;
@@ -15,6 +15,8 @@ export function readTaskJson() {
 }
 
 export function writeTaskJson(taskJson: TaskJson) {
+  emptyRootGuard();
+
   // Backup
   if (fs.existsSync(dataPath))
     fs.renameSync(dataPath, dataPath + ".bak");

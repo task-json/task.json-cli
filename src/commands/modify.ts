@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
-import { checkTaskExistence } from "../utils/config";
 import { Task, TaskType } from 'task.json';
 import cli from "cli-ux";
 import { parseDate } from '../utils/date';
@@ -82,8 +81,6 @@ export default class Modify extends Command {
 
   async run() {
     const { argv, flags } = this.parse(Modify);
-
-    checkTaskExistence(this.error);
 
     type FlagName = keyof (typeof flags);
     let hasFilters = false;

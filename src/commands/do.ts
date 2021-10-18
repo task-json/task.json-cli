@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
-import { checkTaskExistence } from "../utils/config";
 import { doTasks } from "task.json";
 
 export default class Do extends Command {
@@ -26,8 +25,6 @@ export default class Do extends Command {
 
   async run() {
     const { argv } = this.parse(Do);
-
-    checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
     const indexes = parseNumbers(argv, taskJson);

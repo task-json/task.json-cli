@@ -1,8 +1,7 @@
 import { Command, flags } from '@oclif/command'
-import { Task, TaskType } from "task.json";
+import { Task } from "task.json";
 import { v4 as uuidv4 } from "uuid";
-import { numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
-import { readConfig } from "../utils/config";
+import { numberToId, readTaskJson, writeTaskJson } from "../utils/task";
 import { parseDate } from '../utils/date';
 
 export default class Add extends Command {
@@ -52,8 +51,6 @@ export default class Add extends Command {
   async run() {
     const { argv, flags } = this.parse(Add);
 
-    // Create rootPath if not exists
-    readConfig();
     const taskJson = readTaskJson();
 
     const text = argv.join(" ");

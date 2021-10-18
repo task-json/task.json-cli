@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
-import { checkTaskExistence } from "../utils/config";
 import { undoTasks } from "task.json";
 
 export default class Undo extends Command {
@@ -26,8 +25,6 @@ export default class Undo extends Command {
 
   async run() {
     const { argv } = this.parse(Undo);
-
-    checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
     const indexes = parseNumbers(argv, taskJson);

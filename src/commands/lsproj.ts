@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import { normalizeTypes, readTaskJson } from "../utils/task";
-import { TaskType } from "task.json";
 
 export default class ListProj extends Command {
   static description = 'List projects'

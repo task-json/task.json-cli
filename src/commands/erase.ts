@@ -1,6 +1,5 @@
 import {Command, flags} from '@oclif/command'
 import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
-import { checkTaskExistence } from "../utils/config";
 import { eraseTasks } from 'task.json';
 import cli from "cli-ux";
 
@@ -31,8 +30,6 @@ export default class Erase extends Command {
 
   async run() {
     const { argv, flags } = this.parse(Erase);
-
-    checkTaskExistence(this.error);
 
     const taskJson = readTaskJson();
     const indexes = parseNumbers(argv, taskJson);
