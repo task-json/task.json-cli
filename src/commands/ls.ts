@@ -6,6 +6,7 @@ import { Task, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { showDate } from '../utils/date';
+import { readWorkspace } from '../utils/workspace';
 
 export default class List extends Command {
   static description = 'List tasks'
@@ -52,6 +53,9 @@ export default class List extends Command {
     "and-contexts": flags.boolean({
       description: "filter contexts using AND operator instead of OR",
       default: false
+    }),
+    "no-workspace": flags.boolean({
+      description: "ignore workspace settings temporarily"
     })
   }
 
@@ -72,19 +76,21 @@ export default class List extends Command {
     };
 
     const taskJson = readTaskJson();
+    const workspace = flags["no-workspace"] ? {} : readWorkspace();
     const types = normalizeTypes(flags.types);
 
     for (const type of types) {
       const priorityFilter = filterByPriority(flags.priorities);
       const depFilter = filterByDeps(flags.deps);
+      // use workpsace's values if not specified
       const projectFilter = filterByField(
         "projects",
-        flags.projects,
+        flags.projects ?? workspace.projects,
         flags["and-projects"]
       );
       const contextFilter = filterByField(
         "contexts",
-        flags.contexts,
+        flags.contexts ?? workspace.contexts,
         flags["and-contexts"]
       );
 

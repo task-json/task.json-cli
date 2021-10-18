@@ -3,6 +3,7 @@ import { Task } from "task.json";
 import { v4 as uuidv4 } from "uuid";
 import { numberToId, readTaskJson, writeTaskJson } from "../utils/task";
 import { parseDate } from '../utils/date';
+import { readWorkspace } from '../utils/workspace';
 
 export default class Add extends Command {
   static description = 'Add a new task'
@@ -37,6 +38,9 @@ export default class Add extends Command {
     due: flags.string({
       char: "d",
       description: "due date"
+    }),
+    "no-workspace": flags.boolean({
+      description: "ignore workspace settings temporarily"
     })
   }
 
@@ -52,6 +56,7 @@ export default class Add extends Command {
     const { argv, flags } = this.parse(Add);
 
     const taskJson = readTaskJson();
+    const workspace = flags["no-workspace"] ? {} : readWorkspace();
 
     const text = argv.join(" ");
     const date = new Date().toISOString();
@@ -61,12 +66,13 @@ export default class Add extends Command {
     if (flags.deps)
       deps = numberToId(taskJson, flags.deps);
 
+    // use workpsace's values if not specified
     const task: Task = {
       id: uuidv4(),
       text,
       priority: flags.priority,
-      contexts: flags.contexts,
-      projects: flags.projects,
+      contexts: flags.contexts ?? workspace.contexts,
+      projects: flags.projects ?? workspace.projects,
       deps,
       due,
       start: date,
