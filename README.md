@@ -27,7 +27,7 @@ $ npm install -g task.json-cli
 $ tj COMMAND
 running command...
 $ tj (-v|--version|version)
-task.json-cli/5.2.0 linux-x64 node-v16.10.0
+task.json-cli/5.3.0 linux-x64 node-v16.10.0
 $ tj --help [COMMAND]
 USAGE
   $ tj COMMAND
@@ -83,7 +83,7 @@ EXAMPLES
   $ tj add Hello World -p test -D t1 -D t2
 ```
 
-_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/add.ts)_
 
 ## `tj autocomplete DIR`
 
@@ -104,7 +104,7 @@ EXAMPLE
   $ tj autocomplete --zsh ~/.zsh_completion
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/autocomplete.ts)_
 
 ## `tj config`
 
@@ -115,19 +115,19 @@ USAGE
   $ tj config
 
 OPTIONS
-  -h, --help           show CLI help
-  -r, --reset          reset all configurations
-  -s, --server=server  set server address
-  -t, --token=token    set token for login
+  -h, --help                    show CLI help
+  -r, --reset=server|token|all  reset configurations (server, token, all)
+  -s, --server=server           set server address
+  -t, --token=token             set token for login
 
 EXAMPLES
   $ tj config  # show config
-  $ tj config --reset  # reset all config
   $ tj config --server "http://localhost:3000"  # set config
-  $ tj config --server ""  # reset server
+  $ tj config --reset all  # reset all config
+  $ tj config -r server -r token # reset server and token
 ```
 
-_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/config.ts)_
 
 ## `tj detail NUM...`
 
@@ -148,7 +148,7 @@ EXAMPLES
   $ tj detail t1 d1
 ```
 
-_See code: [src/commands/detail.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/detail.ts)_
+_See code: [src/commands/detail.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/detail.ts)_
 
 ## `tj do NUM...`
 
@@ -169,7 +169,7 @@ EXAMPLES
   $ tj do t1 t2
 ```
 
-_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/do.ts)_
+_See code: [src/commands/do.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/do.ts)_
 
 ## `tj due`
 
@@ -187,7 +187,7 @@ EXAMPLE
   $ tj due
 ```
 
-_See code: [src/commands/due.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/due.ts)_
+_See code: [src/commands/due.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/due.ts)_
 
 ## `tj erase NUM...`
 
@@ -208,7 +208,7 @@ EXAMPLE
   $ tj erase r1
 ```
 
-_See code: [src/commands/erase.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/erase.ts)_
+_See code: [src/commands/erase.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/erase.ts)_
 
 ## `tj help [COMMAND]`
 
@@ -244,7 +244,7 @@ EXAMPLES
   $ tj login --password "xxx"  # log in with password
 ```
 
-_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/login.ts)_
+_See code: [src/commands/login.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/login.ts)_
 
 ## `tj ls`
 
@@ -255,15 +255,15 @@ USAGE
   $ tj ls
 
 OPTIONS
-  -D, --deps                   show dependent tasks and dependencies [default: false]
-  -P, --priorities=priorities  filter tasks by priorities (A-Z)
-  -T, --types=types            [default: todo] filter tasks by types (todo, done, removed, all) [default: todo]
-  -c, --contexts=contexts      filter tasks by specific contexts
-  -h, --help                   show CLI help
-  -p, --projects=projects      filter tasks by specific projects
-  --and-contexts               filter contexts using AND operator instead of OR
-  --and-projects               filter projects using AND operator instead of OR
-  --no-workspace               ignore workspace settings temporarily
+  -D, --deps                         show dependent tasks and dependencies [default: false]
+  -P, --priorities=priorities        filter tasks by priorities (A-Z)
+  -T, --types=todo|done|removed|all  [default: todo] filter tasks by types (todo, done, removed, all) [default: todo]
+  -c, --contexts=contexts            filter tasks by specific contexts
+  -h, --help                         show CLI help
+  -p, --projects=projects            filter tasks by specific projects
+  --and-contexts                     filter contexts using AND operator instead of OR
+  --and-projects                     filter projects using AND operator instead of OR
+  --no-workspace                     ignore workspace settings temporarily
 
 EXAMPLES
   $ tj ls
@@ -272,7 +272,7 @@ EXAMPLES
   $ tj ls -p projA -p projB  # list tasks with projA or projB
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/ls.ts)_
 
 ## `tj lsctx`
 
@@ -283,15 +283,17 @@ USAGE
   $ tj lsctx
 
 OPTIONS
-  -T, --types=types  [default: todo] list contexts of tasks of types (todo, done, removed, all) [default: todo]
-  -h, --help         show CLI help
+  -T, --types=todo|done|removed|all  [default: todo] list contexts of tasks of types (todo, done, removed, all)
+                                     [default: todo]
+
+  -h, --help                         show CLI help
 
 EXAMPLES
   $ tj lsctx
   $ tj lsctx -T all
 ```
 
-_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/lsctx.ts)_
+_See code: [src/commands/lsctx.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/lsctx.ts)_
 
 ## `tj lsnum`
 
@@ -302,8 +304,10 @@ USAGE
   $ tj lsnum
 
 OPTIONS
-  -T, --types=types  [default: todo] list numbers of tasks of types (todo, done, removed, all) [default: todo]
-  -h, --help         show CLI help
+  -T, --types=todo|done|removed|all  [default: todo] list numbers of tasks of types (todo, done, removed, all) [default:
+                                     todo]
+
+  -h, --help                         show CLI help
 
 EXAMPLES
   $ tj lsnum
@@ -311,7 +315,7 @@ EXAMPLES
   $ tj lsnum -T done
 ```
 
-_See code: [src/commands/lsnum.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/lsnum.ts)_
+_See code: [src/commands/lsnum.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/lsnum.ts)_
 
 ## `tj lsproj`
 
@@ -322,15 +326,17 @@ USAGE
   $ tj lsproj
 
 OPTIONS
-  -T, --types=types  [default: todo] list projects of tasks of types (todo, done, removed, all) [default: todo]
-  -h, --help         show CLI help
+  -T, --types=todo|done|removed|all  [default: todo] list projects of tasks of types (todo, done, removed, all)
+                                     [default: todo]
+
+  -h, --help                         show CLI help
 
 EXAMPLES
   $ tj lsproj
   $ tj lsproj -T all
 ```
 
-_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/lsproj.ts)_
+_See code: [src/commands/lsproj.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/lsproj.ts)_
 
 ## `tj modify [NUM...]`
 
@@ -347,7 +353,7 @@ OPTIONS
   -D, --deps=deps                        modify dependencies
   -P, --priority=priority                modify priority (A-Z)
 
-  -T, --types=types                      filter tasks by types (todo, done, removed, all) [default: all (if no number
+  -T, --types=todo|done|removed|all      filter tasks by types (todo, done, removed, all) [default: all (if no number
                                          specified)
 
   -c, --contexts=contexts                modify contexts (overwrite all)
@@ -378,7 +384,7 @@ EXAMPLES
   $ tj modify -T todo --filter-projects projA -p projB # Modify all projA to projB
 ```
 
-_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/modify.ts)_
+_See code: [src/commands/modify.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/modify.ts)_
 
 ## `tj restore`
 
@@ -397,7 +403,7 @@ EXAMPLES
   $ tj restore -f
 ```
 
-_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/restore.ts)_
+_See code: [src/commands/restore.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/restore.ts)_
 
 ## `tj rm NUM...`
 
@@ -418,7 +424,7 @@ EXAMPLES
   $ tj rm d1
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/rm.ts)_
 
 ## `tj sync`
 
@@ -440,7 +446,7 @@ EXAMPLES
   $ tj sync --download --force
 ```
 
-_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/sync.ts)_
+_See code: [src/commands/sync.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/sync.ts)_
 
 ## `tj undo NUM...`
 
@@ -461,7 +467,7 @@ EXAMPLES
   $ tj undo r1 r2  # restore removed tasks
 ```
 
-_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/undo.ts)_
+_See code: [src/commands/undo.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/undo.ts)_
 
 ## `tj workspace`
 
@@ -472,21 +478,23 @@ USAGE
   $ tj workspace
 
 OPTIONS
-  -c, --contexts=contexts  set current contexts (auto filter and set contexts for other commands [add, ls] not
-                           specified)
+  -c, --contexts=contexts            set current contexts (auto filter and set contexts for other commands [add, ls] if
+                                     not specified. empty to reset)
 
-  -h, --help               show CLI help
+  -h, --help                         show CLI help
 
-  -p, --projects=projects  set current projects (auto filter and set projects for other commands [add, ls] if not
-                           specified)
+  -p, --projects=projects            set current projects (auto filter and set projects for other commands [add, ls] if
+                                     not specified. empty to reset)
 
-  -r, --reset              reset workspace (to empty)
+  -r, --reset=contexts|projects|all  reset fields (projects, contexts, all) to empty
 
 EXAMPLES
   $ tj workspace -c ctxA
   $ tj workspace -c ctxA -c ctxB -p projA
-  $ tj workspace -r  # reset workspace to empty
+  $ tj workspace -p ""  # set projects to empty
+  $ tj workspace -r projects  # reset projects to empty
+  $ tj workspace -r all # reset both ctx and proj to empty
 ```
 
-_See code: [src/commands/workspace.ts](https://github.com/DCsunset/task.json-cli/blob/v5.2.0/src/commands/workspace.ts)_
+_See code: [src/commands/workspace.ts](https://github.com/DCsunset/task.json-cli/blob/v5.3.0/src/commands/workspace.ts)_
 <!-- commandsstop -->
