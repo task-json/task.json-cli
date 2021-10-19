@@ -67,13 +67,17 @@ export default class Add extends Command {
     if (flags.deps)
       deps = numberToId(taskJson, flags.deps);
 
+    // Remove empty values
+    const projects = (flags.projects ?? workspace.projects)?.filter(v => v !== "");
+    const contexts = (flags.contexts ?? workspace.contexts)?.filter(v => v !== "");
+
     // use workpsace's values if not specified
     const task: Task = {
       id: uuidv4(),
       text,
       priority: flags.priority,
-      contexts: flags.contexts ?? workspace.contexts,
-      projects: flags.projects ?? workspace.projects,
+      contexts: contexts?.length ? contexts : undefined,
+      projects: projects?.length ? projects : undefined,
       deps,
       due,
       start: date,
