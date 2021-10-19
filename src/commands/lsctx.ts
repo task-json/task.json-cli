@@ -15,6 +15,7 @@ export default class ListCtx extends Command {
       char: "T",
       description: "list contexts of tasks of types (todo, done, removed, all) [default: todo]",
       default: ["todo"],
+      options: ["todo", "done", "removed", "all"],
       multiple: true
     })
   }

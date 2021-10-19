@@ -21,6 +21,7 @@ export default class Modify extends Command {
     types: flags.string({
       char: "T",
       description: "filter tasks by types (todo, done, removed, all) [default: all (if no number specified)",
+      options: ["todo", "done", "removed", "all"],
       multiple: true
     }),
     "filter-priorities": flags.string({

@@ -25,6 +25,7 @@ export default class List extends Command {
       char: "T",
       description: "filter tasks by types (todo, done, removed, all) [default: todo]",
       default: ["todo"],
+      options: ["todo", "done", "removed", "all"],
       multiple: true
     }),
     deps: flags.boolean({

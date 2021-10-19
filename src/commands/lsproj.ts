@@ -15,6 +15,7 @@ export default class ListProj extends Command {
       char: "T",
       description: "list projects of tasks of types (todo, done, removed, all) [default: todo]",
       default: ["todo"],
+      options: ["todo", "done", "removed", "all"],
       multiple: true
     })
   }
