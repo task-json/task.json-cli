@@ -24,6 +24,7 @@ export default class ConfigCommand extends Command {
     reset: flags.string({
       char: "r",
       description: "reset configurations (server, token, all)",
+      options: ["server", "token", "all"],
       multiple: true
     })
   };

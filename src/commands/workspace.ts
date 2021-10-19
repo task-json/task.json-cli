@@ -28,6 +28,7 @@ export default class WorkspaceCommand extends Command {
     reset: flags.string({
       char: "r",
       description: "reset fields (projects, contexts, all) to empty",
+      options: ["contexts", "projects", "all"],
       multiple: true
     })
   };
@@ -65,7 +66,7 @@ export default class WorkspaceCommand extends Command {
     if (showWorkspace) {
       for (const [key, value] of Object.entries(workspace)) {
         if (Array.isArray(value)) {
-          this.log(`${key}: ${value.join(", ")}`);
+          this.log(`${key}: ${value.map(v => v.length ? v : '""').join(", ")}`);
         }
         else {
           this.log(`${key}: ${value}`);
