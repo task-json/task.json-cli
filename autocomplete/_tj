@@ -107,7 +107,7 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "(-s --server)"{-s,--server}"[set server address]:"
           "(-t --token)"{-t,--token}"[set token for login]:"
-          "(-r --reset)"{-r,--reset}"[reset all configurations]"
+          "(-r --reset)"{-r,--reset}"[reset all configurations]: :(server token all)"
         )
       ;;
       detail)
@@ -178,7 +178,7 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "*"{-p,--projects}"[one or more projects]: :complete_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
-          "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]"
+          "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]: :(projects contexts all)"
         )
       ;;
       due)
