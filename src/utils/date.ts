@@ -1,4 +1,4 @@
-import { DateObjectUnits, DateTime, DurationLike, DurationUnit, DurationUnits, Interval } from "luxon";
+import { DateObjectUnits, DateTime, DurationLike, DurationUnit, DurationUnits } from "luxon";
 
 export function parseDate(dateStr: string) {
 	let dt: DateTime | undefined = undefined;
@@ -68,8 +68,7 @@ export function parseDate(dateStr: string) {
 	return dt.toISO();
 }
 
-export function showDate(dateStr: string) {
-	const dt = DateTime.fromISO(dateStr);
+export function showDate(date: DateTime) {
 	const units: DurationUnits = ["years", "months", "days", "hours", "minutes", "seconds"];
 	const shortUnit = (unit: DurationUnit) => {
 		let short = unit.charAt(0);
@@ -78,7 +77,7 @@ export function showDate(dateStr: string) {
 		return short;
 	};
 
-	const duration = dt.diffNow(units);
+	const duration = date.diffNow(units);
 	for (const unit of units) {
 		const value = duration[unit];
 		if (value < 0)
@@ -90,5 +89,5 @@ export function showDate(dateStr: string) {
 		}
 	}
 
-	return "0";
+	return "x";
 }

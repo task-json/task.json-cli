@@ -7,6 +7,7 @@ import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { showDate } from '../utils/date';
 import { readWorkspace } from '../utils/workspace';
+import { DateTime } from 'luxon';
 
 export default class List extends Command {
   static description = 'List tasks'
@@ -124,7 +125,7 @@ export default class List extends Command {
         ...(flags.deps && { deps: task.deps?.join(" ") ?? "" }),
         projects: task.projects?.join(" ") ?? "",
         contexts: task.contexts?.join(" ") ?? "",
-        due: task.due ? showDate(task.due) : "",
+        due: task.due ? showDate(DateTime.fromISO(task.due)) : "",
         color: type === "todo" ? colorTask(task) : null
       }));
 

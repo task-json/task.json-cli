@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { numberToId, readTaskJson, writeTaskJson } from "../utils/task";
 import { parseDate } from '../utils/date';
 import { readWorkspace } from '../utils/workspace';
+import { DateTime } from 'luxon';
 
 export default class Add extends Command {
   static description = 'Add a new task'
@@ -59,7 +60,7 @@ export default class Add extends Command {
     const workspace = flags["no-workspace"] ? {} : readWorkspace();
 
     const text = argv.join(" ");
-    const date = new Date().toISOString();
+    const date = DateTime.now().toISO();
     const due = flags.due && parseDate(flags.due);
 
     let deps: string[] | undefined = undefined;

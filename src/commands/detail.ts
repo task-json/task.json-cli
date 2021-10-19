@@ -1,5 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import chalk = require('chalk');
+import { DateTime } from 'luxon';
 import { TaskType } from 'task.json';
 import { showDate } from '../utils/date';
 import { colorDue, colorPriority, parseNumbers, readTaskJson } from "../utils/task";
@@ -50,7 +51,7 @@ export default class Detail extends Command {
           this.log(`  ${color("Ctx")}: ${task.contexts.join(" ")}`);
         if (task.due) {
           const dueColor = colorDue(task.due);
-          const due = showDate(task.due);
+          const due = showDate(DateTime.fromISO(task.due));
           const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
           this.log(`  ${color("Due")}: ${coloredDue}`)
         }

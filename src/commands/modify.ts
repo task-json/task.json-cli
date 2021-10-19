@@ -3,6 +3,7 @@ import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbe
 import { Task, TaskType } from 'task.json';
 import cli from "cli-ux";
 import { parseDate } from '../utils/date';
+import { DateTime } from 'luxon';
 
 export default class Modify extends Command {
   static description = 'Modify tasks (use a single empty string to delete the field or filter tasks without it)';
@@ -102,7 +103,7 @@ export default class Modify extends Command {
     }
 
     const taskJson = readTaskJson();
-    const date = new Date().toISOString();
+    const date = DateTime.now().toISO();
 
     const modifyTasks = (indexes: number[], type: TaskType) => {
       for (const index of indexes) {
