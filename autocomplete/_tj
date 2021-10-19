@@ -19,6 +19,7 @@ _tj() {
 		"undo:undo tasks"
 		"autocomplete:install completion scripts"
     "workspace:set workspace"
+    "due:show most recent due date"
 		"help:display help message"
   )
   describe_commands() {
@@ -178,6 +179,12 @@ _tj() {
           "*"{-p,--projects}"[one or more projects]: :complete_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
           "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]"
+        )
+      ;;
+      due)
+        command_flags=(
+          "(- *)"{-h,--help}"[show command help]"
+          "--iso[show most recent due date in ISO format]"
         )
       ;;
     esac
