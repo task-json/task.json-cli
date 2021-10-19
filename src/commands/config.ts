@@ -6,9 +6,9 @@ export default class ConfigCommand extends Command {
 
   static examples = [
     `$ tj config  # show config`,
-    `$ tj config --reset  # reset all config`,
     `$ tj config --server "http://localhost:3000"  # set config`,
-    `$ tj config --server ""  # reset server`
+    `$ tj config --reset all  # reset all config`,
+    `$ tj config -r server -r token # reset server and token`
   ];
 
   static flags = {
@@ -21,9 +21,10 @@ export default class ConfigCommand extends Command {
       char: "t",
       description: "set token for login"
     }),
-    reset: flags.boolean({
+    reset: flags.string({
       char: "r",
-      description: "reset all configurations"
+      description: "reset configurations (server, token, all)",
+      multiple: true
     })
   };
 
@@ -39,21 +40,22 @@ export default class ConfigCommand extends Command {
       const value = flags[key];
       if (value !== undefined) {
         showConfig = false;
-        if (value.length > 0) {
-          newConfig = {
-            ...newConfig,
-            [key]: value
-          };
-        }
-        else {
-          delete newConfig[key];
-        }
+        newConfig = {
+          ...newConfig,
+          [key]: value
+        };
       }
     }
 
     if (flags.reset) {
       showConfig = false;
-      newConfig = null;
+      const fields: (keyof Config)[] = ["server", "token"];
+      for (const field of fields) {
+        if (flags.reset.includes(field))
+          delete newConfig[field];
+      }
+      if (flags.reset.includes("all"))
+        newConfig = null;
     }
 
     if (showConfig) {

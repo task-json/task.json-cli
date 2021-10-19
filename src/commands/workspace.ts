@@ -8,24 +8,27 @@ export default class WorkspaceCommand extends Command {
   static examples = [
     `$ tj workspace -c ctxA`,
     `$ tj workspace -c ctxA -c ctxB -p projA`,
-    `$ tj workspace -r  # reset workspace to empty`
+    `$ tj workspace -p ""  # set projects to empty`,
+    `$ tj workspace -r projects  # reset projects to empty`,
+    `$ tj workspace -r all # reset both ctx and proj to empty`
   ];
 
   static flags = {
     help: flags.help({ char: 'h' }),
     projects: flags.string({
       char: "p",
-      description: "set current projects (auto filter and set projects for other commands [add, ls] if not specified)",
+      description: "set current projects (auto filter and set projects for other commands [add, ls] if not specified. empty to reset)",
       multiple: true
     }),
     contexts: flags.string({
       char: "c",
-      description: "set current contexts (auto filter and set contexts for other commands [add, ls] not specified)",
+      description: "set current contexts (auto filter and set contexts for other commands [add, ls] if not specified. empty to reset)",
       multiple: true
     }),
-    reset: flags.boolean({
+    reset: flags.string({
       char: "r",
-      description: "reset workspace (to empty)"
+      description: "reset fields (projects, contexts, all) to empty",
+      multiple: true
     })
   };
 
@@ -41,21 +44,22 @@ export default class WorkspaceCommand extends Command {
       const value = flags[key];
       if (value !== undefined) {
         showWorkspace = false;
-        if (value.length > 0) {
-          newWorkspace = {
-            ...newWorkspace,
-            [key]: value
-          };
-        }
-        else {
-          delete newWorkspace[key];
-        }
+        newWorkspace = {
+          ...newWorkspace,
+          [key]: value
+        };
       }
     }
 
     if (flags.reset) {
       showWorkspace = false;
-      newWorkspace = null;
+      const fields: (keyof Workspace)[] = ["projects", "contexts"];
+      for (const field of fields) {
+        if (flags.reset.includes(field))
+          delete newWorkspace[field];
+      }
+      if (flags.reset.includes("all"))
+        newWorkspace = null;
     }
 
     if (showWorkspace) {
