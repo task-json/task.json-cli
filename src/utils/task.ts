@@ -181,6 +181,9 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
     values.forEach(value => {
       if (value.length === 0)
         result = op(result, task[field] === undefined);
+      // negative filter
+      else if (value[0] === "!")
+        result = op(result, !(task[field]?.includes(value.substring(1))));
       else
         result = op(result, Boolean(task[field]?.includes(value)));
     });
