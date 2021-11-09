@@ -23,14 +23,14 @@ export default class List extends Command {
     help: flags.help({char: 'h'}),
     types: flags.string({
       char: "T",
-      description: "filter tasks by types (todo, done, removed, all) [default: todo]",
+      description: "filter tasks by types (todo, done, removed, all)",
       default: ["todo"],
       options: ["todo", "done", "removed", "all"],
       multiple: true
     }),
     deps: flags.boolean({
       char: "D",
-      description: "show dependent tasks and dependencies [default: false]",
+      description: "show dependent tasks and dependencies",
       default: false
     }),
     priorities: flags.string({

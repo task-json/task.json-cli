@@ -15,7 +15,7 @@ export default class ListNum extends Command {
     help: flags.help({char: 'h'}),
     types: flags.string({
       char: "T",
-      description: "list numbers of tasks of types (todo, done, removed, all) [default: todo]",
+      description: "list numbers of tasks of types (todo, done, removed, all)",
       default: ["todo"],
       options: ["todo", "done", "removed", "all"],
       multiple: true

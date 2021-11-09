@@ -20,7 +20,7 @@ export default class Modify extends Command {
     help: flags.help({ char: 'h' }),
     types: flags.string({
       char: "T",
-      description: "filter tasks by types (todo, done, removed, all) [default: all (if no number specified)",
+      description: "filter tasks by types (todo, done, removed, all) [default: all (if no number specified)]",
       options: ["todo", "done", "removed", "all"],
       multiple: true
     }),
