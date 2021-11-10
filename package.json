@@ -1,6 +1,6 @@
 {
   "name": "task.json-cli",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "author": "DCsunset @DCsunset",
   "bin": {
     "tj": "./bin/run"
