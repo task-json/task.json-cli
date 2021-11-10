@@ -38,12 +38,12 @@ _tj() {
     compadd $(eval $ls_contexts)
   }
   complete_filter_projects() {
-    compadd $all_projects
+    compadd $(eval $ls_projects)
+    # add negative representation (! as hidden prefix)
+    compadd -p '!' -- $(eval $ls_projects)
   }
   complete_projects() {
-    compadd $(eval $all_projects)
-    # add negative representation (! as hidden prefix)
-    compadd -p '!' -- $(eval $all_projects)
+    compadd $(eval $ls_projects)
   }
   complete_numbers() {
     compadd $(tj lsnum -T all)
