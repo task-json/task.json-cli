@@ -26,17 +26,24 @@ _tj() {
     _describe "commands" commands
   }
 
+  local ls_contexts="tj lsctx -T todo -T done"
+  local ls_projects="tj lsproj -T todo -T done"
+
   complete_filter_contexts() {
-    compadd $(tj lsctx -T todo -T done -n)
+    compadd $(eval $ls_contexts)
+    # add negative representation (! as hidden prefix)
+    compadd -p '!' -- $(eval $ls_contexts)
   }
   complete_contexts() {
-    compadd $(tj lsctx -T todo -T done)
+    compadd $(eval $ls_contexts)
   }
   complete_filter_projects() {
-    compadd $(tj lsproj -T todo -T done -n)
+    compadd $all_projects
   }
   complete_projects() {
-    compadd $(tj lsproj -T todo -T done)
+    compadd $(eval $all_projects)
+    # add negative representation (! as hidden prefix)
+    compadd -p '!' -- $(eval $all_projects)
   }
   complete_numbers() {
     compadd $(tj lsnum -T all)
