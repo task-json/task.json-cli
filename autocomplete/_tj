@@ -26,8 +26,14 @@ _tj() {
     _describe "commands" commands
   }
 
+  complete_filter_contexts() {
+    compadd $(tj lsctx -T todo -T done -n)
+  }
   complete_contexts() {
     compadd $(tj lsctx -T todo -T done)
+  }
+  complete_filter_projects() {
+    compadd $(tj lsproj -T todo -T done -n)
   }
   complete_projects() {
     compadd $(tj lsproj -T todo -T done)
@@ -122,8 +128,8 @@ _tj() {
           "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
           "*"{-D,--deps}"[show dependent tasks and dependencies]"
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
-          "*"{-p,--projects}"[filter tasks by specific projects]: :complete_projects"
-          "*"{-c,--contexts}"[filter tasks by specific contexts]: :complete_contexts"
+          "*"{-p,--projects}"[filter tasks by specific projects]: :complete_filter_projects"
+          "*"{-c,--contexts}"[filter tasks by specific contexts]: :complete_filter_contexts"
           "--and-projects[filter projects using AND operator instead of OR]"
           "--and-contexts[filter contexts using AND operator instead of OR]"
           "--no-workspace[ignore workspace settings temporarily]"
@@ -152,8 +158,8 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
           "*--filter-priorities[filter tasks by priorities (A-Z)]: :({A..Z})"
-          "*--filter-projects[filter tasks by specific projects]: :complete_projects"
-          "*--filter-contexts[filter tasks by specific contexts]: :complete_contexts"
+          "*--filter-projects[filter tasks by specific projects]: :complete_filter_projects"
+          "*--filter-contexts[filter tasks by specific contexts]: :complete_filter_contexts"
           "--and-projects[filter projects using AND operator instead of OR]"
           "--and-contexts[filter contexts using AND operator instead of OR]"
 
@@ -176,8 +182,8 @@ _tj() {
       workspace)
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
-          "*"{-p,--projects}"[one or more projects]: :complete_projects"
-          "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
+          "*"{-p,--projects}"[one or more projects]: :complete_filter_projects"
+          "*"{-c,--contexts}"[one or more contexts]: :complete_filter_contexts"
           "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]: :(projects contexts all)"
         )
       ;;
