@@ -1,12 +1,12 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, readTaskJson, TaskStr } from "../utils/task";
+import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, TaskStr } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
 import { Task, taskUrgency } from "task.json";
 import chalk = require('chalk');
 import wrapAnsi = require("wrap-ansi");
 import { showDate } from '../utils/date';
-import { readWorkspace } from '../utils/workspace';
+import { readData } from "../utils/config";
 import { DateTime } from 'luxon';
 
 export default class List extends Command {
@@ -77,8 +77,8 @@ export default class List extends Command {
       hard: true
     };
 
-    const taskJson = readTaskJson();
-    const workspace = flags["no-workspace"] ? {} : readWorkspace();
+    const taskJson = readData("task");
+    const workspace = flags["no-workspace"] ? {} : readData("workspace");
     const types = normalizeTypes(flags.types);
 
     for (const type of types) {

@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import { Config } from '@oclif/config';
-import { readWorkspace, Workspace, writeWorkspace } from '../utils/workspace';
+import { readData, writeData } from '../utils/config';
+import { Workspace } from "../utils/types";
 
 export default class WorkspaceCommand extends Command {
   static description = 'Set workspace';
@@ -35,7 +35,7 @@ export default class WorkspaceCommand extends Command {
 
   async run() {
     const { flags } = this.parse(WorkspaceCommand);
-    const workspace = readWorkspace();
+    const workspace = readData("workspace");
     let showWorkspace = true;
 
     let newWorkspace: Workspace | null = workspace;
@@ -74,7 +74,7 @@ export default class WorkspaceCommand extends Command {
       }
     }
     else {
-      writeWorkspace(newWorkspace);
+      writeData("workspace", newWorkspace);
     }
   }
 }

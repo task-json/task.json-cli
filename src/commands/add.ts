@@ -1,9 +1,9 @@
 import { Command, flags } from '@oclif/command'
 import { Task } from "task.json";
 import { v4 as uuidv4 } from "uuid";
-import { numberToId, readTaskJson, writeTaskJson } from "../utils/task";
+import { readData, writeData } from "../utils/config";
+import { numberToId } from "../utils/task";
 import { parseDate } from '../utils/date';
-import { readWorkspace } from '../utils/workspace';
 import { DateTime } from 'luxon';
 
 export default class Add extends Command {
@@ -56,8 +56,8 @@ export default class Add extends Command {
   async run() {
     const { argv, flags } = this.parse(Add);
 
-    const taskJson = readTaskJson();
-    const workspace = flags["no-workspace"] ? {} : readWorkspace();
+    const taskJson = readData("task");
+    const workspace = flags["no-workspace"] ? {} : readData("workspace");
 
     const text = argv.join(" ");
     const date = DateTime.now().toISO();
@@ -99,7 +99,7 @@ export default class Add extends Command {
     };
 
     taskJson.todo.push(task);
-    writeTaskJson(taskJson);
+    writeData("task", taskJson);
 
     this.log(`Task t${taskJson.todo.length} added: ${text}`);
   }

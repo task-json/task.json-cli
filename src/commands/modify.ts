@@ -1,9 +1,10 @@
 import {Command, flags} from '@oclif/command'
-import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { filterByField, filterByPriority, normalizeTypes, numberToId, parseNumbers } from "../utils/task";
 import { Task, TaskType } from 'task.json';
 import cli from "cli-ux";
 import { parseDate } from '../utils/date';
 import { DateTime } from 'luxon';
+import { readData, writeData } from '../utils/config';
 
 export default class Modify extends Command {
   static description = 'Modify tasks (use a single empty string to delete the field or filter tasks without it)';
@@ -103,7 +104,7 @@ export default class Modify extends Command {
         this.exit(0);
     }
 
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
     const date = DateTime.now().toISO();
 
     const modifyTasks = (indexes: number[], type: TaskType) => {
@@ -189,7 +190,7 @@ export default class Modify extends Command {
       }
     }
 
-    writeTaskJson(taskJson);
+    writeData("task", taskJson);
     this.log(`Modify ${count} task(s)`);
   }
 }

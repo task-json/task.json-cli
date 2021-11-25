@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { normalizeTypes, readTaskJson } from "../utils/task";
+import { normalizeTypes } from "../utils/task";
 import * as _ from "lodash";
+import { readData } from '../utils/config';
 
 export default class ListNum extends Command {
   static description = 'List Numbers'
@@ -26,7 +27,7 @@ export default class ListNum extends Command {
     const { flags } = this.parse(ListNum);
 
     const types = normalizeTypes(flags.types);
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
 
     const nums: string[] = [];
     for (const type of types) {

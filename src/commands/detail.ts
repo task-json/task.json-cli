@@ -2,8 +2,9 @@ import {Command, flags} from '@oclif/command'
 import chalk = require('chalk');
 import { DateTime } from 'luxon';
 import { TaskType } from 'task.json';
+import { readData } from '../utils/config';
 import { showDate } from '../utils/date';
-import { colorDue, colorPriority, parseNumbers, readTaskJson } from "../utils/task";
+import { colorDue, colorPriority, parseNumbers } from "../utils/task";
 
 export default class Detail extends Command {
   static description = 'Show task details'
@@ -28,7 +29,7 @@ export default class Detail extends Command {
     if (argv.length === 0)
       this.error("No task specified");
 
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
     const numbers = parseNumbers(argv, taskJson);
 
     for (const [type, indexes] of Object.entries(numbers)) {

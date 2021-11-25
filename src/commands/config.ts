@@ -1,5 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import { readConfig, Config, writeConfig } from "../utils/config";
+import { readData, writeData } from "../utils/config";
+import { Config } from "../utils/types";
 
 export default class ConfigCommand extends Command {
   static description = "Modify or show config";
@@ -31,7 +32,7 @@ export default class ConfigCommand extends Command {
 
   async run() {
     const { flags } = this.parse(ConfigCommand);
-    const config = readConfig();
+    const config = readData("config");
     let showConfig = true;
 
     let newConfig: Config | null = config;
@@ -65,7 +66,7 @@ export default class ConfigCommand extends Command {
       }
     }
     else {
-      writeConfig(newConfig);
+      writeData("config", newConfig);
     }
   }
 }

@@ -1,7 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { parseNumbers } from "../utils/task";
 import { eraseTasks } from 'task.json';
 import cli from "cli-ux";
+import { readData, writeData } from '../utils/config';
 
 export default class Erase extends Command {
   static description = 'Erase removed tasks';
@@ -31,7 +32,7 @@ export default class Erase extends Command {
   async run() {
     const { argv, flags } = this.parse(Erase);
 
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
     const indexes = parseNumbers(argv, taskJson);
 
     let res = true;
@@ -42,7 +43,7 @@ export default class Erase extends Command {
       if (indexes.todo.length + indexes.done.length > 0)
         this.error("Cannot delete todo or done tasks");
       eraseTasks(taskJson, indexes.removed);
-      writeTaskJson(taskJson);
+      writeData("task", taskJson);
       this.log(`Erase ${new Set(indexes.removed).size} task(s)`);
     }
   }

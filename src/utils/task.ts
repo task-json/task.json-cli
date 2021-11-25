@@ -1,33 +1,4 @@
-import * as fs from "fs";
-import { Task, TaskJson, DiffStat, initTaskJson, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
-import { dataPath, emptyRootGuard } from "./config";
-
-export function readTaskJson() {
-  let taskJson: TaskJson;
-  try {
-    const data = fs.readFileSync(dataPath, { encoding: "utf8" });
-    taskJson = JSON.parse(data);
-  }
-  catch (error) {
-    taskJson = initTaskJson();
-  }
-  return taskJson;
-}
-
-export function writeTaskJson(taskJson: TaskJson) {
-  emptyRootGuard();
-
-  // Backup
-  if (fs.existsSync(dataPath))
-    fs.renameSync(dataPath, dataPath + ".bak");
-
-  fs.writeFileSync(
-    dataPath,
-    JSON.stringify(taskJson, null, "\t"),
-    { encoding: "utf8" }
-  );
-}
-
+import { Task, TaskJson, DiffStat, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
 
 export function colorTask(task: Task) {
   const urgency = taskUrgency(task);

@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { parseNumbers, readTaskJson, writeTaskJson } from "../utils/task";
+import { parseNumbers } from "../utils/task";
 import { doTasks } from "task.json";
+import { readData, writeData } from '../utils/config';
 
 export default class Do extends Command {
   static description = 'Mark tasks as done';
@@ -26,12 +27,12 @@ export default class Do extends Command {
   async run() {
     const { argv } = this.parse(Do);
 
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
     const indexes = parseNumbers(argv, taskJson);
     if (indexes.removed.length + indexes.done.length > 0)
       this.error("Cannot do done tasks or removed tasks");
     doTasks(taskJson, indexes.todo);
-    writeTaskJson(taskJson);
+    writeData("task", taskJson);
 
     this.log(`Finish ${new Set(indexes.todo).size} task(s)`);
   }

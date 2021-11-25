@@ -1,5 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import { normalizeTypes, readTaskJson } from "../utils/task";
+import { readData } from '../utils/config';
+import { normalizeTypes } from "../utils/task";
 
 export default class ListProj extends Command {
   static description = 'List projects'
@@ -30,7 +31,7 @@ export default class ListProj extends Command {
 
     const projects: Set<string> = new Set();
     const types = normalizeTypes(flags.types);
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
 
     for (const type of types)
       for (const task of taskJson[type])

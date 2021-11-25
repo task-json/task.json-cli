@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import { readConfig } from "../utils/config";
 import { Client, HttpError } from "task.json-client";
-import { readTaskJson, writeTaskJson, stringifyDiffStat } from '../utils/task';
+import { stringifyDiffStat } from '../utils/task';
 import cli from "cli-ux";
+import { readData, writeData } from '../utils/config';
 
 export default class Sync extends Command {
   static description = "Sync local task.json with server";
@@ -31,8 +31,8 @@ export default class Sync extends Command {
 
   async run() {
     const { flags } = this.parse(Sync);
-    const config = readConfig();
-    const taskJson = readTaskJson();
+    const config = readData("config");
+    const taskJson = readData("task");
 
     if (!config.server) {
       this.error("Use `tj config --server <address>` to set server address");
@@ -57,11 +57,11 @@ export default class Sync extends Command {
           if (!resp)
             return;
         }
-        writeTaskJson(await client.download());
+        writeData("task", await client.download());
       }
       else {
 				const { data, stat } = await client.sync(taskJson);
-        writeTaskJson(data);
+        writeData("task", data);
 				this.log(`[Client] ${stringifyDiffStat(stat.client)}`);
 				this.log(`[Server] ${stringifyDiffStat(stat.server)}`);
       }

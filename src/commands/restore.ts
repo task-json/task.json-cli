@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from "fs";
-import { dataPath } from "../utils/config";
+import * as path from "path";
+import { pathConfig } from "../utils/config";
 import cli from "cli-ux";
 
 export default class Restore extends Command {
@@ -26,6 +27,7 @@ export default class Restore extends Command {
   async run() {
     const { flags } = this.parse(Restore);
 
+    const dataPath = path.join(pathConfig.root, pathConfig["task"]);
     const bakPath = dataPath + ".bak";
 
     if (!fs.existsSync(bakPath)) {

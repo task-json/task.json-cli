@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { readTaskJson } from "../utils/task";
 import * as _ from "lodash";
 import { DateTime } from 'luxon';
+import { readData } from '../utils/config';
 import { showDate } from '../utils/date';
 
 export default class Due extends Command {
@@ -22,7 +22,7 @@ export default class Due extends Command {
   async run() {
     const { flags } = this.parse(Due);
 
-    const taskJson = readTaskJson();
+    const taskJson = readData("task");
     let due: DateTime | null = null;
     for (const task of taskJson.todo) {
       if (task.due) {

@@ -1,46 +1,65 @@
 import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
+import { initTaskJson, TaskJson } from "task.json";
+import { Config, Workspace } from "./types";
 
-export type Config = {
-  server?: string;
-  token?: string;
+export const pathConfig = {
+  root: process.env.TASK_JSON_PATH || path.join(os.homedir(), ".config/task.json"),
+  // relative to root
+  config: "config.json",
+  task: "task.json",
+  workspace: "workspace.json"
 };
 
-export const rootPath = process.env.TASK_JSON_PATH || path.join(os.homedir(), ".task.json");
-export const configPath = path.join(rootPath, "config.json");
-export const dataPath = path.join(rootPath, "task.json");
-export const workspacePath = path.join(rootPath, "workspace.json");
-
 export function emptyRootGuard() {
-  if (!fs.existsSync(rootPath)) {
-    fs.mkdirSync(rootPath);
+  if (!fs.existsSync(pathConfig.root)) {
+    fs.mkdirSync(pathConfig.root, { recursive: true });
   }
 }
 
-export function readConfig() {
-  let config: Config;
+// conditional returen type
+type Type = "config" | "task" | "workspace";
+type DataType<T extends Type> =
+  T extends "config" ? Config :
+  T extends "task" ? TaskJson :
+  T extends "workspace" ? Workspace :
+  never;
+
+export function readData<T extends Type>(type: T): DataType<T> {
+  const dataPath = path.join(pathConfig.root, pathConfig[type]);
   try {
-    config = JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }));
+    return JSON.parse(fs.readFileSync(dataPath, "utf-8"));
   }
-  catch (error) {
-    config = {};
+  catch (err) {
+    if (type === "task")
+      return initTaskJson() as DataType<T>;
+    else
+      return {} as DataType<T>;
   }
-
-  return config;
 }
 
-export function writeConfig(config: Config | null) {
+export function writeData<T extends Type>(type: T, data: DataType<T> | null) {
   emptyRootGuard();
+  const dataPath = path.join(pathConfig.root, pathConfig[type]);
 
-  if (config === null) {
-    if (fs.existsSync(configPath))
-      fs.unlinkSync(configPath);
+  // Backup
+  if (fs.existsSync(pathConfig.task))
+    fs.renameSync(pathConfig.task, pathConfig.task + ".bak");
+
+
+  if (data === null) {
+    if (fs.existsSync(dataPath))
+      fs.unlinkSync(dataPath);
   }
   else {
+    // Backup task.json
+    if (type === "task" && fs.existsSync(dataPath))
+      fs.renameSync(dataPath, dataPath + ".bak");
+
     fs.writeFileSync(
-      configPath,
-      JSON.stringify(config, null, "\t"),
+      dataPath,
+      JSON.stringify(data, null, "\t"),
       { encoding: "utf8" }
     );
   }

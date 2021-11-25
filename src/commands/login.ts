@@ -1,7 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import { readConfig, writeConfig } from "../utils/config";
 import { Client, HttpError } from "task.json-client";
 import cli from "cli-ux";
+import { readData, writeData } from '../utils/config';
 
 export default class Login extends Command {
   static description = "Log into the server";
@@ -21,7 +21,7 @@ export default class Login extends Command {
 
   async run() {
     const { flags } = this.parse(Login);
-    const config = readConfig();
+    const config = readData("config");
 
     if (!config.server) {
       this.error("Use `tj config --server <address>` to set server address");
@@ -39,7 +39,7 @@ export default class Login extends Command {
     try {
       await client.login(password);
 
-      writeConfig({
+      writeData("config", {
         ...config,
         token: client.token
       });
