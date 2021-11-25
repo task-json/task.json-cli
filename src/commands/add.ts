@@ -66,10 +66,24 @@ export default class Add extends Command {
     let deps: string[] | undefined = undefined;
     if (flags.deps)
       deps = numberToId(taskJson, flags.deps);
+    
+    // Make sure no name start with !
+    flags.projects?.forEach(v => {
+      if (v.startsWith("!"))
+        this.error(`Project cannot start with !: ${v}`);
+    })
+    flags.contexts?.forEach(v => {
+      if (v.startsWith("!"))
+        this.error(`Context cannot start with !: ${v}`);
+    })
 
     // Remove empty values
-    const projects = (flags.projects ?? workspace.projects)?.filter(v => v !== "");
-    const contexts = (flags.contexts ?? workspace.contexts)?.filter(v => v !== "");
+    const projects = (flags.projects ??
+      workspace.projects?.filter(v => !v.startsWith("!"))
+    )?.filter(v => v !== "");
+    const contexts = (flags.contexts ??
+      workspace.contexts?.filter(v => !v.startsWith("!"))
+    )?.filter(v => v !== "");
 
     // use workpsace's values if not specified
     const task: Task = {
