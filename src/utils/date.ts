@@ -1,4 +1,4 @@
-import { DateObjectUnits, DateTime, DurationLike, DurationUnit, DurationUnits } from "luxon";
+import { DateObjectUnits, DateTime, DurationLike, DurationObjectUnits } from "luxon";
 
 export function parseDate(dateStr: string) {
 	let dt: DateTime | undefined = undefined;
@@ -69,8 +69,9 @@ export function parseDate(dateStr: string) {
 }
 
 export function showDate(date: DateTime) {
-	const units: DurationUnits = ["years", "months", "days", "hours", "minutes", "seconds"];
-	const shortUnit = (unit: DurationUnit) => {
+	type Unit = keyof DurationObjectUnits;
+	const units: Unit[] = ["years", "months", "days", "hours", "minutes", "seconds"];
+	const shortUnit = (unit: Unit) => {
 		let short = unit.charAt(0);
 		if (short === "m" && unit === "months")
 			short = "M";
