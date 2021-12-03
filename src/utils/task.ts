@@ -3,6 +3,10 @@ import { Task, TaskJson, DiffStat, taskUrgency, TaskType, idToIndex, dueUrgency 
 
 export function colorTask(task: Task) {
   const urgency = taskUrgency(task);
+  // gray if it's pending or has todo dependant
+  if (!filterByWait(false)(task) || !filterByDeps(false)(task))
+    return "gray";
+
   if (urgency >= 1000)
     return "red";
   if (urgency >= 600)
