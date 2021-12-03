@@ -36,6 +36,10 @@ export default class Add extends Command {
       description: "dependencies (use #)",
       multiple: true
     }),
+    wait: flags.string({
+      char: "w",
+      description: "wait until date"
+    }),
     due: flags.string({
       char: "d",
       description: "due date"
@@ -61,6 +65,7 @@ export default class Add extends Command {
 
     const text = argv.join(" ");
     const date = DateTime.now().toISO();
+    const wait = flags.wait && parseDate(flags.wait);
     const due = flags.due && parseDate(flags.due);
 
     let deps: string[] | undefined = undefined;
@@ -93,6 +98,7 @@ export default class Add extends Command {
       contexts: contexts?.length ? contexts : undefined,
       projects: projects?.length ? projects : undefined,
       deps,
+      wait,
       due,
       start: date,
       modified: date

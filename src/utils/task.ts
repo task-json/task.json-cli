@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { Task, TaskJson, DiffStat, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
 
 export function colorTask(task: Task) {
@@ -107,8 +108,23 @@ export function normalizeTypes(types: string[]) {
   return [...result];
 }
 
+export function filterByWait(flag: boolean) {
+  // Showing all tasks if flag is true
+  if (flag)
+    return () => true;
+
+  return (task: Task) => {
+    if (task.wait) {
+      const date = DateTime.fromISO(task.wait);
+      // true if the wait date is after current date
+      return DateTime.now() >= date;
+    }
+    return true;
+  };
+}
+
 export function filterByDeps(flag: boolean) {
-  // Filter when not showing deps
+  // Showing all tasks if flag is true
   if (flag)
     return () => true;
 
@@ -174,23 +190,27 @@ export type TaskStr = {
   priority: string;
   text: string;
   deps?: string;
+  wait?: string;
   projects: string;
   contexts: string;
   due: string;
   color: ReturnType<typeof colorTask> | null;
 };
 
-export function maxWidth(tasks: TaskStr[], deps: boolean) {
+export function maxWidth(tasks: TaskStr[], deps: boolean, wait: boolean) {
   const initWidths = {
     text: 4,
     contexts: 3,
     projects: 4,
     deps: deps ? 3 : 0,
+    wait: wait ? 4 : 0,
     due: 3
   };
   return tasks.reduce<typeof initWidths>((widths, task) => {
     for (const [field, value] of Object.entries(widths)) {
       if (field === "deps" && !deps)
+        continue;
+      if (field === "wait" && !wait)
         continue;
       type Key = keyof typeof initWidths;
       widths[field as Key] = Math.max(task[field as Key]!.length, value);

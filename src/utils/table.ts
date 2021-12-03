@@ -4,10 +4,11 @@ import { TableUserConfig } from "table";
 type ActualWidth = {
   numWidth: number; // fixed
   priWidth: number; // fixed
-  depWidth: number; // fixed
-  textWidth: number; // dyn: 3/5
+  textWidth: number; // dyn: remaining
+  depWidth: number; // dyn: 1/8
   projWidth: number; // dyn: 1/5
-  ctxWidth: number; // dyn: 1/5
+  ctxWidth: number; // dyn: 1/6
+  waitWidth: number; // fixed
   dueWidth: number; // fixed
 };
 
@@ -19,13 +20,14 @@ type ResultWidth = {
 };
 
 export function calculateWidth(totalWidth: number, {
-  numWidth, priWidth, textWidth, projWidth, ctxWidth, dueWidth, depWidth
+  numWidth, priWidth, textWidth, projWidth, ctxWidth, dueWidth, depWidth, waitWidth
 }: ActualWidth, spacing: number): ResultWidth | null {
-  const actualTotal = numWidth + priWidth + textWidth + projWidth + ctxWidth + dueWidth + depWidth + spacing;
+  const actualTotal = numWidth + priWidth + textWidth + projWidth + ctxWidth + dueWidth + depWidth + waitWidth + spacing;
+  // No need to wrap
   if (actualTotal <= totalWidth)
     return null;
   const overflow = actualTotal - totalWidth;
-  const dynamic = totalWidth - numWidth - priWidth - dueWidth - spacing;
+  const dynamic = totalWidth - numWidth - priWidth - dueWidth - waitWidth - spacing;
 
   const expectedProj = Math.floor(dynamic / 5);
   const expectedCtx = Math.floor(dynamic / 6);

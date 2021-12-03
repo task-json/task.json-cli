@@ -60,6 +60,10 @@ export default class Modify extends Command {
       description: "modify dependencies",
       multiple: true
     }),
+    wait: flags.string({
+      char: "w",
+      description: "modify wait date"
+    }),
     due: flags.string({
       char: "d",
       description: "modify due date"
@@ -109,14 +113,14 @@ export default class Modify extends Command {
 
     const modifyTasks = (indexes: number[], type: TaskType) => {
       for (const index of indexes) {
-        const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "due", "deps"];
+        const fields: (keyof Task)[] = ["text", "priority", "projects", "contexts", "wait", "due", "deps"];
 
         for (const field of fields) {
           const value = flags[field as FlagName] as string | string[] | undefined;
           if (value !== undefined) {
             if (typeof value === "string") {
               if (value.length > 0) {
-                if (field === "due")
+                if (field === "due" || field === "wait")
                   taskJson[type][index][field] = parseDate(value);
                 else
                   taskJson[type][index][field] = value as any;

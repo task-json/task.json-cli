@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import { colorTask, filterByDeps, filterByField, filterByPriority, idToNumber, maxWidth, normalizeTypes, TaskStr } from "../utils/task";
+import { colorTask, filterByDeps, filterByField, filterByPriority, filterByWait, idToNumber, maxWidth, normalizeTypes, TaskStr } from "../utils/task";
 import { calculateWidth, tableConfig } from "../utils/table";
 import { table } from "table";
 import { Task, taskUrgency } from "task.json";
@@ -27,6 +27,11 @@ export default class List extends Command {
       default: ["todo"],
       options: ["todo", "done", "removed", "all"],
       multiple: true
+    }),
+    wait: flags.boolean({
+      char: "w",
+      description: "show waiting tasks",
+      default: false
     }),
     deps: flags.boolean({
       char: "D",
@@ -65,7 +70,7 @@ export default class List extends Command {
     const { flags } = this.parse(List);
 
     const header = [
-      ["#", "P", "Text", "Proj", "Ctx", "Due", ...(flags.deps ? ["Dep"] : [])]
+      ["#", "P", "Text", "Proj", "Ctx", "Due", ...(flags.wait ? ["Wait"] : []), ...(flags.deps ? ["Dep"] : [])]
     ];
 
     const stdoutColumns = process.stdout.columns ?? 80;
@@ -84,6 +89,7 @@ export default class List extends Command {
     for (const type of types) {
       const priorityFilter = filterByPriority(flags.priorities);
       const depFilter = filterByDeps(flags.deps);
+      const waitFilter = filterByWait(flags.wait);
       // use workpsace's values if not specified
       const projectFilter = filterByField(
         "projects",
@@ -111,6 +117,7 @@ export default class List extends Command {
           projectFilter(task) &&
           contextFilter(task) &&
           priorityFilter(task) &&
+          waitFilter(task) &&
           depFilter(task)
         ));
 
@@ -124,13 +131,14 @@ export default class List extends Command {
         priority: task.priority ?? "",
         text: task.text,
         ...(flags.deps && { deps: task.deps?.join(" ") ?? "" }),
+        ...(flags.wait && { wait: task.wait ? showDate(DateTime.fromISO(task.wait)) : "" }),
         projects: task.projects?.join(" ") ?? "",
         contexts: task.contexts?.join(" ") ?? "",
         due: task.due ? showDate(DateTime.fromISO(task.due)) : "",
         color: type === "todo" ? colorTask(task) : null
       }));
 
-      const widths = maxWidth(processedData, flags.deps);
+      const widths = maxWidth(processedData, flags.deps, flags.wait);
 
       const result = calculateWidth(stdoutColumns, {
         numWidth: Math.max(1, data.length.toString().length + 1),
@@ -139,8 +147,9 @@ export default class List extends Command {
         textWidth: widths.text,
         projWidth: widths.projects,
         ctxWidth: widths.contexts,
+        waitWidth: widths.wait,
         dueWidth: widths.due
-      }, 2 * (6 + (flags.deps ? 1 : 0)));
+      }, 2 * (6 + Number(flags.deps) + Number(flags.wait)));
 
       const tableData = processedData.map(task => {
         const row = [
@@ -150,6 +159,7 @@ export default class List extends Command {
           task.projects,
           task.contexts,
           task.due,
+          ...(flags.wait ? [task.wait!] : [])
         ].map((field, i) => {
           let value = field;
           if (result) {
