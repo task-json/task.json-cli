@@ -3,9 +3,9 @@ import { DateObjectUnits, DateTime, DurationLike, DurationUnit, DurationUnits } 
 export function parseDate(dateStr: string) {
 	let dt: DateTime | undefined = undefined;
 	// relative date
-	if (/^(\d+[a-z])+$/.test(dateStr)) {
+	if (/^(\d+[a-zA-Z])+$/.test(dateStr)) {
 		// get all matches
-		const groups = dateStr.match(/\d+[a-z]/g)!;
+		const groups = dateStr.match(/\d+[a-zA-Z]/g)!;
 		for (const group of groups) {
 			const num = parseInt(group.substr(0, group.length - 1));
 			const unit = group.charAt(group.length - 1);
