@@ -56,6 +56,10 @@ export default class Detail extends Command {
           const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
           this.log(`  ${color("Due")}: ${coloredDue}`)
         }
+        if (task.wait) {
+          const wait = showDate(DateTime.fromISO(task.wait));
+          this.log(`  ${color("Wait")}: ${wait}`);
+        }
       }
     }
   }
