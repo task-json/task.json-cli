@@ -9,6 +9,14 @@ Command line task management app for [task.json](https://github.com/DCsunset/tas
 
 ![Screenshot](Screenshot.png)
 
+## Features
+
+* User-friendly command-line interface
+* Highlighting for urgent tasks
+* Filtering tasks by various field
+* Sync with remote task.json-server
+* Workspace support
+
 ## Installation
 
 ```
@@ -41,25 +49,33 @@ USAGE
 
 ## Commands
 <!-- commands -->
-* [`tj add TEXT`](#tj-add-text)
-* [`tj autocomplete DIR`](#tj-autocomplete-dir)
-* [`tj config`](#tj-config)
-* [`tj detail NUM...`](#tj-detail-num)
-* [`tj do NUM...`](#tj-do-num)
-* [`tj due`](#tj-due)
-* [`tj erase NUM...`](#tj-erase-num)
-* [`tj help [COMMAND]`](#tj-help-command)
-* [`tj login`](#tj-login)
-* [`tj ls`](#tj-ls)
-* [`tj lsctx`](#tj-lsctx)
-* [`tj lsnum`](#tj-lsnum)
-* [`tj lsproj`](#tj-lsproj)
-* [`tj modify [NUM...]`](#tj-modify-num)
-* [`tj restore`](#tj-restore)
-* [`tj rm NUM...`](#tj-rm-num)
-* [`tj sync`](#tj-sync)
-* [`tj undo NUM...`](#tj-undo-num)
-* [`tj workspace`](#tj-workspace)
+- [task.json-cli](#taskjson-cli)
+  - [Screenshots](#screenshots)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Migration from v5 to v6](#migration-from-v5-to-v6)
+  - [Usage](#usage)
+  - [Commands](#commands)
+  - [`tj add TEXT`](#tj-add-text)
+  - [`tj autocomplete DIR`](#tj-autocomplete-dir)
+  - [`tj config`](#tj-config)
+  - [`tj detail NUM...`](#tj-detail-num)
+  - [`tj do NUM...`](#tj-do-num)
+  - [`tj due`](#tj-due)
+  - [`tj erase NUM...`](#tj-erase-num)
+  - [`tj help [COMMAND]`](#tj-help-command)
+  - [`tj login`](#tj-login)
+  - [`tj ls`](#tj-ls)
+  - [`tj lsctx`](#tj-lsctx)
+  - [`tj lsnum`](#tj-lsnum)
+  - [`tj lsproj`](#tj-lsproj)
+  - [`tj modify [NUM...]`](#tj-modify-num)
+  - [`tj restore`](#tj-restore)
+  - [`tj rm NUM...`](#tj-rm-num)
+  - [`tj sync`](#tj-sync)
+  - [`tj undo NUM...`](#tj-undo-num)
+  - [`tj workspace`](#tj-workspace)
 
 ## `tj add TEXT`
 
