@@ -64,6 +64,7 @@ _tj() {
           "*"{-p,--projects}"[one or more projects]: :complete_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_contexts"
           "*"{-D,--deps}"[dependencies (use #)]: :complete_numbers"
+          "(-w --wait)"{-w,--wait}"[wait until date]:"
           "(-d --due)"{-d,--due}"[due date]:"
           "--no-workspace[ignore workspace settings temporarily]"
         )
@@ -133,7 +134,8 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
-          "*"{-D,--deps}"[show dependent tasks and dependencies]"
+          "(-w --wait)"{-w,--wait}"[show dependent tasks and dependencies]"
+          "(-D --deps)"{-D,--deps}"[show dependent tasks and dependencies]"
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[filter tasks by specific projects]: :complete_filter_projects"
           "*"{-c,--contexts}"[filter tasks by specific contexts]: :complete_filter_contexts"
@@ -175,6 +177,7 @@ _tj() {
           "*"{-p,--projects}"[modify projects (overwrite all)]: :complete_projects"
           "*"{-c,--contexts}"[modify contexts (overwrite all)]: :complete_contexts"
           "*"{-D,--deps}"[modify dependencies (overwrite all)]: :complete_numbers"
+          "(-w --wait)"{-w,--wait}"[modify wait date]:"
           "(-d --due)"{-d,--due}"[modify due date]:"
           "*:num:complete_numbers"
         )
