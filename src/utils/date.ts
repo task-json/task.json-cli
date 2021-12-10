@@ -42,7 +42,7 @@ export function parseDate(dateStr: string) {
 		}
 	}
 	// absolute (with optional date or optional time)
-	else if (dateStr.length !== 0 && /^((\d{4}-)?\d{2}-\d{2})?([.\s]\d{2}:\d{2})?$/.test(dateStr)) {
+	else if (dateStr.length !== 0 && /^((\d{4}-)?\d{2}-\d{2})?(([T.\s]|^)\d{2}:\d{2})?$/.test(dateStr)) {
 		const date: DateObjectUnits = {};
 
 		const dateGroups = dateStr.match(/((\d{4})-)?(\d{2})-(\d{2})/);
@@ -60,6 +60,14 @@ export function parseDate(dateStr: string) {
 		}
 
 		dt = DateTime.fromObject(date);
+		if (dt < DateTime.now()) {
+			// make sure the date is in the future
+			// if the year or date is not specified
+			if (dateGroups && !dateGroups[2])
+				dt = dt.plus({ year: 1 });
+			if (!dateGroups)
+				dt = dt.plus({ day: 1 });
+		}
 	}
 
 	if (dt === undefined)
