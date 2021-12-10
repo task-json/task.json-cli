@@ -15,7 +15,11 @@ export default class Detail extends Command {
   ]
 
   static flags = {
-    help: flags.help({char: 'h'})
+    help: flags.help({ char: 'h' }),
+    iso: flags.boolean({
+      description: "show date in ISO format",
+      default: false
+    })
   }
 
   static args = [{
@@ -25,7 +29,7 @@ export default class Detail extends Command {
   }];
 
   async run() {
-    const { argv } = this.parse(Detail);
+    const { argv, flags } = this.parse(Detail);
     if (argv.length === 0)
       this.error("No task specified");
 
@@ -52,12 +56,12 @@ export default class Detail extends Command {
           this.log(`  ${color("Ctx")}: ${task.contexts.join(" ")}`);
         if (task.due) {
           const dueColor = colorDue(task.due);
-          const due = showDate(DateTime.fromISO(task.due));
+          const due = flags.iso ? task.due : showDate(DateTime.fromISO(task.due));
           const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
           this.log(`  ${color("Due")}: ${coloredDue}`)
         }
         if (task.wait) {
-          const wait = showDate(DateTime.fromISO(task.wait));
+          const wait = flags.iso ? task.wait : showDate(DateTime.fromISO(task.wait));
           this.log(`  ${color("Wait")}: ${wait}`);
         }
       }
