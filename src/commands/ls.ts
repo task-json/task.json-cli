@@ -94,12 +94,12 @@ export default class List extends Command {
       const projectFilter = filterByField(
         "projects",
         flags.projects ?? workspace.projects,
-        flags["and-projects"]
+        flags["and-projects"] || Boolean(workspace['and-projects'])
       );
       const contextFilter = filterByField(
         "contexts",
         flags.contexts ?? workspace.contexts,
-        flags["and-contexts"]
+        flags["and-contexts"] || Boolean(workspace["and-contexts"])
       );
 
       const parseDeps = (task: Task): Task => {

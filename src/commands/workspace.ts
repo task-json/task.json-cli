@@ -25,10 +25,16 @@ export default class WorkspaceCommand extends Command {
       description: "set current contexts (auto filter and set contexts for other commands [add, ls] if not specified. empty to reset)",
       multiple: true
     }),
+    "and-projects": flags.boolean({
+      description: "filter projects using AND operator instead of OR"
+    }),
+    "and-contexts": flags.boolean({
+      description: "filter contexts using AND operator instead of OR"
+    }),
     reset: flags.string({
       char: "r",
       description: "reset fields (projects, contexts, all) to empty",
-      options: ["contexts", "projects", "all"],
+      options: ["contexts", "projects", "all", "and-projects", "and-contexts"],
       multiple: true
     })
   };
@@ -39,7 +45,7 @@ export default class WorkspaceCommand extends Command {
     let showWorkspace = true;
 
     let newWorkspace: Workspace | null = workspace;
-    const keys: (keyof Workspace)[] = ["projects", "contexts"];
+    const keys: (keyof Workspace)[] = ["projects", "contexts", "and-projects", "and-contexts"];
 
     for (const key of keys) {
       const value = flags[key];
@@ -54,10 +60,9 @@ export default class WorkspaceCommand extends Command {
 
     if (flags.reset) {
       showWorkspace = false;
-      const fields: (keyof Workspace)[] = ["projects", "contexts"];
-      for (const field of fields) {
-        if (flags.reset.includes(field))
-          delete newWorkspace[field];
+      for (const key of keys) {
+        if (flags.reset.includes(key))
+          delete newWorkspace[key];
       }
       if (flags.reset.includes("all"))
         newWorkspace = null;

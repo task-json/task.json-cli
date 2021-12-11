@@ -5,5 +5,7 @@ export type Config = {
 
 export type Workspace = {
   projects?: string[],
-  contexts?: string[]
+  contexts?: string[],
+  "and-projects"?: boolean,
+  "and-contexts"?: boolean
 };
