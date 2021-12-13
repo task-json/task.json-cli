@@ -187,7 +187,7 @@ _tj() {
         command_flags=(
           "(- *)"{-h,--help}"[show command help]"
           "--zsh[install zsh completion scripts]"
-          "2:dir:_files -/"
+          "2:dir:_directories"
         )
       ;;
       workspace)
