@@ -195,7 +195,9 @@ _tj() {
           "(- *)"{-h,--help}"[show command help]"
           "*"{-p,--projects}"[one or more projects]: :complete_filter_projects"
           "*"{-c,--contexts}"[one or more contexts]: :complete_filter_contexts"
-          "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]: :(projects contexts all)"
+          "--and-projects[filter projects using AND operator instead of OR]"
+          "--and-contexts[filter contexts using AND operator instead of OR]"
+          "(-r --reset)"{-r,--reset}"[reset workspace (to empty)]: :(projects contexts all and-projects and-contexts)"
         )
       ;;
       due)
