@@ -43,20 +43,15 @@ export function writeData<T extends Type>(type: T, data: DataType<T> | null) {
   emptyRootGuard();
   const dataPath = path.join(pathConfig.root, pathConfig[type]);
 
-  // Backup
-  if (fs.existsSync(pathConfig.task))
-    fs.renameSync(pathConfig.task, pathConfig.task + ".bak");
-
+  // Backup task.json
+  if (type === "task" && fs.existsSync(dataPath))
+    fs.renameSync(dataPath, dataPath + ".bak");
 
   if (data === null) {
     if (fs.existsSync(dataPath))
       fs.unlinkSync(dataPath);
   }
   else {
-    // Backup task.json
-    if (type === "task" && fs.existsSync(dataPath))
-      fs.renameSync(dataPath, dataPath + ".bak");
-
     fs.writeFileSync(
       dataPath,
       JSON.stringify(data, null, "\t"),
