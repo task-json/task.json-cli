@@ -144,8 +144,6 @@ _tj() {
           "*"{-P,--priorities}"[filter tasks by priorities (A-Z)]: :({A..Z})"
           "*"{-p,--projects}"[filter tasks by specific projects]: :complete_filter_projects"
           "*"{-c,--contexts}"[filter tasks by specific contexts]: :complete_filter_contexts"
-          "--and-projects[filter projects using AND operator instead of OR]"
-          "--and-contexts[filter contexts using AND operator instead of OR]"
           "--no-workspace[ignore workspace settings temporarily]"
         )
       ;;

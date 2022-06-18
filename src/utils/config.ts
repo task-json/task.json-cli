@@ -7,12 +7,12 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 import { initTaskJson, TaskJson } from "task.json";
-import { Config, Workspace } from "./types";
+import { Remote, Workspace } from "./types";
 
 export const pathConfig = {
   root: process.env.TASK_JSON_PATH || path.join(os.homedir(), ".config/task.json"),
   // relative to root
-  config: "config.json",
+  remote: "remote.json",
   task: "task.json",
   workspace: "workspace.json"
 };
@@ -24,9 +24,9 @@ export function emptyRootGuard() {
 }
 
 // conditional returen type
-type Type = "config" | "task" | "workspace";
+type Type = "remote" | "task" | "workspace";
 type DataType<T extends Type> =
-  T extends "config" ? Config :
+  T extends "remote" ? Remote :
   T extends "task" ? TaskJson :
   T extends "workspace" ? Workspace :
   never;

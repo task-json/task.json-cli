@@ -31,12 +31,14 @@
   "dependencies": {
     "chalk": "^5.0.1",
     "commander": "^9.3.0",
+    "lodash": "^4.17.21",
     "luxon": "^2.4.0",
     "table": "^6.8.0",
     "task.json": "^2.8.0",
     "wrap-ansi": "^8.0.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.182",
     "@types/luxon": "^2.3.2",
     "@types/node": "^18.0.0",
     "@types/wrap-ansi": "^8.0.1",

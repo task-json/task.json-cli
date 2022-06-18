@@ -10,6 +10,8 @@ import { version } from "../package.json";
 import lsCmd from "./commands/ls";
 import lsctxCmd from "./commands/lsctx";
 import lsprojCmd from "./commands/lsproj";
+import lsnumCmd from "./commands/lsnum";
+import completionCmd from "./commands/completion";
 
 const program = new Command();
 
@@ -21,6 +23,8 @@ program
 program
 	.addCommand(lsCmd)
 	.addCommand(lsctxCmd)
-	.addCommand(lsprojCmd);
+	.addCommand(lsprojCmd)
+	.addCommand(lsnumCmd)
+	.addCommand(completionCmd);
 
 program.parse();

@@ -3,7 +3,7 @@
  * See full notice in README.md in this project
  */
 
-export type Config = {
+export type Remote = {
   server?: string;
   token?: string;
 };
