@@ -1,52 +1,15 @@
 {
   "name": "task.json-cli",
   "version": "6.2.2",
-  "author": "DCsunset @DCsunset",
-  "bin": {
-    "tj": "./bin/run"
+  "description": "Command line todo management app based on task.json",
+  "main": "dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bugs": "https://github.com/DCsunset/task.json-cli/issues",
-  "dependencies": {
-    "@oclif/command": "^1.8.0",
-    "@oclif/config": "^1.17.0",
-    "@oclif/plugin-help": "^3.2.3",
-    "chalk": "^4.1.2",
-    "cli-ux": "^5.6.3",
-    "lodash": "^4.17.21",
-    "luxon": "^2.0.2",
-    "table": "^6.7.1",
-    "task.json": "^2.7.0",
-    "task.json-client": "^0.2.0",
-    "tslib": "^2.3.1",
-    "uuid": "^8.3.2",
-    "wrap-ansi": "^7.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCsunset/task.json-cli.git"
   },
-  "devDependencies": {
-    "@oclif/dev-cli": "^1.26.0",
-    "@types/lodash": "^4.14.173",
-    "@types/luxon": "^2.0.4",
-    "@types/node": "^16.9.2",
-    "@types/table": "^6.3.2",
-    "@types/uuid": "^8.3.1",
-    "@types/wrap-ansi": "^3.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-oclif": "^3.1.0",
-    "eslint-config-oclif-typescript": "^0.2.0",
-    "globby": "^10.0.2",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "files": [
-    "/bin",
-    "/lib",
-    "/autocomplete",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
-  "homepage": "https://github.com/DCsunset/task.json-cli",
   "keywords": [
     "todo",
     "task",
@@ -55,22 +18,10 @@
     "cli",
     "nodejs"
   ],
-  "license": "GPL-3.0",
-  "main": "lib/index.js",
-  "oclif": {
-    "commands": "./lib/commands",
-    "bin": "tj",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
+  "author": "DCsunset",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DCsunset/task.json-cli/issues"
   },
-  "repository": "DCsunset/task.json-cli",
-  "scripts": {
-    "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "echo NO TESTS",
-    "version": "oclif-dev readme && git add README.md"
-  },
-  "types": "lib/index.d.ts"
+  "homepage": "https://github.com/DCsunset/task.json-cli"
 }
