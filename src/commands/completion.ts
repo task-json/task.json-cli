@@ -18,9 +18,9 @@ type CompletionOptions = {
 };
 
 completionCmd
-	.description("list projects")
+	.description("install completion script")
 	.option("--zsh", "install zsh completion")
-	.argument("<dir>", "install completion file to the directory")
+	.argument("<dir>", "install completion script to the directory")
 	.action(execute);
 
 
