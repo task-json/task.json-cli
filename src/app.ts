@@ -6,7 +6,10 @@
 
 import { Command } from "commander";
 import { version } from "../package.json";
+
 import lsCmd from "./commands/ls";
+import lsctxCmd from "./commands/lsctx";
+import lsprojCmd from "./commands/lsproj";
 
 const program = new Command();
 
@@ -15,6 +18,9 @@ program
 	.description("Command line todo management app based on task.json format")
 	.version(version);
 
-program.addCommand(lsCmd);
+program
+	.addCommand(lsCmd)
+	.addCommand(lsctxCmd)
+	.addCommand(lsprojCmd);
 
 program.parse();

@@ -37,6 +37,7 @@ type LsOptions = {
 };
 
 lsCmd
+	.description("list tasks")
 	.addOption(
 		new Option("-T, --type <types...>", "filter tasks by types")
 			.choices(["todo", "done", "removed", "all"])
