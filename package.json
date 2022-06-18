@@ -1,10 +1,14 @@
 {
   "name": "task.json-cli",
   "version": "6.2.2",
-  "description": "Command line todo management app based on task.json",
+  "description": "Command line todo management app based on task.json format",
   "main": "dist/app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/app.js",
+    "dev": "tsx src/app.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -23,5 +27,12 @@
   "bugs": {
     "url": "https://github.com/DCsunset/task.json-cli/issues"
   },
-  "homepage": "https://github.com/DCsunset/task.json-cli"
+  "homepage": "https://github.com/DCsunset/task.json-cli",
+  "dependencies": {
+    "commander": "^9.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "tsx": "^3.4.3"
+  }
 }
