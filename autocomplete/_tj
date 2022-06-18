@@ -1,4 +1,8 @@
 #compdef tj
+#
+# Copyright (C) 2020-2022  DCsunset
+# See full copyright notice in README.md
+#
 
 _tj() {
 	local -a commands=(
