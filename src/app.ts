@@ -12,6 +12,7 @@ import lsctxCmd from "./commands/lsctx";
 import lsprojCmd from "./commands/lsproj";
 import lsnumCmd from "./commands/lsnum";
 import completionCmd from "./commands/completion";
+import addCmd from "./commands/add";
 
 const program = new Command();
 
@@ -25,6 +26,7 @@ program
 	.addCommand(lsctxCmd)
 	.addCommand(lsprojCmd)
 	.addCommand(lsnumCmd)
-	.addCommand(completionCmd);
+	.addCommand(completionCmd)
+	.addCommand(addCmd);
 
 program.parse();
