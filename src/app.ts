@@ -13,6 +13,8 @@ import lsprojCmd from "./commands/lsproj";
 import lsnumCmd from "./commands/lsnum";
 import completionCmd from "./commands/completion";
 import addCmd from "./commands/add";
+import doCmd from "./commands/do";
+import undoCmd from "./commands/undo";
 
 const program = new Command();
 
@@ -27,6 +29,8 @@ program
 	.addCommand(lsprojCmd)
 	.addCommand(lsnumCmd)
 	.addCommand(completionCmd)
-	.addCommand(addCmd);
+	.addCommand(addCmd)
+	.addCommand(doCmd)
+	.addCommand(undoCmd);
 
 program.parse();
