@@ -17,6 +17,7 @@ import doCmd from "./commands/do";
 import undoCmd from "./commands/undo";
 import dueCmd from "./commands/due";
 import rmCmd from "./commands/rm";
+import eraseCmd from "./commands/erase";
 
 const program = new Command();
 
@@ -35,6 +36,7 @@ program
 	.addCommand(doCmd)
 	.addCommand(undoCmd)
 	.addCommand(dueCmd)
-	.addCommand(rmCmd);
+	.addCommand(rmCmd)
+	.addCommand(eraseCmd);
 
-program.parse();
+await program.parseAsync();

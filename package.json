@@ -29,8 +29,10 @@
   },
   "homepage": "https://github.com/DCsunset/task.json-cli",
   "dependencies": {
+    "@types/inquirer": "^8.2.1",
     "chalk": "^5.0.1",
     "commander": "^9.3.0",
+    "inquirer": "^9.0.0",
     "lodash": "^4.17.21",
     "luxon": "^2.4.0",
     "table": "^6.8.0",
