@@ -15,6 +15,8 @@ import completionCmd from "./commands/completion";
 import addCmd from "./commands/add";
 import doCmd from "./commands/do";
 import undoCmd from "./commands/undo";
+import dueCmd from "./commands/due";
+import rmCmd from "./commands/rm";
 
 const program = new Command();
 
@@ -31,6 +33,8 @@ program
 	.addCommand(completionCmd)
 	.addCommand(addCmd)
 	.addCommand(doCmd)
-	.addCommand(undoCmd);
+	.addCommand(undoCmd)
+	.addCommand(dueCmd)
+	.addCommand(rmCmd);
 
 program.parse();
