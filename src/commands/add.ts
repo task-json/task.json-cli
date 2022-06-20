@@ -3,9 +3,9 @@
  * See full notice in README.md in this project
  */
 
+import crypto from "node:crypto";
 import { Command } from "commander";
 import { DateTime } from 'luxon';
-import { v4 as uuidv4 } from "uuid";
 import { Task } from "task.json";
 import { readData, writeData } from "../utils/config";
 import { parseDate } from '../utils/date';
@@ -69,7 +69,7 @@ function execute(options: AddOptions) {
 
 	// use workpsace's values if not specified
 	const task: Task = {
-		id: uuidv4(),
+		id: crypto.randomUUID(),
 		text: options.text,
 		priority: options.prior,
 		contexts: contexts?.length ? contexts : undefined,
