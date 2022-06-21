@@ -11,6 +11,7 @@ import { readData } from "../utils/config";
 import { parseNumbers } from "../utils/task";
 import { colorPriority, colorDue } from "../utils/task";
 import { showDate } from "../utils/date";
+import { printAttrs } from "../utils/format";
 
 const showCmd = new Command("show");
 
@@ -32,31 +33,40 @@ function execute(nums: string[], options: ShowOptions) {
 	for (const [type, indexes] of Object.entries(numbers)) {
 		for (const index of indexes) {
 			const task = taskJson[type as TaskType][index];
-			const color = chalk.cyanBright;
 			const num = chalk.bold(`${type.charAt(0)}${index + 1}`);
-			console.log(`\nTask ${num}`);
-			console.log(`  ${color("Status")}: ${type}`);
+			const attrs: [string, string][] = [];
+			
+			attrs.push(["status", type]);
 			if (task.priority) {
 				const priColor = colorPriority(task.priority);
-				console.log(`  ${color("Pri")}: ${chalk[priColor].bold(task.priority)}`);
+				attrs.push(["prior", chalk[priColor].bold(task.priority)]);
 			}
-			console.log(`  ${color("Text")}: ${task.text}`);
-			if (task.deps)
-				console.log(`  ${color("Deps")}: ${task.deps.join(" ")}`);
-			if (task.projects)
-				console.log(`  ${color("Proj")}: ${task.projects.join(" ")}`);
-			if (task.contexts)
-				console.log(`  ${color("Ctx")}: ${task.contexts.join(" ")}`);
+			attrs.push(["text", task.text])
+			if (task.deps) {
+				attrs.push(["deps", task.deps.join(" ")]);
+			}
+			if (task.projects) {
+				attrs.push(["proj", task.projects.join(" ")]);
+			}
+			if (task.contexts) {
+				attrs.push(["ctx", task.contexts.join(" ")]);
+			}
 			if (task.due) {
 				const dueColor = colorDue(task.due);
 				const due = options.iso ? task.due : showDate(DateTime.fromISO(task.due));
 				const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
-				console.log(`  ${color("Due")}: ${coloredDue}`)
+				attrs.push(["due", coloredDue]);
 			}
 			if (task.wait) {
 				const wait = options.iso ? task.wait : showDate(DateTime.fromISO(task.wait));
-				console.log(`  ${color("Wait")}: ${wait}`);
+				attrs.push(["wait", wait]);
 			}
+
+			console.log(`\nTask ${num}`);
+			printAttrs(attrs, {
+				keyColor: "cyanBright",
+				prefix: "  "
+			});
 		}
 	}
 }
