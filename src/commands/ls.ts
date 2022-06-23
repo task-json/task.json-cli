@@ -67,7 +67,7 @@ function execute(options: LsOptions) {
 	};
 
 	const taskJson = readData("task");
-	const workspace = options.workspace ? {} : readData("workspace");
+	const workspace = options.workspace ? readData("workspace").find(ws => ws.enabled) : undefined;
 	const types = normalizeTypes(options.type);
 
 	for (const type of types) {
@@ -77,11 +77,11 @@ function execute(options: LsOptions) {
 		// use workpsace's values if not specified
 		const projectFilter = filterByField(
 			"projects",
-			options.proj ?? workspace.projects,
+			options.proj ?? workspace?.config.projects,
 		);
 		const contextFilter = filterByField(
 			"contexts",
-			options.ctx ?? workspace.contexts,
+			options.ctx ?? workspace?.config.contexts,
 		);
 
 		const parseDeps = (task: Task): Task => {

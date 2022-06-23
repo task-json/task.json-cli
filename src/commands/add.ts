@@ -39,7 +39,7 @@ addCmd
 
 function execute(options: AddOptions) {
 	const taskJson = readData("task");
-	const workspace = options.workspace ? {} : readData("workspace");
+	const workspace = options.workspace ? readData("workspace").find(ws => ws.enabled) : undefined;
 
 	const date = DateTime.now().toISO();
 	const wait = options.wait && parseDate(options.wait);
@@ -61,10 +61,10 @@ function execute(options: AddOptions) {
 
 	// Remove empty values
 	const projects = (options.proj ??
-		workspace.projects?.filter(v => !v.startsWith("!"))
+		workspace?.config.projects?.filter(v => !v.startsWith("!"))
 	)?.filter(v => v !== "");
 	const contexts = (options.ctx ??
-		workspace.contexts?.filter(v => !v.startsWith("!"))
+		workspace?.config.contexts?.filter(v => !v.startsWith("!"))
 	)?.filter(v => v !== "");
 
 	// use workpsace's values if not specified

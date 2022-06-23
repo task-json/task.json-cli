@@ -3,12 +3,34 @@
  * See full notice in README.md in this project
  */
 
-export type Remote = {
+export type RemoteConfig = {
   server?: string;
   token?: string;
 };
 
-export type Workspace = {
+export type Remote = {
+  name: string,
+  config: RemoteConfig,
+  /// created date (ISO format)
+  created: string,
+  /// modified date (ISO format)
+  modified: string,
+  /// Whether it's the default remote
+  default?: boolean
+};
+
+export type WorkspaceConfig = {
   projects?: string[],
   contexts?: string[]
+};
+
+export type Workspace = {
+  name: string,
+  config: WorkspaceConfig,
+  /// created date (ISO format)
+  created: string,
+  /// modified date (ISO format)
+  modified: string,
+  /// whether this workspace is enabled
+  enabled?: boolean
 };

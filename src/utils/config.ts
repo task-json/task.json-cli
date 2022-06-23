@@ -26,9 +26,9 @@ export function emptyRootGuard() {
 // conditional returen type
 type Type = "remote" | "task" | "workspace";
 type DataType<T extends Type> =
-  T extends "remote" ? Remote :
   T extends "task" ? TaskJson :
-  T extends "workspace" ? Workspace :
+  T extends "remote" ? Remote[] :
+  T extends "workspace" ? Workspace[] :
   never;
 
 export function readData<T extends Type>(type: T): DataType<T> {
@@ -37,10 +37,12 @@ export function readData<T extends Type>(type: T): DataType<T> {
     return JSON.parse(fs.readFileSync(dataPath, "utf-8"));
   }
   catch (err) {
-    if (type === "task")
+    if (type === "task") {
       return initTaskJson() as DataType<T>;
-    else
-      return {} as DataType<T>;
+    }
+    else {
+      return [] as any;
+    }
   }
 }
 
