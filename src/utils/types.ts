@@ -3,19 +3,19 @@
  * See full notice in README.md in this project
  */
 
-export type RemoteConfig = {
-  server?: string;
+export type ServerConfig = {
+  url: string;
   token?: string;
 };
 
-export type Remote = {
+export type Server = {
   name: string,
-  config: RemoteConfig,
+  config: ServerConfig,
   /// created date (ISO format)
   created: string,
   /// modified date (ISO format)
   modified: string,
-  /// Whether it's the default remote
+  /// Whether it's the default server
   default?: boolean
 };
 
