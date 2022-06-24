@@ -4,8 +4,10 @@
  */
 
 export type ServerConfig = {
-  url: string;
-  token?: string;
+  url: string,
+  token?: string,
+  /// trusted CA
+  ca?: string[]
 };
 
 export type Server = {

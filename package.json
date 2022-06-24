@@ -37,6 +37,7 @@
     "luxon": "^2.4.0",
     "table": "^6.8.0",
     "task.json": "^2.8.0",
+    "task.json-client": "^1.0.0",
     "wrap-ansi": "^8.0.1"
   },
   "devDependencies": {

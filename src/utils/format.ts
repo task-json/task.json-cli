@@ -6,6 +6,15 @@
  */
 
 import chalk, { Color } from "chalk";
+import { X509Certificate } from "node:crypto";
+
+const colorize = (key: string, color?: Color) => {
+	if (!color) {
+		return key;
+	}
+	return chalk[color](key);
+};
+
 
 /**
  * Print attributes.
@@ -18,16 +27,24 @@ export function printAttrs(attrs: [string, string][], options?: {
 	/// prefix in each row
 	prefix?: string
 }) {
-	const colorize = (key: string) => {
-		const color = options?.keyColor;
-		if (!color) {
-			return key;
-		}
-		return chalk[color](key);
-	};
-
 	const prefix = options?.prefix ?? "";
 	for (const [key, value] of attrs) {
-		console.log(`${prefix}${colorize(key)}: ${value}`);
+		console.log(`${prefix}${colorize(key, options?.keyColor)}: ${value}`);
 	}
+}
+
+
+export function printCert(cert: X509Certificate, options?: {
+	keyColor?: Color,
+	/// prefix in each row
+	prefix?: string
+}) {
+	const prefix = options?.prefix ?? "";
+	console.log(`${prefix}${colorize("Subject", options?.keyColor)}:`);
+	console.log(
+		cert.subject.split("\n")
+			.map(v => `${prefix}  ${v}`)
+			.join("\n")
+	);
+	console.log(`${prefix}${colorize("Fingerprint", options?.keyColor)}: ${cert.fingerprint}`);
 }

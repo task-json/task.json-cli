@@ -6,8 +6,10 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { DateTime } from 'luxon';
+import inquirer from "inquirer";
+import { getCertificate, HttpError, setupClient } from "task.json-client";
 import { readData, writeData } from "../utils/config";
-import { printAttrs } from "../utils/format";
+import { printAttrs, printCert } from "../utils/format";
 import { Server } from "../utils/types";
 
 const serverCmd = new Command("server");
@@ -43,8 +45,12 @@ function show(names: string[], options: ShowOptions) {
 			if (key === "token" && !options.showToken) {
 				attrs.push([key, "*".repeat(value.length)]);
 			}
+			else if (key === "ca") {
+				const len = (value as string[]).length;
+				attrs.push([key, `[${len} cert(s)]`]);
+			}
 			else {
-				attrs.push([key, value]);
+				attrs.push([key, value as string]);
 			}
 		}
 
@@ -194,11 +200,104 @@ function rm(names: string) {
 	console.log(`${count} server(s) removed`);
 }
 
+/**
+ * Sub command login
+ */
+type LoginOptions = {
+	password?: string
+}
+
+const loginCmd = new Command("login");
+loginCmd
+	.description("log into the server")
+	.argument("[name]", "server name (use default one if not specified")
+	.option("-p, --password <password>", "password for login")
+	.action(login);
+
+async function login(name: string | undefined, options: LoginOptions) {
+	const servers = readData("server");
+	const server = servers.find(s => {
+		if (name !== undefined) {
+			return name === s.name;
+		}
+		else {
+			return s.default;
+		}
+	});
+
+	if (!server) {
+		loginCmd.error("server not found");
+		return;
+	}
+
+	let password: string;
+	if (options.password) {
+		password = options.password;
+	}
+	else {
+		const answer = await inquirer.prompt([{
+			type: "password",
+			name: "password",
+			message: "Password:",
+			mask: "*"
+		}]);
+		password = answer.password;
+	}
+
+	while (true) {
+		try {
+			const client = await setupClient({
+				server: server.config.url,
+				ca: server.config.ca
+			});
+			await client.login(password);
+			server.config.token = client.config.token;
+			break;
+		}
+		catch (error) {
+			const err = error as HttpError;
+			if (err.status === 503 && err.message === "self signed certificate") {
+				const cert = await getCertificate(server.config.url);
+				if (cert) {
+					console.log("Self signed certificate found:")
+					printCert(cert, {
+						keyColor: "cyanBright",
+						prefix: "  "
+					});
+					const answer = await inquirer.prompt([{
+						type: "confirm",
+						name: "confirm",
+						message: "Trust this certificate?",
+						default: false
+					}]);
+					if (answer.confirm) {
+						const ca = server.config.ca ?? [];
+						ca.push(cert.toString());
+						server.config.ca = ca;
+						writeData("server", servers);
+						continue;	
+					}
+				}
+				else {
+					loginCmd.error("Not able to get server certificate");
+				}
+			}
+
+			loginCmd.error(`${err.status}: ${err.message}`);
+		}
+	}
+
+	writeData("server", servers);
+	console.log("Logged in successfully.")
+}
+
+
 // Add all sub commands
 serverCmd
 	.addCommand(showCmd)
 	.addCommand(addCmd)
 	.addCommand(modifyCmd)
-	.addCommand(rmCmd);
+	.addCommand(rmCmd)
+	.addCommand(loginCmd);
 
 export default serverCmd;
