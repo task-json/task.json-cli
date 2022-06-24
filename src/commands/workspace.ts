@@ -30,8 +30,8 @@ function show(names: string[]) {
 			continue;
 		}
 
-		const status = ws.enabled ? "enabled" : "eisabled"
-		console.log(`\nWorkspace ${chalk.bold(ws.name)} [${status}]`);
+		const status = ws.enabled ? "[enabled]" : ""
+		console.log(`\nWorkspace ${chalk.bold(ws.name)} ${status}`);
 
 		const attrs: [string, string][] = [];
 		for (const [key, value] of Object.entries(ws.config)) {
@@ -49,30 +49,25 @@ function show(names: string[]) {
 	}
 }
 
-type WorkspaceOptions = {
-	// true means no arguments, set to empty
-	proj?: string[] | true,
-	ctx?: string[] | true,
-	enabled?: boolean
-}
-
-function parseArrayArgs(args: string[] | true | undefined) {
-	return args === true ? undefined : args;
-}
-
 /**
  * Sub command: add
  */
+type AddOptions = {
+	proj?: string[],
+	ctx?: string[],
+	enabled?: boolean
+}
+
 const addCmd = new Command("add");
 addCmd
 	.description("add a new workspace")
 	.argument("<name>", "workspace name")
-	.option("-p, --proj <projects...>", "auto filter and set projects for other commands (add, ls) if not specified")
-	.option("-c, --ctx <contexts...>", "auto filter and set contexts for other commands (add, ls) if not specified")
+	.option("-p, --proj <proj...>", "auto filter and set projects for other commands (add, ls) if not specified")
+	.option("-c, --ctx <ctx...>", "auto filter and set contexts for other commands (add, ls) if not specified")
 	.option("-e, --enabled", "enable this workspace")
 	.action(add);
 
-function add(name: string, options: WorkspaceOptions) {
+function add(name: string, options: AddOptions) {
 	const workspaces = readData("workspace");
 	if (workspaces.findIndex(v => v.name === name) !== -1) {
 		addCmd.error(`Workspace ${name} already exists`);
@@ -82,8 +77,8 @@ function add(name: string, options: WorkspaceOptions) {
 	const ws: Workspace = {
 		name,
 		config: {
-			projects: parseArrayArgs(options.proj),
-			contexts: parseArrayArgs(options.ctx),
+			projects: options.proj,
+			contexts: options.ctx,
 		},
 		enabled: options.enabled,
 		created: date,
@@ -106,16 +101,25 @@ function add(name: string, options: WorkspaceOptions) {
  * Sub command: modify
  * modify an existing workspace
  */
+type ModifyOptions = {
+	proj?: string[] | false,
+	ctx?: string[] | false,
+	enabled?: boolean,
+}
+
 const modifyCmd = new Command("modify");
 modifyCmd
 	.description("modify an existing workspace")
 	.argument("<name>", "workspace name")
-	.option("-p, --proj [proj...]", "auto filter and set projects for other commands (add, ls) if not specified")
-	.option("-c, --ctx [ctx...]", "auto filter and set contexts for other commands (add, ls) if not specified")
+	.option("-p, --proj <proj...>", "auto filter and set projects for other commands (add, ls) if not specified")
+	.option("--no-proj", "clear projects")
+	.option("-c, --ctx <ctx...>", "auto filter and set contexts for other commands (add, ls) if not specified")
+	.option("--no-ctx", "clear contexts")
 	.option("-e, --enabled", "enable this workspace")
+	.option("--no-enabled", "disable this workspace")
 	.action(modify);
 
-function modify(name: string, options: WorkspaceOptions) {
+function modify(name: string, options: ModifyOptions) {
 	const workspaces = readData("workspace");
 	const ws = workspaces.find(v => v.name === name);
 	if (!ws) {
@@ -124,20 +128,25 @@ function modify(name: string, options: WorkspaceOptions) {
 	}
 
 	let modified = false;
-	if (options.proj) {
-		ws.config.projects = parseArrayArgs(options.proj);
+	if ("proj" in options) {
+		ws.config.projects = options.proj || undefined;
 		modified = true;
 	}
-	if (options.ctx) {
-		ws.config.contexts = parseArrayArgs(options.ctx);
+	if ("ctx" in options) {
+		ws.config.contexts = options.ctx || undefined;
 		modified = true;
 	}
-	if (options.enabled) {
+	if ("enabled" in options) {
 		// make sure there's at most one enabled workspace
-		workspaces.forEach(w => {
-			delete w.enabled;
-		});
-		ws.enabled = true;
+		if (options.enabled) {
+			workspaces.forEach(w => {
+				delete w.enabled;
+			});
+			ws.enabled = true;
+		}
+		else {
+			delete ws.enabled;
+		}
 		modified = true;
 	}
 
