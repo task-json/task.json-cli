@@ -11,6 +11,7 @@ import { getCertificate, HttpError, setupClient } from "task.json-client";
 import { readData, writeData } from "../utils/config";
 import { printAttrs, printCert } from "../utils/format";
 import { Server } from "../utils/types";
+import { stringifyDiffStat } from "../utils/task";
 
 const serverCmd = new Command("server");
 
@@ -116,7 +117,8 @@ function add(name: string, options: AddOptions) {
 type ModifyOptions = {
 	url?: string,
 	token?: string,
-	default?: boolean
+	default?: boolean,
+	ca: boolean
 }
 
 const modifyCmd = new Command("modify");
@@ -128,6 +130,7 @@ modifyCmd
 	.option("--no-token", "clear token")
 	.option("-d, --default", "set this server as default")
 	.option("--no-default", "set this server as not default")
+	.option("--no-ca", "clear all trusted CA certs")
 	.action(modify);
 
 function modify(name: string, options: ModifyOptions) {
@@ -158,6 +161,10 @@ function modify(name: string, options: ModifyOptions) {
 		else {
 			delete s.default;
 		}
+		modified = true;
+	}
+	if (!options.ca) {
+		delete s.config.ca;
 		modified = true;
 	}
 
@@ -275,7 +282,7 @@ async function login(name: string | undefined, options: LoginOptions) {
 						ca.push(cert.toString());
 						server.config.ca = ca;
 						writeData("server", servers);
-						continue;	
+						continue;
 					}
 				}
 				else {
@@ -292,12 +299,102 @@ async function login(name: string | undefined, options: LoginOptions) {
 }
 
 
+/**
+ * Sub command: sync
+ */
+type SyncOptions = {
+	upload?: boolean,
+	download?: boolean,
+	force?: boolean
+};
+
+const syncCmd = new Command("sync");
+syncCmd
+	.description("sync with server")
+	.argument("[name]", "server name (use default one if not specified)")
+	.option("-u, --upload", "upload local task.json to overwrite the one on server")
+	.option("-d, --download", "download task.json from server to overwrite the local one")
+	.option("-f, --force", "overwrite without confirmation")
+	.action(sync);
+
+async function sync(name: string | undefined, options: SyncOptions) {
+	const servers = readData("server");
+	
+	const server = servers.find(s => {
+		if (name !== undefined) {
+			return name === s.name;
+		}
+		else {
+			return s.default;
+		}
+	});
+
+	if (!server) {
+		syncCmd.error("server not found");
+		return;
+	}
+
+	if (!server.config.token) {
+		syncCmd.error("server not logged in");
+	}
+	
+	const taskJson = readData("task");
+
+	const client = await setupClient({
+		server: server.config.url,
+		token: server.config.token,
+		ca: server.config.ca,
+	});
+
+	try {
+		if (options.upload) {
+			if (!options.force) {
+				const anwser = await inquirer.prompt([{
+					type: "confirm",
+					name: "confirm",
+					message: "This will overwrite task.json on the server. Continue?",
+					default: false
+				}]);
+				if (!anwser.confirm)
+					return;
+			}
+			await client.upload(taskJson);
+		}
+		else if (options.download) {
+			if (!options.force) {
+				const anwser = await inquirer.prompt([{
+					type: "confirm",
+					name: "confirm",
+					message: "This will overwrite local task.json. Continue?",
+					default: false
+				}]);
+				if (!anwser.confirm)
+					return;
+			}
+			writeData("task", await client.download());
+		}
+		else {
+			const { data, stat } = await client.sync(taskJson);
+			writeData("task", data);
+			console.log(`[Client] ${stringifyDiffStat(stat.client)}`);
+			console.log(`[Server] ${stringifyDiffStat(stat.server)}`);
+		}
+		console.log("Sync with server successfully.")
+	}
+	catch (error) {
+		const err = error as HttpError;
+		syncCmd.error(`${err.status}: ${err.message}`);
+	}
+}
+
+
 // Add all sub commands
 serverCmd
 	.addCommand(showCmd)
 	.addCommand(addCmd)
 	.addCommand(modifyCmd)
 	.addCommand(rmCmd)
-	.addCommand(loginCmd);
+	.addCommand(loginCmd)
+	.addCommand(syncCmd);
 
 export default serverCmd;
