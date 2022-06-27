@@ -41,7 +41,7 @@ export function parseDate(dateStr: string) {
 					duration.seconds = num;
 					break;
 				default:
-					throw new Error(`Invalid date: ${dateStr}`)
+					throw new Error(`invalid date: ${dateStr}`)
 			}
 			dt = DateTime.now().plus(duration);
 		}
@@ -76,7 +76,7 @@ export function parseDate(dateStr: string) {
 	}
 
 	if (dt === undefined)
-		throw new Error(`Invalid date: ${dateStr}`)
+		throw new Error(`invalid date: ${dateStr}`)
 	
 	return dt.toISO();
 }

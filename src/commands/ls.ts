@@ -44,10 +44,10 @@ lsCmd
 			.default(["todo"])
 	)
 	.option("-P, --prior <priorities...>", "filter tasks by priorities (A-Z)")
-	.option("-w, --wait", "show waiting tasks")
-	.option("-d, --dep", "show dependent tasks and dependencies")
 	.option("-p, --proj <projects...>", "filter tasks by projects")
 	.option("-c, --ctx <contexts...>", "filter tasks by contexts")
+	.option("-w, --wait", "show waiting tasks")
+	.option("-d, --dep", "show dependent tasks and dependencies")
 	.option("--no-workspace", "ignore workspace settings temporarily")
 	.action(execute);
 

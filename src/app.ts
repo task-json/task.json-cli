@@ -21,6 +21,7 @@ import eraseCmd from "./commands/erase";
 import showCmd from "./commands/show";
 import restoreCmd from "./commands/restore";
 import workspaceCmd from "./commands/workspace";
+import modifyCmd from "./commands/modify";
 
 const program = new Command();
 
@@ -43,6 +44,7 @@ program
 	.addCommand(eraseCmd)
 	.addCommand(showCmd)
 	.addCommand(restoreCmd)
-	.addCommand(workspaceCmd);
+	.addCommand(workspaceCmd)
+	.addCommand(modifyCmd);
 
 await program.parseAsync();
