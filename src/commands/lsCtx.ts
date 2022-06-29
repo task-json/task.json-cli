@@ -7,13 +7,13 @@ import { Command, Option } from "commander";
 import { readData } from '../utils/config';
 import { normalizeTypes } from "../utils/task";
 
-const lsctxCmd = new Command("lsctx");
+const lsCtxCmd = new Command("lsCtx");
 
-type LsctxOptions = {
+type LsCtxOptions = {
 	type: string[]
 };
 
-lsctxCmd
+lsCtxCmd
 	.description("list contexts")
 	.addOption(
 		new Option("-T, --type <types...>", "filter tasks by types")
@@ -23,7 +23,7 @@ lsctxCmd
 	.action(execute);
 
 
-function execute(options: LsctxOptions) {
+function execute(options: LsCtxOptions) {
 	const contexts: Set<string> = new Set();
 	const types = normalizeTypes(options.type);
 	const taskJson = readData("task");
@@ -37,4 +37,4 @@ function execute(options: LsctxOptions) {
 	console.log([...contexts].join("\n"));
 }
 
-export default lsctxCmd;
+export default lsCtxCmd;

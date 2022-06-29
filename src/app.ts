@@ -8,9 +8,9 @@ import { Command } from "commander";
 import { version } from "../package.json";
 
 import lsCmd from "./commands/ls";
-import lsctxCmd from "./commands/lsctx";
-import lsprojCmd from "./commands/lsproj";
-import lsnumCmd from "./commands/lsnum";
+import lsCtxCmd from "./commands/lsCtx";
+import lsProjCmd from "./commands/lsProj";
+import lsNumCmd from "./commands/lsNum";
 import completionCmd from "./commands/completion";
 import addCmd from "./commands/add";
 import doCmd from "./commands/do";
@@ -33,9 +33,9 @@ program
 
 program
 	.addCommand(lsCmd)
-	.addCommand(lsctxCmd)
-	.addCommand(lsprojCmd)
-	.addCommand(lsnumCmd)
+	.addCommand(lsCtxCmd)
+	.addCommand(lsProjCmd)
+	.addCommand(lsNumCmd)
 	.addCommand(completionCmd)
 	.addCommand(addCmd)
 	.addCommand(doCmd)

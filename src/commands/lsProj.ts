@@ -6,16 +6,15 @@
 import { Command, Option } from "commander";
 import { readData } from '../utils/config';
 import { normalizeTypes } from "../utils/task";
-import range from "lodash/range";
 
-const lsnumCmd = new Command("lsnum");
+const lsProjCmd = new Command("lsProj");
 
-type LsnumOptions = {
+type LsProjOptions = {
 	type: string[]
 };
 
-lsnumCmd
-	.description("list numbers")
+lsProjCmd
+	.description("list projects")
 	.addOption(
 		new Option("-T, --type <types...>", "filter tasks by types")
 			.choices(["todo", "done", "removed", "all"])
@@ -24,17 +23,18 @@ lsnumCmd
 	.action(execute);
 
 
-function execute(options: LsnumOptions) {
+function execute(options: LsProjOptions) {
+	const projects: Set<string> = new Set();
 	const types = normalizeTypes(options.type);
 	const taskJson = readData("task");
 
-	const nums: string[] = [];
-	for (const type of types) {
-		const size = taskJson[type].length;
-		nums.push(...range(1, size+1).map(n => `${type.charAt(0)}${n}`));
-	}
+	for (const type of types)
+		for (const task of taskJson[type])
+			task.projects?.forEach(c => {
+				projects.add(c);
+			});
 
-	console.log(nums.join("\n"));
+	console.log([...projects].join("\n"));
 }
 
-export default lsnumCmd;
+export default lsProjCmd;
