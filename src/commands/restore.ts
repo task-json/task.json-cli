@@ -17,7 +17,7 @@ type RestoreOptions = {
 
 restoreCmd
 	.description("undo last modification using .bak file")
-	.option("-f, --force", "force erasing without confirmation")
+	.option("-f, --force", "force overwriting without confirmation")
 	.action(execute);
 
 async function execute(options: RestoreOptions) {

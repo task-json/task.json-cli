@@ -47,7 +47,7 @@ lsCmd
 	.option("-p, --proj <projects...>", "filter tasks by projects")
 	.option("-c, --ctx <contexts...>", "filter tasks by contexts")
 	.option("-w, --wait", "show waiting tasks")
-	.option("-d, --dep", "show dependent tasks and dependencies")
+	.option("-D, --dep", "show dependent tasks and dependencies")
 	.option("--no-workspace", "ignore workspace settings temporarily")
 	.action(execute);
 

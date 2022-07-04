@@ -21,7 +21,7 @@ type ShowOptions = {
 
 showCmd
 	.description("show task details")
-	.option("--iso", "show due date in ISO format")
+	.option("--iso", "show date in ISO format")
 	.argument("<num...>", "task # to show")
 	.action(execute);
 
