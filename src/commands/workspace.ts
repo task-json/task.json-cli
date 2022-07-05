@@ -17,16 +17,26 @@ workspaceCmd.description("workspace configuration");
 /**
  * Sub command: show
  */
+type ShowOptions = {
+	name?: boolean
+};
+
 const showCmd = new Command("show");
 showCmd
 	.description("show workspace(s)")
 	.argument("[names...]", "workspace name(s)")
+	.option("-n, --name", "only show workspace names")
 	.action(show);
 
-function show(names: string[]) {
+function show(names: string[], options: ShowOptions) {
 	const workspaces = readData("workspace");
 	for (const ws of workspaces) {
 		if (names.length > 0 && !names.includes(ws.name)) {
+			continue;
+		}
+
+		if (options.name) {
+			console.log(ws.name);
 			continue;
 		}
 

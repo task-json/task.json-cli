@@ -21,14 +21,16 @@ serverCmd.description("server configuration");
  * Sub command: show
  */
 type ShowOptions = {
-	showToken: boolean
+	name?: boolean,
+	token?: boolean
 };
 
 const showCmd = new Command("show");
 showCmd
 	.description("show server(s)")
-	.argument("[names...]", "server name(s)")
-	.option("--show-token", "show server token")
+	.argument("[name...]", "server name(s)")
+	.option("-n, --name", "only show server names")
+	.option("-t, --token", "show server token")
 	.action(show);
 
 function show(names: string[], options: ShowOptions) {
@@ -38,12 +40,17 @@ function show(names: string[], options: ShowOptions) {
 			continue;
 		}
 
+		if (options.name) {
+			console.log(s.name);
+			continue;
+		}
+
 		const status = s.default ? "[default]" : "";
 		console.log(`\nServer ${chalk.bold(s.name)} ${status}`);
 
 		const attrs: [string, string][] = [];
 		for (const [key, value] of Object.entries(s.config)) {
-			if (key === "token" && !options.showToken) {
+			if (key === "token" && !options.token) {
 				attrs.push([key, "*".repeat(value.length)]);
 			}
 			else if (key === "ca") {
