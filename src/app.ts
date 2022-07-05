@@ -5,6 +5,9 @@
  */
 
 import { Command } from "commander";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+import fs from "node:fs";
 
 import lsCmd from "./commands/ls.js";
 import lsCtxCmd from "./commands/lsCtx.js";
@@ -23,12 +26,23 @@ import workspaceCmd from "./commands/workspace.js";
 import modifyCmd from "./commands/modify.js";
 import serverCmd from "./commands/server.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// read version from package.json
+const { version } = JSON.parse(
+	fs.readFileSync(
+		path.join(__dirname, "../package.json"),
+		"utf8"
+	)
+);
+
 const program = new Command();
 
 program
 	.name("tj")
 	.description("Command line todo management app based on task.json format")
-	.version(process.env.npm_package_version ?? "unknown");
+	.version(version);
 
 program
 	.addCommand(lsCmd)
