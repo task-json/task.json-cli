@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.1](https://github.com/DCsunset/task.json-cli/compare/v7.0.0...v7.0.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* bump task.json-client and update metadata ([00a2a19](https://github.com/DCsunset/task.json-cli/commit/00a2a198a048bd02a3b22deaf9a4dbf1a0238682))
+* fix esm import extension ([4265c83](https://github.com/DCsunset/task.json-cli/commit/4265c833811c77517119bad7eadc3f6a8c3d0082))
+
 ## [7.0.0](https://github.com/DCsunset/task.json-cli/compare/v6.2.2...v7.0.0) (2022-07-05)
 
 
