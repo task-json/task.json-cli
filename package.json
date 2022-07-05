@@ -8,7 +8,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app.js",
     "dev": "tsx src/app.ts",
-    "build": "tsc"
+    "build": "rm -rf dist && tsc"
+  },
+  "files": [
+    "package*.json",
+    "dist",
+    "LICENSE"
+  ],
+  "bin": {
+    "tj": "./dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -37,7 +45,7 @@
     "luxon": "^2.4.0",
     "table": "^6.8.0",
     "task.json": "^2.8.0",
-    "task.json-client": "^1.0.0",
+    "task.json-client": "^1.0.2",
     "wrap-ansi": "^8.0.1"
   },
   "devDependencies": {
