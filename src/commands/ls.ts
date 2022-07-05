@@ -9,7 +9,7 @@ import wrapAnsi from "wrap-ansi";
 import chalk from "chalk";
 import { table } from "table";
 import { Task, taskUrgency } from "task.json";
-import { readData } from "../utils/config";
+import { readData } from "../utils/config.js";
 import {
 	normalizeTypes,
 	filterByDeps,
@@ -20,9 +20,9 @@ import {
 	colorTask,
 	maxWidth,
 	TaskStr,
-} from "../utils/task";
-import { calculateWidth, tableConfig } from "../utils/table";
-import { showDate } from "../utils/date";
+} from "../utils/task.js";
+import { calculateWidth, tableConfig } from "../utils/table.js";
+import { showDate } from "../utils/date.js";
 
 const lsCmd = new Command("ls");
 

@@ -7,9 +7,10 @@ import crypto from "node:crypto";
 import { Command } from "commander";
 import { DateTime } from 'luxon';
 import { Task } from "task.json";
-import { readData, writeData } from "../utils/config";
-import { parseDate } from '../utils/date';
-import { numberToId } from "../utils/task";
+import { readData, writeData } from "../utils/config.js";
+import { numberToId } from "../utils/task.js";
+import { parseDate } from "../utils/date.js";
+
 
 const addCmd = new Command("add");
 

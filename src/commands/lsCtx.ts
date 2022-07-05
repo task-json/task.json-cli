@@ -4,8 +4,8 @@
  */
 
 import { Command, Option } from "commander";
-import { readData } from '../utils/config';
-import { normalizeTypes } from "../utils/task";
+import { readData } from "../utils/config.js";
+import { normalizeTypes } from "../utils/task.js";
 
 const lsCtxCmd = new Command("lsCtx");
 

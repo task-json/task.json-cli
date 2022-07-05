@@ -4,9 +4,9 @@
  */
 
 import { Command } from "commander";
-import { readData } from "../utils/config";
 import { DateTime } from 'luxon';
-import { showDate } from "../utils/date";
+import { readData } from "../utils/config.js";
+import { showDate } from "../utils/date.js";
 
 const dueCmd = new Command("due");
 

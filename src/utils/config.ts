@@ -7,7 +7,7 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 import { initTaskJson, TaskJson } from "task.json";
-import { Server, Workspace } from "./types";
+import { Server, Workspace } from "./types.js";
 
 export const pathConfig = {
   root: process.env.TASK_JSON_PATH || path.join(os.homedir(), ".config/task.json"),

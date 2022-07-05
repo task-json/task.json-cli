@@ -4,9 +4,9 @@
  */
 
 import { Command, Option } from "commander";
-import { readData } from '../utils/config';
-import { normalizeTypes } from "../utils/task";
-import range from "lodash/range";
+import range from "lodash/range.js";
+import { readData } from '../utils/config.js';
+import { normalizeTypes } from "../utils/task.js";
 
 const lsNumCmd = new Command("lsNum");
 

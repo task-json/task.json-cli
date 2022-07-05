@@ -5,8 +5,8 @@
 
 import { Command } from "commander";
 import { undoTasks } from "task.json";
-import { readData, writeData } from "../utils/config";
-import { parseNumbers } from "../utils/task";
+import { readData, writeData } from "../utils/config.js";
+import { parseNumbers } from "../utils/task.js";
 
 const undoCmd = new Command("undo");
 

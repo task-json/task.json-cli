@@ -7,15 +7,15 @@ import { Command, Option } from "commander";
 import inquirer from "inquirer";
 import { DateTime } from 'luxon';
 import { Task, TaskType } from "task.json";
-import { readData, writeData } from "../utils/config";
-import { parseDate } from "../utils/date";
+import { readData, writeData } from "../utils/config.js";
+import { parseDate } from "../utils/date.js";
 import {
 	normalizeTypes,
 	filterByField,
 	filterByPriority,
 	numberToId,
 	parseNumbers
-} from "../utils/task";
+} from "../utils/task.js";
 
 const modifyCmd = new Command("modify");
 

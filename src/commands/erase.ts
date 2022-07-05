@@ -6,8 +6,8 @@
 import { Command } from "commander";
 import { eraseTasks } from "task.json";
 import inquirer from "inquirer";
-import { readData, writeData } from "../utils/config";
-import { parseNumbers } from "../utils/task";
+import { readData, writeData } from "../utils/config.js";
+import { parseNumbers } from "../utils/task.js";
 
 const eraseCmd = new Command("erase");
 

@@ -7,11 +7,10 @@ import { Command } from "commander";
 import chalk from "chalk";
 import { TaskType } from "task.json";
 import { DateTime } from 'luxon';
-import { readData } from "../utils/config";
-import { parseNumbers } from "../utils/task";
-import { colorPriority, colorDue } from "../utils/task";
-import { showDate } from "../utils/date";
-import { printAttrs } from "../utils/format";
+import { readData } from "../utils/config.js";
+import { parseNumbers, colorPriority, colorDue } from "../utils/task.js";
+import { showDate } from "../utils/date.js";
+import { printAttrs } from "../utils/format.js";
 
 const showCmd = new Command("show");
 

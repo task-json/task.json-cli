@@ -6,9 +6,9 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { DateTime } from 'luxon';
-import { readData, writeData } from "../utils/config";
-import { printAttrs } from "../utils/format";
-import { Workspace } from "../utils/types";
+import { readData, writeData } from "../utils/config.js";
+import { printAttrs } from "../utils/format.js";
+import { Workspace } from "../utils/types.js";
 
 const workspaceCmd = new Command("workspace");
 

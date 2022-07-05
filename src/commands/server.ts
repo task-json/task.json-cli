@@ -8,10 +8,10 @@ import chalk from "chalk";
 import { DateTime } from 'luxon';
 import inquirer from "inquirer";
 import { getCertificate, HttpError, setupClient } from "task.json-client";
-import { readData, writeData } from "../utils/config";
-import { printAttrs, printCert } from "../utils/format";
-import { Server } from "../utils/types";
-import { stringifyDiffStat } from "../utils/task";
+import { readData, writeData } from "../utils/config.js";
+import { printAttrs, printCert } from "../utils/format.js";
+import { Server } from "../utils/types.js";
+import { stringifyDiffStat } from "../utils/task.js";
 
 const serverCmd = new Command("server");
 

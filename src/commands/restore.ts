@@ -7,7 +7,7 @@ import path from "node:path";
 import fs from "node:fs";
 import inquirer from "inquirer";
 import { Command } from "commander";
-import { pathConfig } from "../utils/config";
+import { pathConfig } from "../utils/config.js";
 
 const restoreCmd = new Command("restore");
 

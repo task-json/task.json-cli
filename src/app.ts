@@ -5,31 +5,30 @@
  */
 
 import { Command } from "commander";
-import { version } from "../package.json";
 
-import lsCmd from "./commands/ls";
-import lsCtxCmd from "./commands/lsCtx";
-import lsProjCmd from "./commands/lsProj";
-import lsNumCmd from "./commands/lsNum";
-import completionCmd from "./commands/completion";
-import addCmd from "./commands/add";
-import doCmd from "./commands/do";
-import undoCmd from "./commands/undo";
-import dueCmd from "./commands/due";
-import rmCmd from "./commands/rm";
-import eraseCmd from "./commands/erase";
-import showCmd from "./commands/show";
-import restoreCmd from "./commands/restore";
-import workspaceCmd from "./commands/workspace";
-import modifyCmd from "./commands/modify";
-import serverCmd from "./commands/server";
+import lsCmd from "./commands/ls.js";
+import lsCtxCmd from "./commands/lsCtx.js";
+import lsProjCmd from "./commands/lsProj.js";
+import lsNumCmd from "./commands/lsNum.js";
+import completionCmd from "./commands/completion.js";
+import addCmd from "./commands/add.js";
+import doCmd from "./commands/do.js";
+import undoCmd from "./commands/undo.js";
+import dueCmd from "./commands/due.js";
+import rmCmd from "./commands/rm.js";
+import eraseCmd from "./commands/erase.js";
+import showCmd from "./commands/show.js";
+import restoreCmd from "./commands/restore.js";
+import workspaceCmd from "./commands/workspace.js";
+import modifyCmd from "./commands/modify.js";
+import serverCmd from "./commands/server.js";
 
 const program = new Command();
 
 program
 	.name("tj")
 	.description("Command line todo management app based on task.json format")
-	.version(version);
+	.version(process.env.npm_package_version ?? "unknown");
 
 program
 	.addCommand(lsCmd)
