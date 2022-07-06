@@ -264,10 +264,10 @@ _tj_server_modify() {
 		":name:comp_server" \
 		{-u,--url}"[server URL]:" \
 		{-t,--token}"[token to log in]:" \
-		{--no-token}"[clear token]" \
+		"--no-token[clear token]" \
 		{-d,--default}"[set this server as default]" \
-		{--no-default}"[set this server as not default]" \
-		{--no-ca}"[clear all trusted CA certs]"
+		"--no-default[set this server as not default]" \
+		"--no-ca[clear all trusted CA certs]"
 }
 
 _tj_server_rm() {
