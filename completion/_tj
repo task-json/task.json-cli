@@ -261,7 +261,7 @@ _tj_server_add() {
 _tj_server_modify() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"::name:comp_server" \
+		":name:comp_server" \
 		{-u,--url}"[server URL]:" \
 		{-t,--token}"[token to log in]:" \
 		{--no-token}"[clear token]" \
@@ -279,14 +279,14 @@ _tj_server_rm() {
 _tj_server_login() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		":name:comp_server" \
+		"::name:comp_server" \
 		{-p,--password}"[password for login]:"
 }
 
 _tj_server_sync() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		":name:comp_server" \
+		"::name:comp_server" \
 		{-u,--upload}"[upload local task.json to overwrite the one on server]" \
 		{-d,--download}"[download task.json from server to overwrite the local one]" \
 		{-f,--force}"[overwrite without confirmation]"
@@ -354,7 +354,7 @@ comp_workspace() {
 _tj_workspace_show() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:name:comp_workspace" \
+		"*::name:comp_workspace" \
 		{-n,--name}"[only show workspace name]"
 }
 
@@ -370,7 +370,7 @@ _tj_workspace_add() {
 _tj_workspace_modify() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"::name:comp_workspace" \
+		":name:comp_workspace" \
 		{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
 		"--no-proj[clear projects]" \
 		{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
@@ -382,7 +382,7 @@ _tj_workspace_modify() {
 _tj_workspace_rm() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"::name:comp_workspace"
+		":name:comp_workspace"
 }
 
 _tj
