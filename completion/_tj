@@ -36,7 +36,7 @@ _tj() {
 				"help:display help message"
 			)
 
-			local comp_commands() {
+			comp_commands() {
 				_describe "commands" commands
 			}
 
@@ -72,28 +72,25 @@ _tj() {
 	esac
 }
 
-local ls_ctx="tj lsCtx -T todo -T done"
-local ls_proj="tj lsProj -T todo -T done"
-local task_types=(todo done removed all)
+ls_ctx="tj lsCtx -T todo -T done"
+ls_proj="tj lsProj -T todo -T done"
+task_types=(todo done removed all)
 
-local comp_ctx_filter() {
+comp_ctx_filter() {
 	compadd $(eval $ls_ctx)
 	# add negative representation (! as hidden prefix)
 	compadd -p '!' -- $(eval $ls_ctx)
 }
-local comp_ctx() {
+comp_ctx() {
 	compadd $(eval $ls_ctx)
 }
-local comp_proj_filter() {
+comp_proj_filter() {
 	compadd $(eval $ls_proj)
 	# add negative representation (! as hidden prefix)
 	compadd -p '!' -- $(eval $ls_proj)
 }
-local comp_proj() {
+comp_proj() {
 	compadd $(eval $ls_proj)
-}
-local comp_num() {
-	compadd $(tj lsNum $@)
 }
 
 _tj_add() {
@@ -103,13 +100,13 @@ _tj_add() {
 		{-P,--priority}"[priority (A-Z)]: :({A..Z})" \
 		"*"{-p,--proj}"[projects]: :comp_proj" \
 		"*"{-c,--ctx}"[contexts]: :comp_ctx" \
-		"*"{-D,--dep}"[dependencies (use #)]: :comp_num -T all" \
+		"*"{-D,--dep}"[dependencies (use #)]: :($(tj lsNum -T all))" \
 		{-w,--wait}"[wait until the specified date]:" \
 		{-d,--due}"[due date]:" \
 		"--no-workspace[ignore workspace settings temporarily]"
 }
 
-_tj_complete() {
+_tj_completion() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		"--zsh[install zsh completion]" \
@@ -119,7 +116,7 @@ _tj_complete() {
 _tj_do() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:num:comp_num"
+		"*:num:($(tj lsNum))"
 }
 
 _tj_due() {
@@ -132,7 +129,7 @@ _tj_erase()  {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		{-f,--force}"[force erasing without confirmation]" \
-		"*:num:comp_num -T removed"
+		"*:num:($(tj lsNum -T removed))"
 }
 
 _tj_ls() {
@@ -176,10 +173,10 @@ _tj_modify() {
 		{-P,--prior}"[modify priority (A-Z)]: :({A..Z})" \
 		"*"{-p,--proj}"[modify projects]: :comp_proj" \
 		"*"{-c,--ctx}"[modify contexts]: :comp_ctx" \
-		"*"{-D,--dep}"[modify dependencies]: :comp_num -T all" \
+		"*"{-D,--dep}"[modify dependencies]: :($(tj lsNum -T all))" \
 		{-w,--wait}"[modify wait date]:" \
 		{-d,--due}"[modify due date]:" \
-		"*:num:comp_num -T all"
+		"*:num:($(tj lsNum -T all))"
 }
 
 _tj_restore() {
@@ -191,7 +188,7 @@ _tj_restore() {
 _tj_rm() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:num:comp_num -T todo -T done"
+		"*:num:($(tj lsNum -T todo -T done))"
 }
 
 _tj_server() {
@@ -215,7 +212,7 @@ _tj_server() {
 				"sync:sync with server"
 			)
 
-			local comp_commands() {
+			comp_commands() {
 				_describe "commands" commands
 			}
 
@@ -240,7 +237,7 @@ _tj_server() {
 	esac
 }
 
-local comp_server() {
+comp_server() {
 	compadd $(tj server show --name)
 }
 
@@ -299,13 +296,13 @@ _tj_show() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		"--iso[show date in ISO format]" \
-		"*:num:comp_num -T all"
+		"*:num:($(tj lsNum -T all))"
 }
 
 _tj_undo() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:num:comp_num -T done -T removed"
+		"*:num:($(tj lsNum -T done -T removed))"
 }
 
 _tj_workspace() {
@@ -327,7 +324,7 @@ _tj_workspace() {
 				"rm:remove an existing workspace"
 			)
 
-			local comp_commands() {
+			comp_commands() {
 				_describe "commands" commands
 			}
 
@@ -350,7 +347,7 @@ _tj_workspace() {
 	esac
 }
 
-local comp_workspace() {
+comp_workspace() {
 	compadd $(tj workspace show --name)
 }
 
