@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.3](https://github.com/DCsunset/task.json-cli/compare/v7.0.2...v7.0.3) (2022-07-06)
+
+
+### Bug Fixes
+
+* fix zsh completion ([f09cc45](https://github.com/DCsunset/task.json-cli/commit/f09cc451e486c51885f9613306fa9ddefda674d9))
+
 ### [7.0.2](https://github.com/DCsunset/task.json-cli/compare/v7.0.1...v7.0.2) (2022-07-05)
 
 
