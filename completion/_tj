@@ -362,8 +362,8 @@ _tj_workspace_add() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		":name:" \
-		{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
-		{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
+		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
+		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
 		{-e,--enabled}"[enable this workspace]"
 }
 
@@ -371,9 +371,9 @@ _tj_workspace_modify() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		":name:comp_workspace" \
-		{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
+		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
 		"--no-proj[clear projects]" \
-		{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
+		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
 		"--no-ctx[clear contexts]" \
 		{-e,--enabled}"[enable this workspace]" \
 		"--no-enabled[disablethis workspace]"
