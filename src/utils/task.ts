@@ -169,6 +169,8 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
     return () => true;
 
   return (task: Task) => {
+    // whether there's positive filter
+    let hasPos = false;
     let posResult = false;
     let negResult = true;
     values.forEach(value => {
@@ -178,11 +180,13 @@ export function filterByField(field: "projects" | "contexts", values: string[] |
         // use and operator for negative filter
         negResult = negResult && !(task[field]?.includes(value.substring(1)));
       }
-      else
+      else {
         posResult = posResult || Boolean(task[field]?.includes(value));
+        hasPos = true;
+      }
     });
 
-    return negResult && posResult;
+    return negResult && (!hasPos || posResult);
   };
 }
 
