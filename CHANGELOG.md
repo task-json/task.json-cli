@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.4](https://github.com/DCsunset/task.json-cli/compare/v7.0.3...v7.0.4) (2022-07-09)
+
+
+### Bug Fixes
+
+* fix arguments in zsh completion ([6ed4741](https://github.com/DCsunset/task.json-cli/commit/6ed4741476366575143ca3ea89032b3720bc8f6e))
+* fix bool options in _tj ([d9a1b4d](https://github.com/DCsunset/task.json-cli/commit/d9a1b4dd01793a5be4ca61a63f0532c56ce3dd8c))
+* fix filterByField ([2f8edc5](https://github.com/DCsunset/task.json-cli/commit/2f8edc5d245fe296e98d90826f2fba88ce4a1e3e))
+* fix zsh completion for workspace ([cead379](https://github.com/DCsunset/task.json-cli/commit/cead37966fbbffd57789e35afaa251584bf01fbb))
+
 ### [7.0.3](https://github.com/DCsunset/task.json-cli/compare/v7.0.2...v7.0.3) (2022-07-06)
 
 
