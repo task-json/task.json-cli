@@ -38,22 +38,22 @@
   },
   "homepage": "https://github.com/DCsunset/task.json-cli",
   "dependencies": {
-    "@types/inquirer": "^8.2.1",
-    "chalk": "^5.0.1",
-    "commander": "^9.3.0",
-    "inquirer": "^9.0.0",
+    "@types/inquirer": "^9.0.3",
+    "chalk": "^5.1.2",
+    "commander": "^9.4.1",
+    "inquirer": "^9.1.4",
     "lodash": "^4.17.21",
-    "luxon": "^2.4.0",
-    "table": "^6.8.0",
+    "luxon": "^3.1.1",
+    "table": "^6.8.1",
     "task.json": "^2.8.0",
     "task.json-client": "^1.0.2",
     "wrap-ansi": "^8.0.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182",
-    "@types/luxon": "^2.3.2",
-    "@types/node": "^18.0.0",
+    "@types/lodash": "^4.14.191",
+    "@types/luxon": "^3.1.0",
+    "@types/node": "^18.11.10",
     "@types/wrap-ansi": "^8.0.1",
-    "tsx": "^3.4.3"
+    "tsx": "^3.12.1"
   }
 }
