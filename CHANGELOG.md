@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.5](https://github.com/DCsunset/task.json-cli/compare/v7.0.4...v7.0.5) (2022-12-02)
+
+
+### Bug Fixes
+
+* handle errors gracefully ([765ce65](https://github.com/DCsunset/task.json-cli/commit/765ce65477195790e01cbbddcfa6ec24ec1ee579))
+
 ### [7.0.4](https://github.com/DCsunset/task.json-cli/compare/v7.0.3...v7.0.4) (2022-07-09)
 
 
