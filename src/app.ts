@@ -62,4 +62,9 @@ program
 	.addCommand(workspaceCmd)
 	.addCommand(serverCmd);
 
-await program.parseAsync();
+try {
+	await program.parseAsync();
+}
+catch (err: any) {
+	console.error("Error:", (err as Error).message);
+}
