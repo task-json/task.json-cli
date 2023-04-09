@@ -19,10 +19,10 @@ dueCmd
 	.option("--iso", "show due date in ISO format")
 	.action(execute);
 
-function execute(options: DueOptions) {
-	const taskJson = readData("task");
+async function execute(options: DueOptions) {
+	const tj = await readData("task");
 	let due: DateTime | null = null;
-	for (const task of taskJson.todo) {
+	for (const task of tj) {
 		if (task.due) {
 			const date = DateTime.fromISO(task.due);
 			if (due === null || date < due) {
