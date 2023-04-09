@@ -28,6 +28,13 @@ npm i -g task.json-cli
 
 * `TASK_JSON_PATH`: the path of task.json data (default: `$HOME/.config/task.json`)
 
+## Migration from v7 to v8
+
+Backup your old data first.
+Then use the script in <https://github.com/task-json/task.json/tree/master/scripts> to migrate your data
+from task.json format v1 to v2.
+
+You'll also need to use task.json-server v2 if you want to sync data with a server.
 
 ## Migration from v5 to v6
 
