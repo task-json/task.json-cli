@@ -42,7 +42,6 @@
     "chalk": "^5.2.0",
     "commander": "^10.0.0",
     "inquirer": "^9.1.5",
-    "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "table": "^6.8.1",
     "task.json": "^3.2.0",
@@ -50,10 +49,8 @@
     "wrap-ansi": "^8.1.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.192",
     "@types/luxon": "^3.2.0",
     "@types/node": "^18.15.11",
-    "@types/wrap-ansi": "^8.0.1",
-    "tsx": "^3.12.6"
+    "@types/wrap-ansi": "^8.0.1"
   }
 }
