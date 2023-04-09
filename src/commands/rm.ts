@@ -10,12 +10,17 @@ import { numbersToTasks } from "../utils/task.js";
 
 const rmCmd = new Command("rm");
 
+type RmOptions = {
+	quiet?: boolean
+};
+
 rmCmd
 	.description("delete task(s)")
+	.option("-q, --quiet", "without showing task text verbosely")
 	.argument("<num...>", "task # to delete")
 	.action(execute);
 
-async function execute(nums: string[]) {
+async function execute(nums: string[], options: RmOptions) {
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);
@@ -28,6 +33,11 @@ async function execute(nums: string[]) {
 	writeData("task", tj);
 
 	console.log(`Removed ${tasks.length} task(s)`);
+	if (!options.quiet) {
+		tasks.forEach((t, i) => {
+			console.log(`- ${nums[i]}: ${t.text}`);
+		});
+	}
 }
 
 export default rmCmd;
