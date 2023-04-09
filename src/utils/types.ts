@@ -8,7 +8,8 @@ export type ServerConfig = {
   token?: string,
   /// trusted CA
   ca?: string[],
-  encryptionKey?: string
+  /// Encryption key
+  key?: string
 };
 
 export type Server = {

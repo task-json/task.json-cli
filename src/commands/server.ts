@@ -103,7 +103,7 @@ async function add(name: string, options: AddOptions) {
 		config: {
 			url: options.url,
 			token: options.token,
-			encryptionKey: options.key
+			key: options.key
 		},
 		default: options.default,
 		created: date,
@@ -179,7 +179,7 @@ async function modify(name: string, options: ModifyOptions) {
 		modified = true;
 	}
 	if ("key" in options) {
-		s.config.encryptionKey = options.key || undefined;
+		s.config.key = options.key || undefined;
 		modified = true;
 	}
 	if (!options.ca) {
@@ -363,7 +363,7 @@ async function sync(name: string | undefined, options: SyncOptions) {
 		server: server.config.url,
 		token: server.config.token,
 		ca: server.config.ca,
-		encryptionKey: server.config.encryptionKey
+		encryptionKey: server.config.key
 	});
 
 	try {
