@@ -22,7 +22,8 @@ serverCmd.description("server configuration");
  */
 type ShowOptions = {
 	name?: boolean,
-	token?: boolean
+	token?: boolean,
+	key?: boolean
 };
 
 const showCmd = new Command("show");
@@ -31,6 +32,7 @@ showCmd
 	.argument("[name...]", "server name(s)")
 	.option("-n, --name", "only show server names")
 	.option("-t, --token", "show server token")
+	.option("-k, --key", "show encryption key")
 	.action(show);
 
 async function show(names: string[], options: ShowOptions) {
@@ -50,12 +52,12 @@ async function show(names: string[], options: ShowOptions) {
 
 		const attrs: [string, string][] = [];
 		for (const [key, value] of Object.entries(s.config)) {
-			if (key === "token" && !options.token) {
-				attrs.push([key, "*".repeat(value.length)]);
+			if ((key === "token" || key == "key") && !options[key]) {
+				attrs.push([key, "***"]);
 			}
 			else if (key === "ca") {
 				const len = (value as string[]).length;
-				attrs.push([key, `[${len} cert(s)]`]);
+				attrs.push([key, `${len} cert(s)`]);
 			}
 			else {
 				attrs.push([key, value as string]);
