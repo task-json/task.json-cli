@@ -1,6 +1,30 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [8.0.0](https://github.com/DCsunset/task.json-cli/compare/v7.0.6...v8.0.0) (2023-04-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to task.json v2
+
+### Features
+
+* add e2e encryption when syncing with server ([897d48c](https://github.com/DCsunset/task.json-cli/commit/897d48c1529fe679c5a94f552ef0d73819c7e969))
+* show removed task text by default ([5e0d1ae](https://github.com/DCsunset/task.json-cli/commit/5e0d1ae1c440a19e6215a9b8e37847c3f69c9c98))
+* update zsh completion ([5f74efe](https://github.com/DCsunset/task.json-cli/commit/5f74efe8f945a389f6833c53270900884bf3f8ed))
+* upgrade to task.json v2 ([ac62a8a](https://github.com/DCsunset/task.json-cli/commit/ac62a8a2bb71a66d75b22c687d9023b55e125cea))
+
+
+### Bug Fixes
+
+* allow showing server encryption key ([747cacd](https://github.com/DCsunset/task.json-cli/commit/747cacd9ceee36e47cbee88135e114127e49df84))
+* copy instead of removing when adding new task ([33023bd](https://github.com/DCsunset/task.json-cli/commit/33023bd29d934a87f0a16e150e51e525535279a0))
+* fix due command ([10041fd](https://github.com/DCsunset/task.json-cli/commit/10041fd0aa14aca675395b780d7cad9f5134dc14))
+* rename encryptionKey to key ([d0c3bc6](https://github.com/DCsunset/task.json-cli/commit/d0c3bc65c4e567731cac71e8097864bcd18a70bb))
+* start index from 0 instead of 1 ([9168817](https://github.com/DCsunset/task.json-cli/commit/91688176453126b77dec9b7feaa1ed5fe8c647da))
+* update zsh completion ([502baa1](https://github.com/DCsunset/task.json-cli/commit/502baa12b214985177902f3315208c98f581e54a))
 
 ### [7.0.6](https://github.com/DCsunset/task.json-cli/compare/v7.0.5...v7.0.6) (2022-12-02)
 
