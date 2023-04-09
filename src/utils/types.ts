@@ -7,7 +7,8 @@ export type ServerConfig = {
   url: string,
   token?: string,
   /// trusted CA
-  ca?: string[]
+  ca?: string[],
+  encryptionKey?: string
 };
 
 export type Server = {
@@ -18,7 +19,7 @@ export type Server = {
   /// modified date (ISO format)
   modified: string,
   /// Whether it's the default server
-  default?: boolean
+  default?: boolean,
 };
 
 export type WorkspaceConfig = {

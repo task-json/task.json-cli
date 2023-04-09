@@ -75,7 +75,8 @@ async function show(names: string[], options: ShowOptions) {
 type AddOptions = {
 	url: string,
 	token?: string,
-	default?: boolean
+	default?: boolean,
+	key?: string
 }
 
 const addCmd = new Command("add");
@@ -85,6 +86,7 @@ addCmd
 	.requiredOption("-u, --url <url>", "server URL")
 	.option("-t, --token <token>", "token to log in")
 	.option("-d, --default", "set this server as default")
+	.option("-k, --key", "key to encrypt uploaded data (e2ee)")
 	.action(add);
 
 async function add(name: string, options: AddOptions) {
@@ -98,7 +100,8 @@ async function add(name: string, options: AddOptions) {
 		name,
 		config: {
 			url: options.url,
-			token: options.token
+			token: options.token,
+			encryptionKey: options.key
 		},
 		default: options.default,
 		created: date,
@@ -123,8 +126,9 @@ async function add(name: string, options: AddOptions) {
  */
 type ModifyOptions = {
 	url?: string,
-	token?: string,
+	token?: string | false,
 	default?: boolean,
+	key?: string | false,
 	ca: boolean
 }
 
@@ -138,6 +142,8 @@ modifyCmd
 	.option("-d, --default", "set this server as default")
 	.option("--no-default", "set this server as not default")
 	.option("--no-ca", "clear all trusted CA certs")
+	.option("-k, --key", "key to encrypt uploaded data (e2ee)")
+	.option("--no-key", "clear encryption key")
 	.action(modify);
 
 async function modify(name: string, options: ModifyOptions) {
@@ -168,6 +174,10 @@ async function modify(name: string, options: ModifyOptions) {
 		else {
 			delete s.default;
 		}
+		modified = true;
+	}
+	if ("key" in options) {
+		s.config.encryptionKey = options.key || undefined;
 		modified = true;
 	}
 	if (!options.ca) {
@@ -351,6 +361,7 @@ async function sync(name: string | undefined, options: SyncOptions) {
 		server: server.config.url,
 		token: server.config.token,
 		ca: server.config.ca,
+		encryptionKey: server.config.encryptionKey
 	});
 
 	try {
