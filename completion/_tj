@@ -188,6 +188,7 @@ _tj_restore() {
 _tj_rm() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
+		{-q,--quiet}"[without showing task text verbosely]" \
 		"*:num:($(tj lsNum -S todo -S done))"
 }
 
