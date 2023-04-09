@@ -4,27 +4,36 @@
  */
 
 import { Command } from "commander";
-import { doTasks } from "task.json";
+import { doTasks, classifyTaskJson } from "task.json";
 import { readData, writeData } from "../utils/config.js";
-import { parseNumbers } from "../utils/task.js";
+import { numbersToIndexes, indexesToTasks } from "../utils/task.js";
 
 const doCmd = new Command("do");
 
 doCmd
 	.description("mark task(s) as done")
-	.argument("<num...>", "task # to mark")
+	.argument("<num...>", "task # to mark (must be todo task)")
 	.action(execute);
 
 
-function execute(nums: string[]) {
-	const taskJson = readData("task");
-	const indexes = parseNumbers(nums, taskJson);
-	if (indexes.removed.length + indexes.done.length > 0)
-		doCmd.error("Cannot do done tasks or removed tasks");
-	doTasks(taskJson, indexes.todo);
-	writeData("task", taskJson);
+async function execute(nums: string[]) {
+	let tj = await readData("task");
+	const classified = classifyTaskJson(tj);
+	const indexes = numbersToIndexes(nums);
 
-	console.log(`Finish ${new Set(indexes.todo).size} task(s)`);
+	// Don't allow do removed or done tasks
+	classified.done = [];
+	classified.removed = [];
+	
+	// Keep unique ids
+	const ids = [...new Set(
+		indexesToTasks(classified, indexes).map(t => t.id)
+	)];
+
+	tj = doTasks(tj, ids);
+	writeData("task", tj);
+
+	console.log(`Finish ${ids.length} task(s)`);
 }
 
 export default doCmd;

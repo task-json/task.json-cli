@@ -4,9 +4,9 @@
  */
 
 import { Command } from "commander";
-import { undoTasks } from "task.json";
+import { classifyTaskJson, undoTasks } from "task.json";
 import { readData, writeData } from "../utils/config.js";
-import { parseNumbers } from "../utils/task.js";
+import { numbersToTasks } from "../utils/task.js";
 
 const undoCmd = new Command("undo");
 
@@ -16,16 +16,19 @@ undoCmd
 	.action(execute);
 
 
-function execute(nums: string[]) {
-	const taskJson = readData("task");
-	const indexes = parseNumbers(nums, taskJson);
-	if (indexes.todo.length > 0)
-		undoCmd.error("Cannot delete removed tasks")
-	undoTasks(taskJson, "done", indexes.done);
-	undoTasks(taskJson, "removed", indexes.removed);
-	writeData("task", taskJson);
+async function execute(nums: string[]) {
+	let tj = await readData("task");
+	const classified = classifyTaskJson(tj);
+	const tasks = numbersToTasks(classified, nums);
+	tasks.forEach(t => {
+		if (t.status === "removed") {
+			undoCmd.error("Cannot undo todo tasks");
+		}
+	});
+	tj = undoTasks(tj, tasks.map(t => t.id));
+	writeData("task", tj);
 
-	console.log(`Undo ${new Set(indexes.done).size + new Set(indexes.removed).size} task(s)`);
+	console.log(`Undo ${tasks.length} task(s)`);
 }
 
 export default undoCmd;

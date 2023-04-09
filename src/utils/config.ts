@@ -3,10 +3,10 @@
  * See full notice in README.md in this project
  */
 
-import * as path from "path";
-import * as os from "os";
-import * as fs from "fs";
-import { initTaskJson, TaskJson } from "task.json";
+import path from "path";
+import os from "os";
+import fs from "node:fs";
+import { TaskJson } from "task.json";
 import { Server, Workspace } from "./types.js";
 
 export const pathConfig = {
@@ -30,22 +30,32 @@ type DataType<T extends Type> =
   T extends "server" ? Server[] :
   T extends "workspace" ? Workspace[] :
   never;
+  
 
-export function readData<T extends Type>(type: T): DataType<T> {
+function deserializeData(data: string) {
+  return data
+		.trim()  // Trim white spaces to avoid empty lines
+		.split("\n")
+		.map(line => JSON.parse(line));
+};
+
+function serializeData<T extends Type>(data: DataType<T>) {
+	return data
+		.map(item => JSON.stringify(item))
+		.join("\n");
+};
+
+export async function readData<T extends Type>(type: T): Promise<DataType<T>> {
   const dataPath = path.join(pathConfig.root, pathConfig[type]);
   try {
-    return JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+    return deserializeData(fs.readFileSync(dataPath, "utf-8")) as any;
   }
   catch (err) {
-    if (type === "task") {
-      return initTaskJson() as DataType<T>;
-    }
-    else {
-      return [] as any;
-    }
+    return [] as any;
   }
 }
 
+/// null means deleting the file
 export function writeData<T extends Type>(type: T, data: DataType<T> | null) {
   emptyRootGuard();
   const dataPath = path.join(pathConfig.root, pathConfig[type]);
@@ -61,8 +71,25 @@ export function writeData<T extends Type>(type: T, data: DataType<T> | null) {
   else {
     fs.writeFileSync(
       dataPath,
-      JSON.stringify(data, null, "\t"),
+      // Add an extra newline to make it easier to append
+      serializeData(data) + "\n",
       { encoding: "utf8" }
     );
   }
+}
+
+/// Assume that there is a new line at the end of file
+export function appendData<T extends Type>(type: T, data: DataType<T>) {
+  emptyRootGuard();
+  const dataPath = path.join(pathConfig.root, pathConfig[type]);
+
+  // Backup task.json
+  if (type === "task" && fs.existsSync(dataPath))
+    fs.renameSync(dataPath, dataPath + ".bak");
+
+  fs.appendFileSync(
+    dataPath,
+    serializeData(data),
+    { encoding: "utf8" }
+  );
 }

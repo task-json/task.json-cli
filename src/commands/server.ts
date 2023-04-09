@@ -33,8 +33,8 @@ showCmd
 	.option("-t, --token", "show server token")
 	.action(show);
 
-function show(names: string[], options: ShowOptions) {
-	const servers = readData("server");
+async function show(names: string[], options: ShowOptions) {
+	const servers = await readData("server");
 	for (const s of servers) {
 		if (names.length > 0 && !names.includes(s.name)) {
 			continue;
@@ -87,8 +87,8 @@ addCmd
 	.option("-d, --default", "set this server as default")
 	.action(add);
 
-function add(name: string, options: AddOptions) {
-	const servers = readData("server");
+async function add(name: string, options: AddOptions) {
+	const servers = await readData("server");
 	if (servers.findIndex(v => v.name === name) !== -1) {
 		addCmd.error(`Server ${name} already exists`);
 	}
@@ -140,8 +140,8 @@ modifyCmd
 	.option("--no-ca", "clear all trusted CA certs")
 	.action(modify);
 
-function modify(name: string, options: ModifyOptions) {
-	const servers = readData("server");
+async function modify(name: string, options: ModifyOptions) {
+	const servers = await readData("server");
 	const s = servers.find(v => v.name === name);
 	if (!s) {
 		modifyCmd.error(`Server ${name} doesn't exist`);
@@ -194,8 +194,8 @@ rmCmd
 	.argument("<name...>", "server names")
 	.action(rm);
 
-function rm(names: string) {
-	let servers = readData("server");
+async function rm(names: string) {
+	let servers = await readData("server");
 	const nameSet = new Set(names);
 	const count = nameSet.size;
 	servers = servers.filter(ws => {
@@ -229,7 +229,7 @@ loginCmd
 	.action(login);
 
 async function login(name: string | undefined, options: LoginOptions) {
-	const servers = readData("server");
+	const servers = await readData("server");
 	const server = servers.find(s => {
 		if (name !== undefined) {
 			return name === s.name;
@@ -325,7 +325,7 @@ syncCmd
 	.action(sync);
 
 async function sync(name: string | undefined, options: SyncOptions) {
-	const servers = readData("server");
+	const servers = await readData("server");
 	
 	const server = servers.find(s => {
 		if (name !== undefined) {
@@ -345,7 +345,7 @@ async function sync(name: string | undefined, options: SyncOptions) {
 		syncCmd.error("server not logged in");
 	}
 	
-	const taskJson = readData("task");
+	const taskJson = await readData("task");
 
 	const client = await setupClient({
 		server: server.config.url,
@@ -378,15 +378,16 @@ async function sync(name: string | undefined, options: SyncOptions) {
 				if (!anwser.confirm)
 					return;
 			}
-			writeData("task", await client.download());
+			const { data } = await client.download();
+			writeData("task", data);
 		}
 		else {
-			const { data, stat } = await client.sync(taskJson);
+			const { data, diff } = await client.sync(taskJson);
 			writeData("task", data);
-			console.log(`[Client] ${stringifyDiffStat(stat.client)}`);
-			console.log(`[Server] ${stringifyDiffStat(stat.server)}`);
+			console.log(`[Client] ${stringifyDiffStat(diff.client)}`);
+			console.log(`[Server] ${stringifyDiffStat(diff.server)}`);
 		}
-		console.log("Sync with server successfully.")
+		console.log("Synced with server successfully.")
 	}
 	catch (error) {
 		const err = error as HttpError;

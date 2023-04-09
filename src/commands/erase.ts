@@ -4,10 +4,10 @@
  */
 
 import { Command } from "commander";
-import { eraseTasks } from "task.json";
+import { eraseTasks, classifyTaskJson } from "task.json";
 import inquirer from "inquirer";
 import { readData, writeData } from "../utils/config.js";
-import { parseNumbers } from "../utils/task.js";
+import { numbersToIndexes, indexesToTasks } from "../utils/task.js";
 
 const eraseCmd = new Command("erase");
 
@@ -18,12 +18,22 @@ type EraseOptions = {
 eraseCmd
 	.description("erase task(s) permanently")
 	.option("-f, --force", "force erasing without confirmation")
-	.argument("<num...>", "task # to erase")
+	.argument("<num...>", "task # to erase (must be removed task for safety)")
 	.action(execute);
 
 async function execute(nums: string[], options: EraseOptions) {
-	const taskJson = readData("task");
-	const indexes = parseNumbers(nums, taskJson);
+	let tj = await readData("task");
+	const classified = classifyTaskJson(tj);
+	const indexes = numbersToIndexes(nums);
+
+	// Don't allow erase todo or done tasks
+	classified.todo = [];
+	classified.done = [];
+	
+	// Keep unique ids
+	const ids = [...new Set(
+		indexesToTasks(classified, indexes).map(t => t.id)
+	)];
 
 	let confirm = true;
 	if (!options.force) {
@@ -37,11 +47,9 @@ async function execute(nums: string[], options: EraseOptions) {
 	}
 
 	if (confirm) {
-		if (indexes.todo.length + indexes.done.length > 0)
-			eraseCmd.error("Cannot erase todo or done tasks");
-		eraseTasks(taskJson, indexes.removed);
-		writeData("task", taskJson);
-		console.log(`Erase ${new Set(indexes.removed).size} task(s)`);
+		tj = eraseTasks(tj, ids);
+		writeData("task", tj);
+		console.log(`Erase ${ids.length} task(s)`);
 	}
 }
 

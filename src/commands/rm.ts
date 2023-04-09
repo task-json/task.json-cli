@@ -4,9 +4,9 @@
  */
 
 import { Command } from "commander";
-import { removeTasks } from "task.json";
+import { classifyTaskJson, removeTasks } from "task.json";
 import { readData, writeData } from "../utils/config.js";
-import { parseNumbers } from "../utils/task.js";
+import { numbersToTasks } from "../utils/task.js";
 
 const rmCmd = new Command("rm");
 
@@ -15,16 +15,19 @@ rmCmd
 	.argument("<num...>", "task # to delete")
 	.action(execute);
 
-function execute(nums: string[]) {
-	const taskJson = readData("task");
-	const indexes = parseNumbers(nums, taskJson);
-	if (indexes.removed.length > 0)
-		rmCmd.error("Cannot delete removed tasks")
-	removeTasks(taskJson, "todo", indexes.todo);
-	removeTasks(taskJson, "done", indexes.done);
-	writeData("task", taskJson);
+async function execute(nums: string[]) {
+	let tj = await readData("task");
+	const classified = classifyTaskJson(tj);
+	const tasks = numbersToTasks(classified, nums);
+	tasks.forEach(t => {
+		if (t.status === "removed") {
+			rmCmd.error("Cannot delete removed tasks");
+		}
+	});
+	tj = removeTasks(tj, tasks.map(t => t.id));
+	writeData("task", tj);
 
-	console.log(`Remove ${new Set(indexes.todo).size + new Set(indexes.done).size} task(s)`);
+	console.log(`Removed ${tasks.length} task(s)`);
 }
 
 export default rmCmd;

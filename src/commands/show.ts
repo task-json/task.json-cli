@@ -5,10 +5,10 @@
 
 import { Command } from "commander";
 import chalk from "chalk";
-import { TaskType } from "task.json";
+import { classifyTaskJson } from "task.json";
 import { DateTime } from 'luxon';
 import { readData } from "../utils/config.js";
-import { parseNumbers, colorPriority, colorDue } from "../utils/task.js";
+import { colorPriority, colorDue, numbersToTasks } from "../utils/task.js";
 import { showDate } from "../utils/date.js";
 import { printAttrs } from "../utils/format.js";
 
@@ -25,49 +25,47 @@ showCmd
 	.action(execute);
 
 
-function execute(nums: string[], options: ShowOptions) {
-	const taskJson = readData("task");
-	const numbers = parseNumbers(nums, taskJson);
+async function execute(nums: string[], options: ShowOptions) {
+	const tj = await readData("task");
+	const classified = classifyTaskJson(tj);
+	const tasks = numbersToTasks(classified, nums);
 
-	for (const [type, indexes] of Object.entries(numbers)) {
-		for (const index of indexes) {
-			const task = taskJson[type as TaskType][index];
-			const num = chalk.bold(`${type.charAt(0)}${index + 1}`);
-			const attrs: [string, string][] = [];
-			
-			attrs.push(["status", type]);
-			if (task.priority) {
-				const priColor = colorPriority(task.priority);
-				attrs.push(["prior", chalk[priColor].bold(task.priority)]);
-			}
-			attrs.push(["text", task.text])
-			if (task.deps) {
-				attrs.push(["deps", task.deps.join(" ")]);
-			}
-			if (task.projects) {
-				attrs.push(["proj", task.projects.join(" ")]);
-			}
-			if (task.contexts) {
-				attrs.push(["ctx", task.contexts.join(" ")]);
-			}
-			if (task.due) {
-				const dueColor = colorDue(task.due);
-				const due = options.iso ? task.due : showDate(DateTime.fromISO(task.due));
-				const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
-				attrs.push(["due", coloredDue]);
-			}
-			if (task.wait) {
-				const wait = options.iso ? task.wait : showDate(DateTime.fromISO(task.wait));
-				attrs.push(["wait", wait]);
-			}
-
-			console.log(`\nTask ${num}`);
-			printAttrs(attrs, {
-				keyColor: "cyanBright",
-				prefix: "  "
-			});
+	tasks.forEach((t, i) => {
+		const num = chalk.bold(`${t.status.charAt(0)}${i+1}`);
+		const attrs: [string, string][] = [];
+		
+		attrs.push(["status", t.status]);
+		if (t.priority) {
+			const priColor = colorPriority(t.priority);
+			attrs.push(["prior", chalk[priColor].bold(t.priority)]);
 		}
-	}
+		attrs.push(["text", t.text])
+		if (t.deps) {
+			attrs.push(["deps", t.deps.join(" ")]);
+		}
+		if (t.projects) {
+			attrs.push(["proj", t.projects.join(" ")]);
+		}
+		if (t.contexts) {
+			attrs.push(["ctx", t.contexts.join(" ")]);
+		}
+		if (t.due) {
+			const dueColor = colorDue(t.due);
+			const due = options.iso ? t.due : showDate(DateTime.fromISO(t.due));
+			const coloredDue = dueColor ? chalk[dueColor].bold(due) : due;
+			attrs.push(["due", coloredDue]);
+		}
+		if (t.wait) {
+			const wait = options.iso ? t.wait : showDate(DateTime.fromISO(t.wait));
+			attrs.push(["wait", wait]);
+		}
+
+		console.log(`\nTask ${num}`);
+		printAttrs(attrs, {
+			keyColor: "cyanBright",
+			prefix: "  "
+		});
+	});
 }
 
 export default showCmd;

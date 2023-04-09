@@ -4,37 +4,37 @@
  */
 
 import { Command, Option } from "commander";
-import range from "lodash/range.js";
+import { classifyTaskJson } from "task.json";
 import { readData } from '../utils/config.js';
-import { normalizeTypes } from "../utils/task.js";
+import { normalizeStatuses } from "../utils/task.js";
+import { range } from "../utils/common.js";
 
 const lsNumCmd = new Command("lsNum");
 
 type LsNumOptions = {
-	type: string[]
+	status: string[]
 };
 
 lsNumCmd
-	.description("list numbers")
+	.description("list task numbers")
 	.addOption(
-		new Option("-T, --type <types...>", "filter tasks by types")
+		new Option("-S, --status <status...>", "filter tasks by status")
 			.choices(["todo", "done", "removed", "all"])
 			.default(["todo"])
 	)
 	.action(execute);
 
 
-function execute(options: LsNumOptions) {
-	const types = normalizeTypes(options.type);
-	const taskJson = readData("task");
+async function execute(options: LsNumOptions) {
+	const statuses = normalizeStatuses(options.status);
+	const taskJson = await readData("task");
+	const classified = classifyTaskJson(taskJson);
 
-	const nums: string[] = [];
-	for (const type of types) {
-		const size = taskJson[type].length;
-		nums.push(...range(1, size+1).map(n => `${type.charAt(0)}${n}`));
+	for (const st of statuses) {
+		for (const i of range(classified[st].length)) {
+			console.log(`${st.charAt(0)}${i+1}`);
+		}
 	}
-
-	console.log(nums.join("\n"));
 }
 
 export default lsNumCmd;

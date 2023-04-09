@@ -28,8 +28,8 @@ showCmd
 	.option("-n, --name", "only show workspace names")
 	.action(show);
 
-function show(names: string[], options: ShowOptions) {
-	const workspaces = readData("workspace");
+async function show(names: string[], options: ShowOptions) {
+	const workspaces = await readData("workspace");
 	for (const ws of workspaces) {
 		if (names.length > 0 && !names.includes(ws.name)) {
 			continue;
@@ -77,8 +77,8 @@ addCmd
 	.option("-e, --enabled", "enable this workspace")
 	.action(add);
 
-function add(name: string, options: AddOptions) {
-	const workspaces = readData("workspace");
+async function add(name: string, options: AddOptions) {
+	const workspaces = await readData("workspace");
 	if (workspaces.findIndex(v => v.name === name) !== -1) {
 		addCmd.error(`Workspace ${name} already exists`);
 	}
@@ -129,8 +129,8 @@ modifyCmd
 	.option("--no-enabled", "disable this workspace")
 	.action(modify);
 
-function modify(name: string, options: ModifyOptions) {
-	const workspaces = readData("workspace");
+async function modify(name: string, options: ModifyOptions) {
+	const workspaces = await readData("workspace");
 	const ws = workspaces.find(v => v.name === name);
 	if (!ws) {
 		modifyCmd.error(`Workspace ${name} doesn't exist`);
@@ -179,8 +179,8 @@ rmCmd
 	.argument("<name...>", "workspace names")
 	.action(rm);
 
-function rm(names: string) {
-	let workspaces = readData("workspace");
+async function rm(names: string) {
+	let workspaces = await readData("workspace");
 	const nameSet = new Set(names);
 	const count = nameSet.size;
 	workspaces = workspaces.filter(ws => {

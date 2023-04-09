@@ -4,7 +4,35 @@
  */
 
 import { DateTime } from "luxon";
-import { Task, TaskJson, DiffStat, taskUrgency, TaskType, idToIndex, dueUrgency } from "task.json";
+import { Task, TaskJson, DiffStat, taskUrgency, dueUrgency, classifyTaskJson, TaskStatus, ClassifiedTaskJson, indexTaskJson, IndexedTaskJson } from "task.json";
+import { isTaskStatus } from "task.json/dist/index.guard.js";
+
+const statusMap: { [key: string]: TaskStatus } = {
+  t: "todo",
+  d: "done",
+  r: "removed"
+};
+
+/// Index: (status, index of tasks of that status)
+export type TaskIndex = [TaskStatus, number];
+
+export function numbersToIndexes(nums: string[]): TaskIndex[] {
+  const handleError = (num: string): never => {
+    throw new Error(`Invalid Number: ${num}`);
+  };
+  
+  return nums.map(num => {
+    if (num.length <= 1)
+      handleError(num);
+    const s = num.substring(0, 1);
+    const n = parseInt(num.substring(1));
+    if (isNaN(n) || n <= 0 || !(s in statusMap))
+      handleError(num);
+
+    return [statusMap[s], n-1];
+  });
+}
+
 
 export function colorTask(task: Task) {
   const urgency = taskUrgency(task);
@@ -41,78 +69,59 @@ export function colorDue(due: string) {
   return null;
 }
 
-export function idToNumber(taskJson: TaskJson, ids: string[]) {
-  const types: TaskType[] = ["todo", "done", "removed"];
-  const numbers: string[] = [];
-  for (const type of types) {
-    const indexes = idToIndex(taskJson, type, ids);
-    for (const index of indexes)
-      numbers.push(`${type.charAt(0)}${index+1}`);
-  }
-  return numbers;
+export function idsToNumbers(classified: ClassifiedTaskJson, ids: string[]) {
+  return ids.map(id => {
+    let num: string | null = null;
+    for (const [status, tasks] of Object.entries(classified)) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index !== -1) {
+        num = `${status.charAt(0)}${index+1}`;
+        break;
+      }
+    }
+    if (!num) {
+      throw new Error(`Invalid id: ${id}`);
+    }
+    return num;
+  });
 }
 
-export function parseNumbers(numbers: string[], taskJson: TaskJson) {
-  const handleError = (num: string): never => {
-    throw new Error(`Invalid Number: ${num}`);
-  };
-  const result = {
-    todo: [] as number[],
-    done: [] as number[],
-    removed: [] as number[]
-  };
-
-  for (const num of numbers) {
-    if (num.length <= 1)
-      handleError(num);
-    const typeStr = num.substring(0, 1);
-    const n = parseInt(num.substring(1));
-    if (isNaN(n) || n <= 0)
-      handleError(num);
-    
-    const typeMap: { [key: string]: TaskType } = {
-      t: "todo",
-      d: "done",
-      r: "removed"
-    };
-    if (!(typeStr in typeMap))
-      handleError(num);
-
-    const type = typeMap[typeStr];
-    if (n > taskJson[type].length)
-      handleError(num);
-    result[type].push(n-1);
-  }
-
-  return result;
+export function indexesToTasks(classified: ClassifiedTaskJson, indexes: TaskIndex[]) {
+  return indexes.map(([status, i]) => {
+    if (i >= classified[status].length)
+      throw new Error(`Invalid index: ${status.substring(0, 1)}${i+1}`);
+    return classified[status][i];
+  });
 }
 
-export function numberToId(taskJson: TaskJson, numbers: string[]) {
-  const result = parseNumbers(numbers, taskJson);
-  // Get id for deps
-  const ids: string[] = [];
-  for (const [type, indexes] of Object.entries(result)) {
-    for (const index of indexes)
-      ids.push(taskJson[type as TaskType][index].id);
-  }
-  return ids;
+/// Find tasks for given numbers
+export function numbersToTasks(classified: ClassifiedTaskJson, numbers: string[]) {
+  const indexes = numbersToIndexes(numbers);
+  return indexesToTasks(classified, indexes);
 }
 
-export function normalizeTypes(types: string[]) {
-  const preset = new Set(["todo", "done", "removed", "all"])
-  const result: Set<TaskType> = new Set();
-  for (const type of types) {
-    if (!preset.has(type))
-      throw new Error(`Invalid task type: ${type}`);
-      
-    if (type === "all") {
+export function numbersToIds(classified: ClassifiedTaskJson, numbers: string[]) {
+  return numbersToTasks(classified, numbers).map(t => t.id);
+}
+
+export function indexesToIds(classified: ClassifiedTaskJson, indexes: TaskIndex[]) {
+  return indexesToTasks(classified, indexes).map(t => t.id);
+}
+
+export function normalizeStatuses(statuses: string[]) {
+  const result: Set<TaskStatus> = new Set();
+  for (const st of statuses) {
+    if (st === "all") {
       result.add("todo");
       result.add("done");
       result.add("removed");
-      break;
     }
-    else
-      result.add(type as TaskType);
+    else {
+      if (!isTaskStatus(st)) {
+        throw new Error(`Invalid status: ${st}`);
+      }
+      result.add(st as TaskStatus);
+    }
   }
   return [...result];
 }

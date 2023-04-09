@@ -6,9 +6,9 @@
 import crypto from "node:crypto";
 import { Command } from "commander";
 import { DateTime } from 'luxon';
-import { Task } from "task.json";
-import { readData, writeData } from "../utils/config.js";
-import { numberToId } from "../utils/task.js";
+import { classifyTaskJson, Task } from "task.json";
+import { appendData, readData } from "../utils/config.js";
+import { numbersToIds } from "../utils/task.js";
 import { parseDate } from "../utils/date.js";
 
 
@@ -38,17 +38,19 @@ addCmd
 	.action(execute);
 
 
-function execute(options: AddOptions) {
-	const taskJson = readData("task");
-	const workspace = options.workspace ? readData("workspace").find(ws => ws.enabled) : undefined;
+async function execute(options: AddOptions) {
+	const taskJson = await readData("task");
+	const classified = classifyTaskJson(taskJson);
 
+	const ws = options.workspace ? (await readData("workspace")).find(w => w.enabled) : undefined;
 	const date = DateTime.now().toISO();
 	const wait = options.wait && parseDate(options.wait);
 	const due = options.due && parseDate(options.due);
 
+
 	let deps: string[] | undefined = undefined;
 	if (options.dep)
-		deps = numberToId(taskJson, options.dep);
+		deps = numbersToIds(classified, options.dep);
 
 	// Make sure no name start with !
 	options.proj?.forEach(v => {
@@ -62,15 +64,16 @@ function execute(options: AddOptions) {
 
 	// Remove empty values
 	const projects = (options.proj ??
-		workspace?.config.projects?.filter(v => !v.startsWith("!"))
+		ws?.config.projects?.filter(v => !v.startsWith("!"))
 	)?.filter(v => v !== "");
 	const contexts = (options.ctx ??
-		workspace?.config.contexts?.filter(v => !v.startsWith("!"))
+		ws?.config.contexts?.filter(v => !v.startsWith("!"))
 	)?.filter(v => v !== "");
 
 	// use workpsace's values if not specified
 	const task: Task = {
 		id: crypto.randomUUID(),
+		status: "todo",
 		text: options.text,
 		priority: options.prior,
 		contexts: contexts?.length ? contexts : undefined,
@@ -78,14 +81,13 @@ function execute(options: AddOptions) {
 		deps,
 		wait,
 		due,
-		start: date,
+		created: date,
 		modified: date
 	};
 
-	taskJson.todo.push(task);
-	writeData("task", taskJson);
+	appendData("task", [task]);
 
-	console.log(`Task t${taskJson.todo.length} added: ${options.text}`);
+	console.log(`Task t${classified.todo.length} added: ${options.text}`);
 }
 
 export default addCmd;

@@ -6,21 +6,21 @@
 import { Command, Option } from "commander";
 import inquirer from "inquirer";
 import { DateTime } from 'luxon';
-import { Task, TaskType } from "task.json";
+import { classifyTaskJson, Task } from "task.json";
 import { readData, writeData } from "../utils/config.js";
 import { parseDate } from "../utils/date.js";
 import {
-	normalizeTypes,
+	normalizeStatuses,
 	filterByField,
 	filterByPriority,
-	numberToId,
-	parseNumbers
+	numbersToTasks,
+	numbersToIds
 } from "../utils/task.js";
 
 const modifyCmd = new Command("modify");
 
 type ModifyOptions = {
-	type?: string[],
+	status?: string[],
 	filterPrior?: string[],
 	filterProj?: string[],
 	filterCtx?: string[],
@@ -36,7 +36,7 @@ type ModifyOptions = {
 modifyCmd
 	.description("modify tasks (use empty string to delete field)")
 	.addOption(
-		new Option("-T, --type <types...>", "filter tasks by types")
+		new Option("-S, --status <status...>", "filter tasks by status")
 			.choices(["todo", "done", "removed", "all"])
 	)
 	.option("--filter-prior <priorities...>", "filter tasks by priorities (A-Z)")
@@ -58,7 +58,7 @@ async function execute(nums: string[], options: ModifyOptions) {
 		"filterPrior",
 		"filterProj",
 		"filterCtx",
-		"type"
+		"status"
 	];
 	for (const filterOption of filterOptions) {
 		if (options[filterOption] !== undefined) {
@@ -82,7 +82,8 @@ async function execute(nums: string[], options: ModifyOptions) {
 		}
 	}
 
-	const taskJson = readData("task");
+	let tj = await readData("task");
+	const classified = classifyTaskJson(tj);
 	const date = DateTime.now().toISO();
 
 	const modifyDate = (task: Task, field: "due" | "wait", value: string) => {
@@ -111,7 +112,7 @@ async function execute(nums: string[], options: ModifyOptions) {
 			}
 			
 			task[field] = field === "deps" ?
-				numberToId(taskJson, value) :
+				numbersToIds(classified, value) :
 				value;
 		}
 	};
@@ -168,7 +169,7 @@ async function execute(nums: string[], options: ModifyOptions) {
 
 	let count = 0;
 	if (nums.length === 0) {
-		const types = normalizeTypes(options.type || ["all"]);
+		const statuses = normalizeStatuses(options.status ?? ["all"]);
 		const priorityFilter = filterByPriority(options.filterPrior);
 		const projectFilter = filterByField(
 			"projects",
@@ -179,30 +180,28 @@ async function execute(nums: string[], options: ModifyOptions) {
 			options.filterCtx
 		);
 
-		for (const type of types) {
-			taskJson[type]
+		for (const st of statuses) {
+			classified[st]
 				.filter(task => (
 					projectFilter(task) &&
 					contextFilter(task) &&
 					priorityFilter(task)
 				))
 				.forEach(task => {
+					// Modify in place
 					modifyTask(task);
 					count++;
 				});
 		}
 	}
 	else {
-		const numbers = parseNumbers(nums, taskJson);
-		for (const [type, indexes] of Object.entries(numbers)) {
-			for (const i of indexes) {
-				modifyTask(taskJson[type as TaskType][i]);
-			}
-			count += indexes.length;
-		}
+		const tasks = numbersToTasks(classified, nums);
+		// Modify in place
+		tasks.forEach(modifyTask);
+		count += tasks.length;
 	}
 
-	writeData("task", taskJson);
+	writeData("task", tj);
 	console.log(`Modified ${count} task(s)`);
 }
 
