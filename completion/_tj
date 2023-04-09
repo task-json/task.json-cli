@@ -72,9 +72,9 @@ _tj() {
 	esac
 }
 
-ls_ctx="tj lsCtx -T todo -T done"
-ls_proj="tj lsProj -T todo -T done"
-task_types=(todo done removed all)
+ls_ctx="tj lsCtx -S todo -S done"
+ls_proj="tj lsProj -S todo -S done"
+task_statues=(todo done removed all)
 
 comp_ctx_filter() {
 	compadd $(eval $ls_ctx)
@@ -100,7 +100,7 @@ _tj_add() {
 		{-P,--priority}"[priority (A-Z)]: :({A..Z})" \
 		"*"{-p,--proj}"[projects]: :comp_proj" \
 		"*"{-c,--ctx}"[contexts]: :comp_ctx" \
-		"*"{-D,--dep}"[dependencies (use #)]: :($(tj lsNum -T all))" \
+		"*"{-D,--dep}"[dependencies (use #)]: :($(tj lsNum -S all))" \
 		{-w,--wait}"[wait until the specified date]:" \
 		{-d,--due}"[due date]:" \
 		"--no-workspace[ignore workspace settings temporarily]"
@@ -129,13 +129,13 @@ _tj_erase()  {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		{-f,--force}"[force erasing without confirmation]" \
-		"*:num:($(tj lsNum -T removed))"
+		"*:num:($(tj lsNum -S removed))"
 }
 
 _tj_ls() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)" \
+		"*"{-S,--status}"[filter tasks by status]: :($task_statuses)" \
 		"*"{-P,--prior}"[filter tasks by priorities (A-Z)]: :({A..Z})" \
 		"*"{-p,--proj}"[filter tasks by projects]: :comp_proj_filter" \
 		"*"{-c,--ctx}"[filter tasks by contexts]: :comp_ctx_filter" \
@@ -147,25 +147,25 @@ _tj_ls() {
 _tj_lsNum() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
+		"*"{-S,--status}"[filter tasks by status]: :($task_statuses)"
 }
 
 _tj_lsCtx() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
+		"*"{-S,--status}"[filter tasks by statuses]: :($task_statuses)"
 }
 
 _tj_lsProj() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)"
+		"*"{-S,--status}"[filter tasks by statuses]: :($task_statuses)"
 }
 
 _tj_modify() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*"{-T,--types}"[filter tasks by types (todo, done, removed, all)]: :($task_types)" \
+		"*"{-S,--status}"[filter tasks by statuses]: :($task_statuses)" \
 		"*--filter-prior[filter tasks by priorities (A-Z)]: :({A..Z})" \
 		"*--filter-proj[filter tasks by projects]: :comp_proj_filter" \
 		"*--filter-ctx[filter tasks by contexts]: :comp_ctx_filter" \
@@ -173,10 +173,10 @@ _tj_modify() {
 		{-P,--prior}"[modify priority (A-Z)]: :({A..Z})" \
 		"*"{-p,--proj}"[modify projects]: :comp_proj" \
 		"*"{-c,--ctx}"[modify contexts]: :comp_ctx" \
-		"*"{-D,--dep}"[modify dependencies]: :($(tj lsNum -T all))" \
+		"*"{-D,--dep}"[modify dependencies]: :($(tj lsNum -S all))" \
 		{-w,--wait}"[modify wait date]:" \
 		{-d,--due}"[modify due date]:" \
-		"*:num:($(tj lsNum -T all))"
+		"*:num:($(tj lsNum -S all))"
 }
 
 _tj_restore() {
@@ -188,7 +188,7 @@ _tj_restore() {
 _tj_rm() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:num:($(tj lsNum -T todo -T done))"
+		"*:num:($(tj lsNum -S todo -S done))"
 }
 
 _tj_server() {
@@ -245,8 +245,9 @@ _tj_server_show() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		"*::name:comp_server" \
+		{-n,--name}"[only show server names]" \
 		{-t,--token}"[show server token]" \
-		{-n,--name}"[only show server names]"
+		{-k,--key}"[show encryption key]"
 }
 
 _tj_server_add() {
@@ -255,7 +256,8 @@ _tj_server_add() {
 		":name:" \
 		{-u,--url}"[server URL]:" \
 		{-t,--token}"[token to log in]:" \
-		{-d,--default}"[set this server as default]"
+		{-d,--default}"[set this server as default]" \
+		{-k,--key}"[key to encrypt uploaded data (e2ee)]:"
 }
 
 _tj_server_modify() {
@@ -267,7 +269,9 @@ _tj_server_modify() {
 		"--no-token[clear token]" \
 		{-d,--default}"[set this server as default]" \
 		"--no-default[set this server as not default]" \
-		"--no-ca[clear all trusted CA certs]"
+		"--no-ca[clear all trusted CA certs]" \
+		{-k,--key}"[key to encrypt uploaded data (e2ee)]:" \
+		"--no-key[clear encryption key]"
 }
 
 _tj_server_rm() {
@@ -296,13 +300,13 @@ _tj_show() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		"--iso[show date in ISO format]" \
-		"*:num:($(tj lsNum -T all))"
+		"*:num:($(tj lsNum -S all))"
 }
 
 _tj_undo() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
-		"*:num:($(tj lsNum -T done -T removed))"
+		"*:num:($(tj lsNum -S done -S removed))"
 }
 
 _tj_workspace() {
