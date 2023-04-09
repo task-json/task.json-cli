@@ -85,7 +85,7 @@ export function appendData<T extends Type>(type: T, data: DataType<T>) {
 
   // Backup task.json
   if (type === "task" && fs.existsSync(dataPath))
-    fs.renameSync(dataPath, dataPath + ".bak");
+    fs.copyFileSync(dataPath, dataPath + ".bak");
 
   fs.appendFileSync(
     dataPath,
