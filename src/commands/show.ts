@@ -31,7 +31,7 @@ async function execute(nums: string[], options: ShowOptions) {
 	const tasks = numbersToTasks(classified, nums);
 
 	tasks.forEach((t, i) => {
-		const num = chalk.bold(`${t.status.charAt(0)}${i+1}`);
+		const num = chalk.bold(`${t.status.charAt(0)}${i}`);
 		const attrs: [string, string][] = [];
 		
 		attrs.push(["status", t.status]);

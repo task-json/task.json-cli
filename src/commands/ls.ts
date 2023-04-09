@@ -111,7 +111,7 @@ async function execute(options: LsOptions) {
 		}
 
 		const processedData: TaskStr[] = data.map(({ task, index }) => ({
-			number: `${st.charAt(0)}${index+1}`,
+			number: `${st.charAt(0)}${index}`,
 			priority: task.priority ?? "",
 			text: task.text,
 			...(options.dep && { deps: task.deps?.join(" ") ?? "" }),

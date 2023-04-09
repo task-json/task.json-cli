@@ -32,7 +32,7 @@ async function execute(options: LsNumOptions) {
 
 	for (const st of statuses) {
 		for (const i of range(classified[st].length)) {
-			console.log(`${st.charAt(0)}${i+1}`);
+			console.log(`${st.charAt(0)}${i}`);
 		}
 	}
 }

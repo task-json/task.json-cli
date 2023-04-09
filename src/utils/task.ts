@@ -26,10 +26,10 @@ export function numbersToIndexes(nums: string[]): TaskIndex[] {
       handleError(num);
     const s = num.substring(0, 1);
     const n = parseInt(num.substring(1));
-    if (isNaN(n) || n <= 0 || !(s in statusMap))
+    if (isNaN(n) || n < 0 || !(s in statusMap))
       handleError(num);
 
-    return [statusMap[s], n-1];
+    return [statusMap[s], n];
   });
 }
 
@@ -75,7 +75,7 @@ export function idsToNumbers(classified: ClassifiedTaskJson, ids: string[]) {
     for (const [status, tasks] of Object.entries(classified)) {
       const index = tasks.findIndex(t => t.id === id);
       if (index !== -1) {
-        num = `${status.charAt(0)}${index+1}`;
+        num = `${status.charAt(0)}${index}`;
         break;
       }
     }
@@ -89,7 +89,7 @@ export function idsToNumbers(classified: ClassifiedTaskJson, ids: string[]) {
 export function indexesToTasks(classified: ClassifiedTaskJson, indexes: TaskIndex[]) {
   return indexes.map(([status, i]) => {
     if (i >= classified[status].length)
-      throw new Error(`Invalid index: ${status.substring(0, 1)}${i+1}`);
+      throw new Error(`Invalid index: ${status.substring(0, 1)}${i}`);
     return classified[status][i];
   });
 }
