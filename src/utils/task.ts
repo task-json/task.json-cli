@@ -21,7 +21,8 @@ export function numbersToIndexes(nums: string[]): TaskIndex[] {
     throw new Error(`Invalid Number: ${num}`);
   };
   
-  return nums.map(num => {
+  // Keep only unique nums
+  return [...new Set(nums)].map(num => {
     if (num.length <= 1)
       handleError(num);
     const s = num.substring(0, 1);
