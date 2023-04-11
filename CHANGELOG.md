@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.1](https://github.com/DCsunset/task.json-cli/compare/v8.0.0...v8.0.1) (2023-04-11)
+
+
+### Bug Fixes
+
+* add new line in serialize/deserialize function ([d3300be](https://github.com/DCsunset/task.json-cli/commit/d3300bebd9f5f6472a36d55d78294b9a2e84bede))
+* append a new line when appending data ([5299cdc](https://github.com/DCsunset/task.json-cli/commit/5299cdcbc82996b9035a360a22713a1a63f83d44))
+* keep only unique number ([3b1bba1](https://github.com/DCsunset/task.json-cli/commit/3b1bba1da9cb0f6d4ffca9234b02b7cbf2f1d964))
+* show task detail in do cmd ([2f76ebd](https://github.com/DCsunset/task.json-cli/commit/2f76ebd114cccd958eb7419b7649245557e10d0d))
+
 ## [8.0.0](https://github.com/DCsunset/task.json-cli/compare/v7.0.6...v8.0.0) (2023-04-09)
 
 
