@@ -44,12 +44,12 @@
     "inquirer": "^9.1.5",
     "luxon": "^3.3.0",
     "table": "^6.8.1",
-    "task.json": "^3.2.0",
+    "task.json": "^3.2.1",
     "task.json-client": "^2.0.0",
     "wrap-ansi": "^8.1.0"
   },
   "devDependencies": {
-    "@types/luxon": "^3.2.0",
+    "@types/luxon": "^3.3.0",
     "@types/node": "^18.15.11",
     "@types/wrap-ansi": "^8.0.1"
   }
