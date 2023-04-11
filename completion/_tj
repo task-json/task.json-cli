@@ -116,6 +116,7 @@ _tj_completion() {
 _tj_do() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
+		{-q,--quiet}"[without showing task text verbosely]" \
 		"*:num:($(tj lsNum))"
 }
 

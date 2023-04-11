@@ -6,34 +6,41 @@
 import { Command } from "commander";
 import { doTasks, classifyTaskJson } from "task.json";
 import { readData, writeData } from "../utils/config.js";
-import { numbersToIndexes, indexesToTasks } from "../utils/task.js";
+import { numbersToTasks, indexesToTasks } from "../utils/task.js";
 
 const doCmd = new Command("do");
 
+type DoOptions = {
+	quiet?: boolean
+};
+
 doCmd
 	.description("mark task(s) as done")
+	.option("-q, --quiet", "without showing task text verbosely")
 	.argument("<num...>", "task # to mark (must be todo task)")
 	.action(execute);
 
 
-async function execute(nums: string[]) {
+async function execute(nums: string[], options: DoOptions) {
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
-	const indexes = numbersToIndexes(nums);
-
+	const tasks = numbersToTasks(classified, nums);
 	// Don't allow do removed or done tasks
-	classified.done = [];
-	classified.removed = [];
+	tasks.forEach(t => {
+		if (t.status !== "todo") {
+			doCmd.error("Only todo tasks can be done");
+		}
+	});
 	
-	// Keep unique ids
-	const ids = [...new Set(
-		indexesToTasks(classified, indexes).map(t => t.id)
-	)];
-
-	tj = doTasks(tj, ids);
+	tj = doTasks(tj, tasks.map(t => t.id));
 	writeData("task", tj);
 
-	console.log(`Finish ${ids.length} task(s)`);
+	console.log(`Finish ${tasks.length} task(s)`);
+	if (!options.quiet) {
+		tasks.forEach((t, i) => {
+			console.log(`- ${nums[i]}: ${t.text}`);
+		});
+	}
 }
 
 export default doCmd;
