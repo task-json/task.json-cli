@@ -8,6 +8,7 @@ import { Command } from "commander";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
+import { Settings } from "luxon";
 
 import lsCmd from "./commands/ls.js";
 import lsCtxCmd from "./commands/lsCtx.js";
@@ -36,6 +37,14 @@ const { version } = JSON.parse(
 		"utf8"
 	)
 );
+
+// Set global luxon settings
+Settings.throwOnInvalid = true;
+declare module 'luxon' {
+  interface TSSettings {
+    throwOnInvalid: true;
+  }
+}
 
 const program = new Command();
 
