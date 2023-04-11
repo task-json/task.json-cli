@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.2](https://github.com/DCsunset/task.json-cli/compare/v8.0.1...v8.0.2) (2023-04-11)
+
+
+### Bug Fixes
+
+* let luxon throw on invalid dates ([3b45335](https://github.com/DCsunset/task.json-cli/commit/3b45335a7b7d2492b5e96fe049e45814745bb48d))
+
 ## [8.0.1](https://github.com/DCsunset/task.json-cli/compare/v8.0.0...v8.0.1) (2023-04-11)
 
 
