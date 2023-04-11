@@ -89,7 +89,8 @@ export function appendData<T extends Type>(type: T, data: DataType<T>) {
 
   fs.appendFileSync(
     dataPath,
-    serializeData(data),
+    // Add an extra newline to make it easier to append
+    serializeData(data) + "\n",
     { encoding: "utf8" }
   );
 }
