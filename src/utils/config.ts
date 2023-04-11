@@ -40,9 +40,10 @@ function deserializeData(data: string) {
 };
 
 function serializeData<T extends Type>(data: DataType<T>) {
+  // Make sure a new line is at the end
 	return data
-		.map(item => JSON.stringify(item))
-		.join("\n");
+		.map(item => JSON.stringify(item) + "\n")
+		.join("");
 };
 
 export async function readData<T extends Type>(type: T): Promise<DataType<T>> {
@@ -71,8 +72,7 @@ export function writeData<T extends Type>(type: T, data: DataType<T> | null) {
   else {
     fs.writeFileSync(
       dataPath,
-      // Add an extra newline to make it easier to append
-      serializeData(data) + "\n",
+      serializeData(data),
       { encoding: "utf8" }
     );
   }
@@ -89,8 +89,7 @@ export function appendData<T extends Type>(type: T, data: DataType<T>) {
 
   fs.appendFileSync(
     dataPath,
-    // Add an extra newline to make it easier to append
-    serializeData(data) + "\n",
+    serializeData(data),
     { encoding: "utf8" }
   );
 }
