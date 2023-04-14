@@ -1,6 +1,6 @@
 {
   "name": "task.json-cli",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "description": "Command line todo management app based on task.json format",
   "main": "dist/app.js",
   "type": "module",
