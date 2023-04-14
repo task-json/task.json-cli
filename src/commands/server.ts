@@ -88,7 +88,7 @@ addCmd
 	.requiredOption("-u, --url <url>", "server URL")
 	.option("-t, --token <token>", "token to log in")
 	.option("-d, --default", "set this server as default")
-	.option("-k, --key", "key to encrypt uploaded data (e2ee)")
+	.option("-k, --key <key>", "key to encrypt uploaded data (e2ee)")
 	.action(add);
 
 async function add(name: string, options: AddOptions) {
@@ -144,7 +144,7 @@ modifyCmd
 	.option("-d, --default", "set this server as default")
 	.option("--no-default", "set this server as not default")
 	.option("--no-ca", "clear all trusted CA certs")
-	.option("-k, --key", "key to encrypt uploaded data (e2ee)")
+	.option("-k, --key <key>", "key to encrypt uploaded data (e2ee)")
 	.option("--no-key", "clear encryption key")
 	.action(modify);
 
