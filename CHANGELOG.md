@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.1.0](https://github.com/DCsunset/task.json-cli/compare/v8.0.4...v8.1.0) (2023-06-30)
+
+
+### Features
+
+* use dynamic imports to speed up startup ([174bc42](https://github.com/DCsunset/task.json-cli/commit/174bc4215884a2ed0da5327c4681aae3e1e7e06f))
+
+
+### Bug Fixes
+
+* hard code version in app.js to reduce package loading ([82ff8b4](https://github.com/DCsunset/task.json-cli/commit/82ff8b41a323e5ee8fa487acd1110c528b4495e6))
+
 ## [8.0.4](https://github.com/DCsunset/task.json-cli/compare/v8.0.3...v8.0.4) (2023-04-14)
 
 
