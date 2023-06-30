@@ -4,14 +4,8 @@
  */
 
 import { Command } from "commander";
-import chalk from "chalk";
-import { DateTime } from 'luxon';
-import inquirer from "inquirer";
-import { getCertificate, HttpError, setupClient } from "task.json-client";
-import { readData, writeData } from "../utils/config.js";
-import { printAttrs, printCert } from "../utils/format.js";
+import { HttpError } from "task.json-client";
 import { Server } from "../utils/types.js";
-import { stringifyDiffStat } from "../utils/task.js";
 
 const serverCmd = new Command("server");
 
@@ -36,6 +30,10 @@ showCmd
 	.action(show);
 
 async function show(names: string[], options: ShowOptions) {
+	const { default: chalk } = await import("chalk");
+	const { readData } = await import("../utils/config.js");
+	const { printAttrs } = await import("../utils/format.js");
+
 	const servers = await readData("server");
 	for (const s of servers) {
 		if (names.length > 0 && !names.includes(s.name)) {
@@ -92,6 +90,9 @@ addCmd
 	.action(add);
 
 async function add(name: string, options: AddOptions) {
+	const { DateTime } = await import('luxon');
+	const { readData, writeData } = await import("../utils/config.js");
+
 	const servers = await readData("server");
 	if (servers.findIndex(v => v.name === name) !== -1) {
 		addCmd.error(`Server ${name} already exists`);
@@ -149,6 +150,9 @@ modifyCmd
 	.action(modify);
 
 async function modify(name: string, options: ModifyOptions) {
+	const { DateTime } = await import('luxon');
+	const { readData, writeData } = await import("../utils/config.js");
+
 	const servers = await readData("server");
 	const s = servers.find(v => v.name === name);
 	if (!s) {
@@ -207,6 +211,8 @@ rmCmd
 	.action(rm);
 
 async function rm(names: string) {
+	const { readData, writeData } = await import("../utils/config.js");
+
 	let servers = await readData("server");
 	const nameSet = new Set(names);
 	const count = nameSet.size;
@@ -241,6 +247,11 @@ loginCmd
 	.action(login);
 
 async function login(name: string | undefined, options: LoginOptions) {
+	const { default: inquirer } = await import("inquirer");
+	const { getCertificate, HttpError, setupClient } = await import("task.json-client");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { printCert } = await import("../utils/format.js");
+
 	const servers = await readData("server");
 	const server = servers.find(s => {
 		if (name !== undefined) {
@@ -337,6 +348,11 @@ syncCmd
 	.action(sync);
 
 async function sync(name: string | undefined, options: SyncOptions) {
+	const { default: inquirer } = await import("inquirer");
+	const { setupClient } = await import("task.json-client");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { stringifyDiffStat } = await import("../utils/task.js");
+
 	const servers = await readData("server");
 	
 	const server = servers.find(s => {

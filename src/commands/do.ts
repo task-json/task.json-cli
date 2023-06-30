@@ -4,9 +4,6 @@
  */
 
 import { Command } from "commander";
-import { doTasks, classifyTaskJson } from "task.json";
-import { readData, writeData } from "../utils/config.js";
-import { numbersToTasks, indexesToTasks } from "../utils/task.js";
 
 const doCmd = new Command("do");
 
@@ -22,6 +19,10 @@ doCmd
 
 
 async function execute(nums: string[], options: DoOptions) {
+	const { doTasks, classifyTaskJson } = await import("task.json");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { numbersToTasks } = await import("../utils/task.js");
+
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);

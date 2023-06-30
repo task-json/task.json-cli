@@ -4,10 +4,6 @@
  */
 
 import { Command, Option } from "commander";
-import { classifyTaskJson } from "task.json";
-import { readData } from '../utils/config.js';
-import { normalizeStatuses } from "../utils/task.js";
-import { range } from "../utils/common.js";
 
 const lsNumCmd = new Command("lsNum");
 
@@ -26,6 +22,11 @@ lsNumCmd
 
 
 async function execute(options: LsNumOptions) {
+	const { classifyTaskJson } = await import("task.json");
+	const { readData } = await import('../utils/config.js');
+	const { normalizeStatuses } = await import("../utils/task.js");
+	const { range } = await import("../utils/common.js");
+
 	const statuses = normalizeStatuses(options.status);
 	const taskJson = await readData("task");
 	const classified = classifyTaskJson(taskJson);

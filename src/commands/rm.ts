@@ -4,9 +4,6 @@
  */
 
 import { Command } from "commander";
-import { classifyTaskJson, removeTasks } from "task.json";
-import { readData, writeData } from "../utils/config.js";
-import { numbersToTasks } from "../utils/task.js";
 
 const rmCmd = new Command("rm");
 
@@ -21,6 +18,10 @@ rmCmd
 	.action(execute);
 
 async function execute(nums: string[], options: RmOptions) {
+	const { classifyTaskJson, removeTasks } = await import("task.json");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { numbersToTasks } = await import("../utils/task.js");
+
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);

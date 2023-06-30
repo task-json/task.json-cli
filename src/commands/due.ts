@@ -4,9 +4,6 @@
  */
 
 import { Command } from "commander";
-import { DateTime } from 'luxon';
-import { readData } from "../utils/config.js";
-import { showDate } from "../utils/date.js";
 
 const dueCmd = new Command("due");
 
@@ -20,18 +17,22 @@ dueCmd
 	.action(execute);
 
 async function execute(options: DueOptions) {
+	const { DateTime } = await import('luxon');
+	const { readData } = await import("../utils/config.js");
+	const{ showDate } = await import("../utils/date.js");
+
 	const tj = await readData("task");
-	let due: DateTime | null = null;
+	let due = undefined;
 	for (const task of tj) {
 		if (task.due) {
 			const date = DateTime.fromISO(task.due);
-			if (due === null || date < due) {
+			if (due === undefined || date < due) {
 				due = date;
 			}
 		}
 	}
 
-	if (due !== null) {
+	if (due !== undefined) {
 		if (options.iso)
 			console.log(due.toISO());
 		else

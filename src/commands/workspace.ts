@@ -4,10 +4,6 @@
  */
 
 import { Command } from "commander";
-import chalk from "chalk";
-import { DateTime } from 'luxon';
-import { readData, writeData } from "../utils/config.js";
-import { printAttrs } from "../utils/format.js";
 import { Workspace } from "../utils/types.js";
 
 const workspaceCmd = new Command("workspace");
@@ -29,6 +25,10 @@ showCmd
 	.action(show);
 
 async function show(names: string[], options: ShowOptions) {
+	const { default: chalk } = await import("chalk");
+	const { readData } = await import("../utils/config.js");
+	const { printAttrs } = await import("../utils/format.js");
+
 	const workspaces = await readData("workspace");
 	for (const ws of workspaces) {
 		if (names.length > 0 && !names.includes(ws.name)) {
@@ -40,7 +40,7 @@ async function show(names: string[], options: ShowOptions) {
 			continue;
 		}
 
-		const status = ws.enabled ? "[enabled]" : ""
+		const status = ws.enabled ? "[enabled]" : "";
 		console.log(`\nWorkspace ${chalk.bold(ws.name)} ${status}`);
 
 		const attrs: [string, string][] = [];
@@ -78,6 +78,9 @@ addCmd
 	.action(add);
 
 async function add(name: string, options: AddOptions) {
+	const { DateTime } = await import('luxon');
+	const { readData, writeData } = await import("../utils/config.js");
+
 	const workspaces = await readData("workspace");
 	if (workspaces.findIndex(v => v.name === name) !== -1) {
 		addCmd.error(`Workspace ${name} already exists`);
@@ -130,8 +133,12 @@ modifyCmd
 	.action(modify);
 
 async function modify(name: string, options: ModifyOptions) {
+	const { DateTime } = await import('luxon');
+	const { readData, writeData } = await import("../utils/config.js");
+
 	const workspaces = await readData("workspace");
 	const ws = workspaces.find(v => v.name === name);
+
 	if (!ws) {
 		modifyCmd.error(`Workspace ${name} doesn't exist`);
 		return;
@@ -180,6 +187,8 @@ rmCmd
 	.action(rm);
 
 async function rm(names: string) {
+	const { readData, writeData } = await import("../utils/config.js");
+
 	let workspaces = await readData("workspace");
 	const nameSet = new Set(names);
 	const count = nameSet.size;

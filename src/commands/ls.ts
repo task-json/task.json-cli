@@ -4,25 +4,8 @@
  */
 
 import { Command, Option } from "commander";
-import { DateTime } from 'luxon';
-import wrapAnsi from "wrap-ansi";
-import chalk from "chalk";
-import { table } from "table";
 import { classifyTaskJson, Task, taskUrgency } from "task.json";
-import { readData } from "../utils/config.js";
-import {
-	filterByDeps,
-	filterByField,
-	filterByPriority,
-	filterByWait,
-	idsToNumbers,
-	colorTask,
-	maxWidth,
-	TaskStr,
-	normalizeStatuses,
-} from "../utils/task.js";
-import { calculateWidth, tableConfig } from "../utils/table.js";
-import { showDate } from "../utils/date.js";
+import { TaskStr } from "../utils/task.js";
 
 const lsCmd = new Command("ls");
 
@@ -53,6 +36,24 @@ lsCmd
 
 
 async function execute(options: LsOptions) {
+	const { DateTime } = await import('luxon');
+	const { default: wrapAnsi } = await import("wrap-ansi");
+	const { default: chalk } = await import("chalk");
+	const { table } = await import("table");
+	const { readData } = await import("../utils/config.js");
+	const {
+		filterByDeps,
+		filterByField,
+		filterByPriority,
+		filterByWait,
+		idsToNumbers,
+		colorTask,
+		maxWidth,
+		normalizeStatuses,
+	} = await import("../utils/task.js");
+	const { calculateWidth, tableConfig } = await import("../utils/table.js");
+	const { showDate } = await import("../utils/date.js");
+
 	const header = [
 		["#", "P", "Text", "Proj", "Ctx", "Due", ...(options.wait ? ["Wait"] : []), ...(options.dep ? ["Dep"] : [])]
 	];

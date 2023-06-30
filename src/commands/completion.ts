@@ -4,12 +4,6 @@
  */
 
 import { Command } from "commander";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const completionCmd = new Command("completion");
 
@@ -24,7 +18,14 @@ completionCmd
 	.action(execute);
 
 
-function execute(dir: string, options: CompletionOptions) {
+async function execute(dir: string, options: CompletionOptions) {
+	const path = await import("node:path");
+	const fs = await import("node:fs");
+	const { fileURLToPath } = await import("node:url");
+
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = path.dirname(__filename);
+
 	try {
 		if (options.zsh) {
 			const target = path.join(dir, "_tj");

@@ -4,9 +4,6 @@
  */
 
 import { Command, Option } from "commander";
-import { classifyTaskJson } from "task.json";
-import { readData } from "../utils/config.js";
-import { normalizeStatuses } from "../utils/task.js";
 
 const lsCtxCmd = new Command("lsCtx");
 
@@ -25,6 +22,10 @@ lsCtxCmd
 
 
 async function execute(options: LsCtxOptions) {
+	const { classifyTaskJson } = await import("task.json");
+	const { readData } = await import("../utils/config.js");
+	const { normalizeStatuses } = await import("../utils/task.js");
+	
 	const contexts: Set<string> = new Set();
 	const statuses = normalizeStatuses(options.status);
 	const taskJson = await readData("task");

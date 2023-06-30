@@ -4,18 +4,7 @@
  */
 
 import { Command, Option } from "commander";
-import inquirer from "inquirer";
-import { DateTime } from 'luxon';
-import { classifyTaskJson, Task } from "task.json";
-import { readData, writeData } from "../utils/config.js";
-import { parseDate } from "../utils/date.js";
-import {
-	normalizeStatuses,
-	filterByField,
-	filterByPriority,
-	numbersToTasks,
-	numbersToIds
-} from "../utils/task.js";
+import { Task } from "task.json";
 
 const modifyCmd = new Command("modify");
 
@@ -53,6 +42,19 @@ modifyCmd
 	.action(execute);
 
 async function execute(nums: string[], options: ModifyOptions) {
+	const { default: inquirer } = await import("inquirer");
+	const { DateTime } = await import('luxon');
+	const { classifyTaskJson } = await import("task.json");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { parseDate } = await import("../utils/date.js");
+	const {
+		normalizeStatuses,
+		filterByField,
+		filterByPriority,
+		numbersToTasks,
+		numbersToIds
+	} = await import("../utils/task.js");
+
 	let hasFilters = false;
 	const filterOptions: (keyof ModifyOptions)[] = [
 		"filterPrior",

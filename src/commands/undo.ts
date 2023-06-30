@@ -4,9 +4,6 @@
  */
 
 import { Command } from "commander";
-import { classifyTaskJson, undoTasks } from "task.json";
-import { readData, writeData } from "../utils/config.js";
-import { numbersToTasks } from "../utils/task.js";
 
 const undoCmd = new Command("undo");
 
@@ -17,6 +14,10 @@ undoCmd
 
 
 async function execute(nums: string[]) {
+	const { classifyTaskJson, undoTasks } = await import("task.json");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { numbersToTasks } = await import("../utils/task.js");
+
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);

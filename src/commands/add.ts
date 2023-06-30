@@ -3,14 +3,8 @@
  * See full notice in README.md in this project
  */
 
-import crypto from "node:crypto";
 import { Command } from "commander";
-import { DateTime } from 'luxon';
-import { classifyTaskJson, Task } from "task.json";
-import { appendData, readData } from "../utils/config.js";
-import { numbersToIds } from "../utils/task.js";
-import { parseDate } from "../utils/date.js";
-
+import { Task } from "task.json";
 
 const addCmd = new Command("add");
 
@@ -39,6 +33,13 @@ addCmd
 
 
 async function execute(options: AddOptions) {
+	const crypto = await import("node:crypto");
+	const { DateTime } = await import("luxon");
+	const { appendData, readData } = await import("../utils/config.js");
+	const { numbersToIds } = await import("../utils/task.js");
+	const { parseDate } = await import("../utils/date.js");
+	const { classifyTaskJson } = await import("task.json");
+	
 	const taskJson = await readData("task");
 	const classified = classifyTaskJson(taskJson);
 

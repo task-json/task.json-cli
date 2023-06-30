@@ -4,13 +4,6 @@
  */
 
 import { Command } from "commander";
-import chalk from "chalk";
-import { classifyTaskJson } from "task.json";
-import { DateTime } from 'luxon';
-import { readData } from "../utils/config.js";
-import { colorPriority, colorDue, numbersToTasks } from "../utils/task.js";
-import { showDate } from "../utils/date.js";
-import { printAttrs } from "../utils/format.js";
 
 const showCmd = new Command("show");
 
@@ -26,6 +19,14 @@ showCmd
 
 
 async function execute(nums: string[], options: ShowOptions) {
+	const { default: chalk } = await import("chalk");
+	const { classifyTaskJson } = await import("task.json");
+	const { DateTime } = await import('luxon');
+	const { readData } = await import("../utils/config.js");
+	const { colorPriority, colorDue, numbersToTasks } = await import("../utils/task.js");
+	const { showDate } = await import("../utils/date.js");
+	const { printAttrs } = await import("../utils/format.js");
+
 	const tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);

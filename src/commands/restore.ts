@@ -3,11 +3,7 @@
  * See full notice in README.md in this project
  */
 
-import path from "node:path";
-import fs from "node:fs";
-import inquirer from "inquirer";
 import { Command } from "commander";
-import { pathConfig } from "../utils/config.js";
 
 const restoreCmd = new Command("restore");
 
@@ -21,6 +17,11 @@ restoreCmd
 	.action(execute);
 
 async function execute(options: RestoreOptions) {
+	const path = await import("node:path");
+	const fs = await import("node:fs");
+	const { default: inquirer } = await import("inquirer");
+	const { pathConfig } = await import("../utils/config.js");
+
 	const dataPath = path.join(pathConfig.root, pathConfig["task"]);
 	const bakPath = dataPath + ".bak";
 

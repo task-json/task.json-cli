@@ -4,10 +4,6 @@
  */
 
 import { Command } from "commander";
-import { eraseTasks, classifyTaskJson } from "task.json";
-import inquirer from "inquirer";
-import { readData, writeData } from "../utils/config.js";
-import { numbersToIndexes, indexesToTasks } from "../utils/task.js";
 
 const eraseCmd = new Command("erase");
 
@@ -22,6 +18,11 @@ eraseCmd
 	.action(execute);
 
 async function execute(nums: string[], options: EraseOptions) {
+	const { eraseTasks, classifyTaskJson } = await import("task.json");
+	const { default: inquirer } = await import("inquirer");
+	const { readData, writeData } = await import("../utils/config.js");
+	const { numbersToIndexes, indexesToTasks } = await import("../utils/task.js");
+
 	let tj = await readData("task");
 	const classified = classifyTaskJson(tj);
 	const indexes = numbersToIndexes(nums);
