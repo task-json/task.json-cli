@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2022 DCsunset
+ * Copyright (C) 2020-2023 DCsunset
  * See full notice in README.md in this project
  */
 
