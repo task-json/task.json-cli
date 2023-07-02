@@ -14,7 +14,7 @@ Command line task management app for [task.json](https://github.com/DCsunset/tas
 * User-friendly command-line interface
 * Highlighting for urgent tasks
 * Filtering tasks by various field
-* Sync with remote task.json-server
+* Sync with remote task.json-server (with end-to-end encryption support)
 * Workspace support
 * ZSH autocompletion
 
