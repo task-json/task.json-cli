@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.2.0](https://github.com/DCsunset/task.json-cli/compare/v8.1.0...v8.2.0) (2023-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename comand restore to rollback and fix undo command
+
+### Bug Fixes
+
+* rename comand restore to rollback and fix undo command ([a406a47](https://github.com/DCsunset/task.json-cli/commit/a406a476387461c78b02aa1311564258b07ffbc0))
+
 ## [8.1.0](https://github.com/DCsunset/task.json-cli/compare/v8.0.4...v8.1.0) (2023-06-30)
 
 
