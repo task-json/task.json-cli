@@ -9,7 +9,7 @@ const undoCmd = new Command("undo");
 
 undoCmd
 	.description("undo task(s)")
-	.argument("<num...>", "task # to undo")
+	.argument("<num...>", "task # to undo (must be done or removed tasks)")
 	.action(execute);
 
 
@@ -22,7 +22,7 @@ async function execute(nums: string[]) {
 	const classified = classifyTaskJson(tj);
 	const tasks = numbersToTasks(classified, nums);
 	tasks.forEach(t => {
-		if (t.status === "removed") {
+		if (t.status === "todo") {
 			undoCmd.error("Cannot undo todo tasks");
 		}
 	});

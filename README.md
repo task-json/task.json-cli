@@ -48,8 +48,8 @@ tj ls -p proj -c ctx
 tj do t1 t2
 # remove task(s)
 tj rm t1 d1
-# restore removed task(s)
-tj restore r1
+# undo removed task
+tj undo r1 r2
 
 # modify a task by number
 tj modify t1 -t "Changed text" -c changed-ctx

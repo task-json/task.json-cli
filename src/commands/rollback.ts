@@ -5,18 +5,18 @@
 
 import { Command } from "commander";
 
-const restoreCmd = new Command("restore");
+const rollbackCmd = new Command("rollback");
 
-type RestoreOptions = {
+type RollbackOptions = {
 	force?: boolean
 };
 
-restoreCmd
-	.description("undo last modification using .bak file")
+rollbackCmd
+	.description("Roll back before last modification using .bak file")
 	.option("-f, --force", "force overwriting without confirmation")
 	.action(execute);
 
-async function execute(options: RestoreOptions) {
+async function execute(options: RollbackOptions) {
 	const path = await import("node:path");
 	const fs = await import("node:fs");
 	const { default: inquirer } = await import("inquirer");
@@ -26,7 +26,7 @@ async function execute(options: RestoreOptions) {
 	const bakPath = dataPath + ".bak";
 
 	if (!fs.existsSync(bakPath)) {
-		restoreCmd.error("task.json.bak does not exist.");
+		rollbackCmd.error("task.json.bak does not exist.");
 	}
 
 	let confirm = true;
@@ -42,8 +42,8 @@ async function execute(options: RestoreOptions) {
 
 	if (confirm) {
 		fs.renameSync(bakPath, dataPath);
-		console.log(`Restored successfully`);
+		console.log(`Rolled back successfully`);
 	}
 }
 
-export default restoreCmd;
+export default rollbackCmd;

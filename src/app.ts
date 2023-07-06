@@ -19,7 +19,7 @@ import dueCmd from "./commands/due.js";
 import rmCmd from "./commands/rm.js";
 import eraseCmd from "./commands/erase.js";
 import showCmd from "./commands/show.js";
-import restoreCmd from "./commands/restore.js";
+import rollbackCmd from "./commands/rollback.js";
 import workspaceCmd from "./commands/workspace.js";
 import modifyCmd from "./commands/modify.js";
 import serverCmd from "./commands/server.js";
@@ -52,7 +52,7 @@ program
 	.addCommand(rmCmd)
 	.addCommand(eraseCmd)
 	.addCommand(showCmd)
-	.addCommand(restoreCmd)
+	.addCommand(rollbackCmd)
 	.addCommand(modifyCmd)
 	.addCommand(workspaceCmd)
 	.addCommand(serverCmd);
