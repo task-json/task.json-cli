@@ -27,7 +27,7 @@ _tj() {
 				"lsNum:list numbers"
 				"lsProj:list projects"
 				"modify:modify tasks"
-				"restore:undo the last modification"
+				"rollback:roll back before the last modification"
 				"rm:delete task(s)"
 				"server:server configuration"
 				"show:show task details"
@@ -57,7 +57,7 @@ _tj() {
 				"lsNum"
 				"lsProj"
 				"modify"
-				"restore"
+				"rollback"
 				"rm"
 				"server"
 				"show"
@@ -180,7 +180,7 @@ _tj_modify() {
 		"*:num:($(tj lsNum -S all))"
 }
 
-_tj_restore() {
+_tj_rollback() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		{-f,--force}"[force overwriting without confirmation]"
