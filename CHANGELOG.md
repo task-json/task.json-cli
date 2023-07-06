@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.2.1](https://github.com/DCsunset/task.json-cli/compare/v8.2.0...v8.2.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* fix zsh completion ([3c68fb0](https://github.com/DCsunset/task.json-cli/commit/3c68fb01a7a8278506805dba31608883fb361c5c))
+
 ## [8.2.0](https://github.com/DCsunset/task.json-cli/compare/v8.1.0...v8.2.0) (2023-07-06)
 
 
