@@ -74,7 +74,7 @@ _tj() {
 
 ls_ctx="tj lsCtx -S todo -S done"
 ls_proj="tj lsProj -S todo -S done"
-task_statues=(todo done removed all)
+task_statuses=(todo done removed all)
 
 comp_ctx_filter() {
 	compadd $(eval $ls_ctx)
