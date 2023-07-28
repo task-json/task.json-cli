@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.2.3](https://github.com/DCsunset/task.json-cli/compare/v8.2.2...v8.2.3) (2023-07-28)
+
+
+### Bug Fixes
+
+* add typescript as dev dependency ([971acfa](https://github.com/DCsunset/task.json-cli/commit/971acfafae0a48f3ce00573cdd9a627b720411f9))
+
 ## [8.2.2](https://github.com/DCsunset/task.json-cli/compare/v8.2.1...v8.2.2) (2023-07-27)
 
 
