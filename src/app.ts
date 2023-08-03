@@ -37,7 +37,7 @@ const program = new Command();
 program
 	.name("tj")
 	.description("Command line todo management app based on task.json format")
-	.version("v8.2.3");
+	.version("v8.2.4");
 
 program
 	.addCommand(lsCmd)

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.2.4](https://github.com/DCsunset/task.json-cli/compare/v8.2.3...v8.2.4) (2023-08-03)
+
+
+### Misc
+
+* **deps:** bump dependency versions ([9319a2d](https://github.com/DCsunset/task.json-cli/commit/9319a2d334874ca7853cbe2b56900681e67cbfd8))
+* update changelog config ([1d969b3](https://github.com/DCsunset/task.json-cli/commit/1d969b36f8ce9d753963f5f2f9268067e86638ea))
+
 ## [8.2.3](https://github.com/DCsunset/task.json-cli/compare/v8.2.2...v8.2.3) (2023-07-28)
 
 
