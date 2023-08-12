@@ -13,7 +13,7 @@ _tj() {
 	_arguments -C \
 		"1: :->cmd" \
 		"*::arg:->arg"
-	
+
 	case "$state" in
 		cmd)
 			local commands=(
@@ -64,7 +64,7 @@ _tj() {
 				"undo"
 				"workspace"
 			)
-			
+
 			# call complete functions if it's a valid command
 			if (( $commands[(Ie)$line[1]] )); then
 				_tj_$line[1]
@@ -202,7 +202,7 @@ _tj_server() {
 	_arguments -C \
 		"1: :->cmd" \
 		"*::arg:->arg"
-	
+
 	case "$state" in
 		cmd)
 			local commands=(
@@ -231,7 +231,7 @@ _tj_server() {
 				"login"
 				"sync"
 			)
-			
+
 			# call complete functions if it's a valid command
 			if (( $commands[(Ie)$line[1]] )); then
 				_tj_server_$line[1]
@@ -320,7 +320,7 @@ _tj_workspace() {
 	_arguments -C \
 		"1: :->cmd" \
 		"*::arg:->arg"
-	
+
 	case "$state" in
 		cmd)
 			local commands=(
@@ -345,8 +345,8 @@ _tj_workspace() {
 				"modify"
 				"rm"
 			)
-			
-			# call complete functions if it's a valid command
+
+      # call complete functions if it's a valid command
 			if (( $commands[(Ie)$line[1]] )); then
 				_tj_workspace_$line[1]
 			fi
@@ -368,8 +368,8 @@ _tj_workspace_add() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		":name:" \
-		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
-		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
+		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]: :comp_proj_filter" \
+		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]: :comp_ctx_filter" \
 		{-e,--enabled}"[enable this workspace]"
 }
 
@@ -377,9 +377,9 @@ _tj_workspace_modify() {
 	_arguments \
 		"(- *)"{-h,--help}"[show command help]" \
 		":name:comp_workspace" \
-		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]:" \
+		"*"{-p,--proj}"[auto filter and set projects for other commands (add, ls) if not specified]: :comp_proj_filter" \
 		"--no-proj[clear projects]" \
-		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]:" \
+		"*"{-c,--ctx}"[auto filter and set contexts for other commands (add, ls) if not specified]: :comp_ctx_filter" \
 		"--no-ctx[clear contexts]" \
 		{-e,--enabled}"[enable this workspace]" \
 		"--no-enabled[disablethis workspace]"
