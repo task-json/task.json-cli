@@ -5,7 +5,7 @@
 
 import { Command, Option } from "commander";
 import { classifyTaskJson, Task, taskUrgency } from "task.json";
-import { TaskStr } from "../utils/task.js";
+import { TaskStr, numbersToIds  } from "../utils/task.js";
 
 const lsCmd = new Command("ls");
 
@@ -32,10 +32,11 @@ lsCmd
 	.option("-w, --wait", "show waiting tasks")
 	.option("-D, --dep", "show dependent tasks and dependencies")
 	.option("--no-workspace", "ignore workspace settings temporarily")
+	.argument("[num...]", "task # to list")
 	.action(execute);
 
 
-async function execute(options: LsOptions) {
+async function execute(nums: string[], options: LsOptions) {
 	const { DateTime } = await import('luxon');
 	const { default: wrapAnsi } = await import("wrap-ansi");
 	const { default: chalk } = await import("chalk");
@@ -71,6 +72,8 @@ async function execute(options: LsOptions) {
 	const classified = classifyTaskJson(taskJson);
 	const ws = options.workspace ? (await readData("workspace")).find(w => w.enabled) : undefined;
 	const statuses = normalizeStatuses(options.status);
+  // Only include the specified tasks
+  const includedIds = nums.length ? new Set(numbersToIds(classified, nums)) : undefined;
 
 	for (const st of statuses) {
 		const priorityFilter = filterByPriority(options.prior);
@@ -101,8 +104,11 @@ async function execute(options: LsOptions) {
 				projectFilter(task) &&
 				contextFilter(task) &&
 				priorityFilter(task) &&
-				waitFilter(task) &&
-				depFilter(task)
+        waitFilter(task) &&
+        depFilter(task) &&
+        // filter by number if specified
+        (!includedIds ||
+          includedIds.has(task.id))
 			));
 
 		if (st === "todo") {

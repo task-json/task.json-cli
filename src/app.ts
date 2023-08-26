@@ -62,4 +62,5 @@ try {
 }
 catch (err: any) {
 	console.error("Error:", (err as Error).message);
+  // console.error(err.stack);
 }
