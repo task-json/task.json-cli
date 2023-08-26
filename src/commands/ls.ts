@@ -16,7 +16,8 @@ type LsOptions = {
 	dep?: boolean,
 	proj?: string[],
 	ctx?: string[],
-	workspace: boolean
+	workspace: boolean,
+  json?: boolean
 };
 
 lsCmd
@@ -32,6 +33,7 @@ lsCmd
 	.option("-w, --wait", "show waiting tasks")
 	.option("-D, --dep", "show dependent tasks and dependencies")
 	.option("--no-workspace", "ignore workspace settings temporarily")
+  .option("-j, --json", "output in ndjson format with num")
 	.argument("[num...]", "task # to list")
 	.action(execute);
 
@@ -116,6 +118,17 @@ async function execute(nums: string[], options: LsOptions) {
 				return taskUrgency(b.task) - taskUrgency(a.task);
 			});
 		}
+
+    // log json data instead of a table
+    if (options.json) {
+      console.log(
+        data.map(({ task, index }) => JSON.stringify({
+          num: `${st.charAt(0)}${index}`,
+          ...task
+        })).join("\n")
+      );
+      continue;
+    }
 
 		const processedData: TaskStr[] = data.map(({ task, index }) => ({
 			number: `${st.charAt(0)}${index}`,
