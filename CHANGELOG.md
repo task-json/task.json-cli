@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.3.0](https://github.com/DCsunset/task.json-cli/compare/v8.2.4...v8.3.0) (2023-08-26)
+
+
+### Features
+
+* support json output for ls cmd ([ec7c7e7](https://github.com/DCsunset/task.json-cli/commit/ec7c7e7651a55187d583506f5edb55796f0a5a48))
+* support list tasks by nums ([31abec4](https://github.com/DCsunset/task.json-cli/commit/31abec4b358182313d8ea63275cc714456fc3bd9))
+
+
+### Bug Fixes
+
+* fix completion for workspace command ([82ae6b8](https://github.com/DCsunset/task.json-cli/commit/82ae6b8f9b9a5799c8bbedc790fabd4d0fb6ac76))
+
+
+### Misc
+
+* add nur installation option ([0eae8c7](https://github.com/DCsunset/task.json-cli/commit/0eae8c7e6bac7f64a4b8d089b2afe29cdedf3b24))
+
 ## [8.2.4](https://github.com/DCsunset/task.json-cli/compare/v8.2.3...v8.2.4) (2023-08-03)
 
 
