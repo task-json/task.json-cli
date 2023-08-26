@@ -20,9 +20,13 @@ Command line task management app for [task.json](https://github.com/DCsunset/tas
 
 ## Installation
 
+From npm:
+
 ```sh
 npm i -g task.json-cli
 ```
+
+If you are using Nix, you can also install it from NUR package `nur.repos.dcsunset.task-json-cli`.
 
 ## Usage
 
