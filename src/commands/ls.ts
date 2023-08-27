@@ -61,7 +61,7 @@ async function execute(nums: string[], options: LsOptions) {
 		["#", "P", "Text", "Proj", "Ctx", "Due", ...(options.wait ? ["Wait"] : []), ...(options.dep ? ["Dep"] : [])]
 	];
 
-	const stdoutColumns = process.stdout.columns ?? 80;
+	const stdoutColumns = process.stdout.columns ?? Infinity;
 	if (stdoutColumns < 50) {
 		lsCmd.error("Terminal width must be greater than 50.");
 	}
