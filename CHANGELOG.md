@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.3.1](https://github.com/DCsunset/task.json-cli/compare/v8.3.0...v8.3.1) (2023-08-27)
+
+
+### Bug Fixes
+
+* do not split lines when not writing to tty ([1d0dc3a](https://github.com/DCsunset/task.json-cli/commit/1d0dc3a5e3d7725356b827e55169808fd17aac72))
+* update zsh completion ([0eba8ef](https://github.com/DCsunset/task.json-cli/commit/0eba8ef78fc141235a0fdf15b37fcaebaec2c2a0))
+
 ## [8.3.0](https://github.com/DCsunset/task.json-cli/compare/v8.2.4...v8.3.0) (2023-08-26)
 
 
