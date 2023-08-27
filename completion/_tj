@@ -142,7 +142,9 @@ _tj_ls() {
 		"*"{-c,--ctx}"[filter tasks by contexts]: :comp_ctx_filter" \
 		{-w,--wait}"[show waiting tasks]" \
 		{-D,--dep}"[show dependent tasks and dependencies]" \
-		"--no-workspace[ignore workspace settings temporarily]"
+		{-j,--json}"[output in ndjson format with num]" \
+		"--no-workspace[ignore workspace settings temporarily]" \
+		"*:num:($(tj lsNum -S all))"
 }
 
 _tj_lsNum() {
