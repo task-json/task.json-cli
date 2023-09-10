@@ -17,6 +17,7 @@ Command line task management app for [task.json](https://github.com/DCsunset/tas
 * Sync with remote task.json-server (with end-to-end encryption support)
 * Workspace support
 * ZSH autocompletion
+* Interoperability (e.g. output searchable by grep, support for JSON output instead of list)
 
 ## Installation
 
@@ -47,6 +48,10 @@ tj ls
 # list by a certain project or context
 tj ls -c ctx
 tj ls -p proj -c ctx
+# search result by piping to grep
+tj ls | grep "Todo task"
+# JSON output to pass to other programs
+tj ls -p proj --json | <other-program>
 
 # finish task(s) by number(s)
 tj do t1 t2
