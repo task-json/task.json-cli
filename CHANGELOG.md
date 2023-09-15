@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.3.2](https://github.com/DCsunset/task.json-cli/compare/v8.3.1...v8.3.2) (2023-09-15)
+
+
+### Bug Fixes
+
+* bump versions of dependencies to fix openpgp import issue ([f739ae6](https://github.com/DCsunset/task.json-cli/commit/f739ae64a998d6bfaa817c02222bc4212abbb8d4))
+
+
+### Misc
+
+* add example usage for interoperability ([64dfb71](https://github.com/DCsunset/task.json-cli/commit/64dfb71e51e21d4fff108d98b02db291e3b2c859))
+
 ## [8.3.1](https://github.com/DCsunset/task.json-cli/compare/v8.3.0...v8.3.1) (2023-08-27)
 
 
